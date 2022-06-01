@@ -4,3 +4,4 @@ yarn.lock
 .next
 client/.env.local
 server/.env
+.vscode/

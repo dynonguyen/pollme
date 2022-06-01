@@ -1,7 +1,7 @@
 {
-	"name": "dynovote",
+	"name": "pollme",
 	"publisher": "Dyno Nguyễn",
-	"displayName": "Dyno Vote Application",
+	"displayName": "Pollme Application",
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
