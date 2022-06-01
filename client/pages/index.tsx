@@ -1,7 +1,9 @@
 import type { NextPage } from 'next';
+import useLanguage from '../hooks/useLanguage';
 
 const Home: NextPage = () => {
-	return <h1 className='text-3xl text-gray-700'>Hello Vote App</h1>;
+	const lang = useLanguage();
+	return <h1 className='text-3xl text-gray-700'>{lang.home.title} App</h1>;
 };
 
 export default Home;
