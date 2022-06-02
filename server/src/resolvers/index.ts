@@ -1,6 +1,6 @@
 import { NonEmptyArray } from 'type-graphql';
-import { HelloResolver } from './hashtag';
+import { HashTagResolver } from './hashtag';
 
-const Resolvers: NonEmptyArray<Function> = [HelloResolver];
+const Resolvers: NonEmptyArray<Function> = [HashTagResolver];
 
 export default Resolvers;

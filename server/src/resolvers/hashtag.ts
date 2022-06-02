@@ -1,10 +1,14 @@
-import { Arg, Query, Resolver } from 'type-graphql';
-import HashTag from '../entities/hashtag';
+import { Query, Resolver } from 'type-graphql';
+import { HashTagQueryResponse } from '../types/entities/HashTagQueryResponse';
 
 @Resolver()
-export class HelloResolver {
-	@Query(_returns => HashTag)
-	hashtag(@Arg('id') id: string): HashTag {
-		return { _id: id, name: '', catalogId: '' };
+export class HashTagResolver {
+	@Query(_returns => HashTagQueryResponse)
+	hashtag(): HashTagQueryResponse {
+		return {
+			code: 200,
+			message: 'Khộng có gì',
+			hashtag: { _id: '1', name: 'Tech', catalogId: '' },
+		};
 	}
 }

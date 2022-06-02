@@ -6,4 +6,5 @@ export const DEFAULT = {
 	VOTE_ALLOW_MARK: false,
 	VOTE_MAX_VOTE: 0,
 	VOTE_MAX_SCORE: 10,
+	PAGE_SIZE: 10,
 };

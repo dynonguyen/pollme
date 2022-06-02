@@ -1,5 +1,5 @@
 import { Field, ID, Int, ObjectType } from 'type-graphql';
-import { MongoID } from '../core/types/common';
+import { MongoID } from '../types/commons';
 
 @ObjectType()
 class VoteOfUser {
@@ -40,7 +40,7 @@ class Vote {
 	desc?: string;
 
 	@Field()
-	isPrivate!: boolean;
+	isPrivate: boolean;
 
 	@Field()
 	hashtag: string[];

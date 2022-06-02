@@ -1,5 +1,5 @@
 import { Field, ID, Int, ObjectType } from 'type-graphql';
-import { MongoID } from '../core/types/common';
+import { MongoID } from '../types/commons';
 
 @ObjectType()
 class Catalog {
@@ -7,10 +7,10 @@ class Catalog {
 	_id: MongoID;
 
 	@Field()
-	name!: string;
+	name: string;
 
 	@Field(_type => Int)
-	voteTotal!: number;
+	voteTotal: number;
 }
 
 export default Catalog;

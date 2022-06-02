@@ -1,5 +1,5 @@
 import { Field, ID, ObjectType } from 'type-graphql';
-import { MongoID } from '../core/types/common';
+import { MongoID } from '../types/commons';
 
 @ObjectType()
 class HashTag {
@@ -7,7 +7,7 @@ class HashTag {
 	_id: MongoID;
 
 	@Field()
-	name!: string;
+	name: string;
 
 	@Field(_type => String, { nullable: true })
 	catalogId?: MongoID;
