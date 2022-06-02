@@ -1,0 +1,11 @@
+export const MIN = {};
+
+export const MAX = {
+	VOTE_TITLE: 150,
+	VOTE_DESC: 250,
+	USER_NAME: 50,
+	USER_EMAIL: 150,
+	COMMENT_LENGTH: 200,
+	HASHTAG_NAME: 50,
+	CATALOG_NAME: 50,
+};
