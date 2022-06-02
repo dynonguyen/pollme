@@ -1,5 +1,5 @@
 import { model, Model, Schema } from 'mongoose';
-import Catalog from '../core/interface/catalog';
+import Catalog from '../entities/catalog';
 import { MAX } from './../constants/validation';
 
 const schema: Schema = new Schema({
