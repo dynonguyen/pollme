@@ -8,3 +8,6 @@ export const CORS_ORIGINS: string[] = [
 	process.env.CLIENT_WEB_ORIGIN || '',
 	'https://studio.apollographql.com',
 ];
+export const APP_NAME = process.env.APP_NAME || 'Pollme_Api';
+export const SESSION_SECRET = process.env.SESSION_SECRET || 'Secret';
+export const __PROD__ = process.env.NODE_ENV === 'production';
