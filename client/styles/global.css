@@ -7,6 +7,34 @@
 @layer base {
 	html,
 	body {
-		@apply font-inter bg-white dark:bg-dark-bg;
+		@apply font-inter bg-white dark:bg-d_bg dark:text-d_text_primary;
+	}
+}
+
+@layer components {
+	.btn {
+		@apply px-4 py-1 duration-300 hover:brightness-90 rounded-lg;
+	}
+	.btn-outline {
+		@apply btn border-solid border-gray-200 dark:border-gray-700 border dark:text-d_text_title;
+	}
+	.btn-primary {
+		@apply btn bg-primary text-white dark:bg-d_primary dark:text-gray-50;
+	}
+
+	.field {
+		@apply border border-gray-200 dark:border-gray-600 outline-none py-2 px-4 w-full text-gray-500;
+	}
+}
+
+@layer utilities {
+	.flex-center {
+		@apply flex items-center justify-center;
+	}
+
+	.bg-overlay {
+		@apply fixed top-0 left-0 w-full h-full;
+		background-color: rgba(0, 0, 0, 0.45);
+		z-index: 99;
 	}
 }
