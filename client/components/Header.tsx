@@ -14,7 +14,7 @@ function LoginRegister(): JSX.Element {
 	const lang = useLanguage();
 
 	return (
-		<React.Fragment>
+		<>
 			<Link href='/login'>
 				<a>
 					<button className='btn-outline rounded-full font-medium text-gray-600'>
@@ -29,14 +29,14 @@ function LoginRegister(): JSX.Element {
 					</button>
 				</a>
 			</Link>
-		</React.Fragment>
+		</>
 	);
 }
 
 function Navbar(): JSX.Element {
 	const lang = useLanguage();
 	return (
-		<React.Fragment>
+		<>
 			{lang.navbarItems.map((item, index) => (
 				<Link href={item.link} key={index}>
 					<a className='font-medium capitalize text-gray-500 dark:text-d_text_title hover:text-gray-700 duration-300'>
@@ -44,7 +44,7 @@ function Navbar(): JSX.Element {
 					</a>
 				</Link>
 			))}
-		</React.Fragment>
+		</>
 	);
 }
 
@@ -84,7 +84,7 @@ function SearchBar(): JSX.Element {
 	};
 
 	return (
-		<React.Fragment>
+		<>
 			<SearchIcon className='w-5 h-5 absolute top-1/2 left-2 text-gray-400 dark:text-gray-500 font-normal -translate-y-1/2' />
 			<input
 				type='text'
@@ -94,7 +94,7 @@ function SearchBar(): JSX.Element {
 				onChange={e => (searchInput.current = e.target.value)}
 				onKeyDown={handlePressEnter}
 			/>
-		</React.Fragment>
+		</>
 	);
 }
 
