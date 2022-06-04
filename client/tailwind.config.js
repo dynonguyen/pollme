@@ -16,17 +16,17 @@ module.exports = {
 		extend: {
 			colors: {
 				// light mode
-				primary: '#2d8bba',
-				secondary: '#41b8d5',
-				accent: '#f260cd',
-				text_title: '#0f172a',
+				primary: '#219ebc',
+				secondary: '#8ecae6',
+				accent: '#fb8500',
+				text_title: '#023047',
 				text_primary: '#334155',
 
 				// dark mode
 				d_bg: '#193151',
-				d_primary: '#3aa8df',
-				d_secondary: '#2dadcc',
-				d_accent: '#ef40c3',
+				d_primary: '#40b8d5',
+				d_secondary: '#aed7eb',
+				d_accent: '#ee9f46',
 				d_text_title: '#e2e8f0',
 				d_text_primary: '#94a3b8',
 			},

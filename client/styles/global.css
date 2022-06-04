@@ -13,7 +13,10 @@
 
 @layer components {
 	.btn {
-		@apply px-4 py-1 duration-300 hover:brightness-90 rounded-lg;
+		@apply px-4 py-1 duration-300 hover:brightness-90 rounded-md;
+	}
+	.btn-lg {
+		@apply !py-2 text-lg;
 	}
 	.btn-outline {
 		@apply btn border-solid border-gray-200 dark:border-gray-700 border dark:text-d_text_title;
@@ -36,5 +39,13 @@
 		@apply fixed top-0 left-0 w-full h-full;
 		background-color: rgba(0, 0, 0, 0.45);
 		z-index: 99;
+	}
+
+	.text-gradient {
+		@apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary dark:from-d_primary dark:to-d_secondary;
+	}
+
+	.bg-gradient {
+		@apply bg-gradient-to-r from-primary to-secondary dark:from-d_primary dark:to-d_secondary;
 	}
 }

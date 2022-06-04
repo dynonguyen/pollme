@@ -89,7 +89,7 @@ function SearchBar(): JSX.Element {
 			<input
 				type='text'
 				autoFocus
-				className='field pl-9 py-1 rounded-full text-gray-700 dark:border-0'
+				className='field pl-9 py-1 rounded-full text-gray-700 dark:text-d_text_title dark:bg-transparent'
 				placeholder={lang.placeholder.search}
 				onChange={e => (searchInput.current = e.target.value)}
 				onKeyDown={handlePressEnter}
@@ -102,14 +102,14 @@ function MobileSearch(): JSX.Element {
 	const [showSearch, setShowSearch] = useState(false);
 
 	return (
-		<div className='lg:hidden'>
+		<div className='xl:hidden'>
 			<SearchIcon className={ICON_STYLES} onClick={() => setShowSearch(true)} />
 			<div className={`${showSearch ? 'bg-overlay' : 'hidden'}`}>
 				<div className='absolute w-4/5 h-8 top-20 left-1/2 -translate-x-1/2'>
 					<div className='flex'>
 						<SearchBar />
 						<XIcon
-							className='w-8 h-8 text-gray-50 hover:text-gray-200 cursor-pointer'
+							className='w-8 h-8 text-gray-50 hover:text-gray-200 cursor-pointer dark:text-d_text_primary'
 							onClick={() => setShowSearch(false)}
 						/>
 					</div>
@@ -132,17 +132,16 @@ export default function Header(): JSX.Element {
 						<strong className='text-lg text-primary dark:text-d_primary tracking-wide'>
 							{APP_NAME}
 						</strong>
-						<div className='bottom-6'></div>
 					</a>
 				</Link>
 			</div>
 
-			<nav className='hidden gap-6 flex-grow md:flex'>
+			<nav className='hidden gap-10 flex-grow md:flex mx-2'>
 				<Navbar />
 			</nav>
 
 			<div className='hidden md:flex md:gap-2 md:items-center'>
-				<div className='hidden lg:block w-44 lg:w-60 relative'>
+				<div className='hidden xl:block w-44 lg:w-60 relative'>
 					<SearchBar />
 				</div>
 				{isAuth ? <NavbarAccountAvatar /> : <LoginRegister />}

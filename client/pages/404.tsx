@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 import HeadTitle from '../components/HeadTitle';
 import useLanguage from '../hooks/useLanguage';
@@ -20,10 +21,13 @@ export default function NotFoundPage() {
 							{title}
 						</p>
 						<p className='mb-8 dark:text-d_text_primary mt-2'>{subTitle}</p>
-
-						<button className='px-4 inline py-2 text-sm font-medium leading-5 shadow text-white transition-colors duration-150 border border-transparent rounded-lg focus:outline-none focus:shadow-outline-blue btn-primary uppercase'>
-							{backHomeBtn}
-						</button>
+						<Link href='/'>
+							<a>
+								<button className='px-4 inline py-2 text-sm font-medium leading-5 shadow text-white transition-colors duration-150 border border-transparent rounded-lg focus:outline-none focus:shadow-outline-blue btn-primary uppercase'>
+									{backHomeBtn}
+								</button>
+							</a>
+						</Link>
 					</div>
 					<div className='max-w-lg'>
 						<img src='/images/404.svg' alt='Logo' />
