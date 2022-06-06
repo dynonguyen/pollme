@@ -137,7 +137,7 @@ export default function Header(): JSX.Element {
 					</Link>
 				</div>
 
-				<nav className='hidden gap-10 flex-grow md:flex ml-5'>
+				<nav className='hidden gap-5 lg:gap-10 flex-grow md:flex ml-2 lg:ml-5'>
 					<Navbar />
 				</nav>
 

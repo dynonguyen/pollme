@@ -72,7 +72,7 @@ export default {
 						'User-friendly interface, beautiful, easy to use for beginners. Beautiful across all devices and screens.',
 				},
 			],
-			analytics: ['Poll', 'Active user', 'Daily Visitor', 'Comment'],
+			analytics: ['Poll', 'Active user', 'Hashtag', 'Comment'],
 			featureTitle: 'Best Features',
 			features: [
 				{

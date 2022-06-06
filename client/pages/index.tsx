@@ -9,6 +9,7 @@ import {
 	UserCircleIcon,
 } from '@heroicons/react/solid';
 import type { GetStaticProps, NextPage } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import Footer from '../components/Footer';
@@ -154,21 +155,27 @@ const Home: NextPage = () => {
 						</p>
 					</div>
 					<div className='col-span-1 row-start-1 mb-4 md:mb-0 md:col-start-2'>
-						<img
-							src='/images/home-page/intro-1.svg'
-							alt='Landing Page 1'
-							className='max-w-96 mx-auto'
-						/>
+						<div className='max-w-96 h-80 relative'>
+							<Image
+								src='/images/home-page/intro-1.svg'
+								alt='Landing Page 1'
+								objectFit='contain'
+								layout='fill'
+							/>
+						</div>
 					</div>
 				</div>
 
 				<div className='grid gap-6 grid-cols-1 md:grid-cols-2 items-center mb-28'>
 					<div className='col-span-1'>
-						<img
-							src='/images/home-page/intro-2.png'
-							alt='Landing Page 1'
-							className='max-w-96 max-h-80 mx-auto mb-4 md:mb-0'
-						/>
+						<div className='max-w-96 h-80 relative'>
+							<Image
+								src='/images/home-page/intro-2.png'
+								alt='Landing Page 2'
+								objectFit='contain'
+								layout='fill'
+							/>
+						</div>
 					</div>
 					<div className='col-span-1'>
 						<h2 className='text-2xl md:text-3xl capitalize max-w-xl text-text_title dark:text-d_text_title font-medium'>
@@ -190,11 +197,14 @@ const Home: NextPage = () => {
 						</p>
 					</div>
 					<div className='col-span-1 row-start-1 mb-4 md:mb-0 md:col-start-2'>
-						<img
-							src='/images/home-page/intro-3.png'
-							alt='Landing Page 1'
-							className='max-w-96 max-h-80 mx-auto'
-						/>
+						<div className='max-w-96 h-80 relative'>
+							<Image
+								src='/images/home-page/intro-3.png'
+								alt='Landing Page 3'
+								objectFit='contain'
+								layout='fill'
+							/>
+						</div>
 					</div>
 				</div>
 			</section>

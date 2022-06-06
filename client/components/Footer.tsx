@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React from 'react';
 import { APP_NAME } from '../constants';
 
@@ -20,6 +21,10 @@ const contacts: Contact[] = [
 		iconSrc: '/icons/twitter.svg',
 	},
 	{
+		link: 'https://github.com/TuanNguyen2504',
+		iconSrc: '/icons/github.svg',
+	},
+	{
 		link: 'https://dynonguyen.com',
 		iconSrc: '/icons/blog.svg',
 	},
@@ -34,16 +39,22 @@ export default function Footer(): JSX.Element {
 						{APP_NAME}
 					</strong>
 				</div>
-				<ul className='flex justify-center gap-6 mt-3 mb-8'>
+				<ul className='flex justify-center gap-3 md:gap-6 mt-3 mb-8'>
 					{contacts.map((contact, index) => (
 						<li key={index} className='rounded-full p-2 border cursor-pointer'>
 							<a href={contact.link} target='_blank'>
-								<img src={contact.iconSrc} className='w-5 h-5' />
+								<div className='w-3 h-3 md:w-5 md:h-5 relative'>
+									<Image
+										src={contact.iconSrc}
+										layout='fill'
+										objectFit='contain'
+									/>
+								</div>
 							</a>
 						</li>
 					))}
 				</ul>
-				<p className='text-white text-center'>
+				<p className='text-white text-center text-sm md:text-lg'>
 					Copyright© {new Date().getFullYear()} {APP_NAME}. All Rights Reserved.
 				</p>
 			</div>
