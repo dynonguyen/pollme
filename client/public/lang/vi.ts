@@ -1,3 +1,4 @@
+import { MAX, MIN } from '../../constants/validation';
 import { APP_NAME } from './../../constants/index';
 
 export default {
@@ -91,6 +92,42 @@ export default {
 						'Pollme cho phép bạn chấm điểm lựa chọn của mình và thảo luận về nó trong cuộc khảo sát đó',
 				},
 			],
+		},
+		register: {
+			title: 'Đăng ký',
+			subTitle: 'Nhập thông tin của bạn để đăng ký',
+			fields: {
+				email: {
+					label: 'Email',
+					errors: {
+						required: 'Email là bắt buộc !',
+						format: 'Email vừa nhập không chính xác.',
+						max: `Email tối đa ${MAX.EMAIL_LEN} ký tự.`,
+					},
+				},
+				name: {
+					label: 'Họ tên',
+					errors: {
+						required: 'Họ tên là bắt buộc !',
+						max: `Họ tên tối đa ${MAX.USERNAME_LEN} ký tự.`,
+					},
+				},
+				password: {
+					label: 'Mật khẩu',
+					errors: {
+						required: 'Mật khẩu là bắt buộc !',
+						min: `Mật khẩu tối thiểu ${MIN.PASSWORD_LEN} ký tự.`,
+						max: `Mật khẩu tối đa ${MAX.PASSWORD_LEN} ký tự.`,
+					},
+				},
+				confirmPwd: {
+					label: 'Xác nhận mật khẩu',
+					errors: {
+						noMatch: 'Mật khẩu không trùng khớp',
+					},
+				},
+			},
+			submitBtn: 'Đăng ký',
 		},
 	},
 };

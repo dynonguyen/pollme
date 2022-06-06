@@ -34,12 +34,12 @@ module.exports = {
 				text_primary: '#334155',
 
 				// dark mode
-				d_bg: '#193151',
-				d_primary: '#40b8d5',
+				d_bg: '#0f172a',
+				d_primary: '#50b8d5',
 				d_secondary: '#aed7eb',
 				d_accent: '#ee9f46',
-				d_text_title: '#e2e8f0',
-				d_text_primary: '#94a3b8',
+				d_text_title: '#e8e9ea',
+				d_text_primary: '#979899',
 			},
 
 			fontFamily: {

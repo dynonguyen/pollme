@@ -8,7 +8,9 @@
 	html,
 	body {
 		@apply font-inter bg-white dark:bg-d_bg dark:text-d_text_primary;
-		max-width: 100vw;
+	}
+
+	body {
 		overflow-x: hidden;
 	}
 
@@ -37,7 +39,10 @@
 	}
 
 	.field {
-		@apply border border-gray-200 dark:border-gray-600 outline-none py-2 px-4 w-full text-gray-500;
+		@apply border border-gray-200 dark:border-gray-600 outline-none py-2 px-4 w-full rounded-md text-gray-500 dark:bg-slate-800 dark:text-gray-200 dark:border-none;
+	}
+	.field-error {
+		@apply border-red-600 dark:border-red-400;
 	}
 }
 
@@ -66,5 +71,9 @@
 
 	.text-color-title {
 		@apply text-text_title dark:text-d_text_title;
+	}
+
+	.error-text {
+		@apply !text-red-600 dark:!text-red-400;
 	}
 }

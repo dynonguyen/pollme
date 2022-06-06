@@ -14,12 +14,15 @@
 	"dependencies": {
 		"@apollo/client": "^3.6.6",
 		"@heroicons/react": "^1.0.6",
+		"@hookform/resolvers": "^2.9.0",
 		"deepmerge": "^4.2.2",
 		"graphql": "^16.5.0",
 		"lodash": "^4.17.21",
 		"next": "12.1.6",
 		"react": "18.1.0",
-		"react-dom": "18.1.0"
+		"react-dom": "18.1.0",
+		"react-hook-form": "^7.31.3",
+		"yup": "^0.32.11"
 	},
 	"devDependencies": {
 		"@graphql-codegen/cli": "2.6.2",

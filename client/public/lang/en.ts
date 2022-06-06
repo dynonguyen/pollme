@@ -1,3 +1,4 @@
+import { MAX, MIN } from '../../constants/validation';
 import { APP_NAME } from './../../constants/index';
 
 export default {
@@ -91,6 +92,42 @@ export default {
 						'Pollme allows you to grade your choice and discuss it on that survey',
 				},
 			],
+		},
+		register: {
+			title: 'Register',
+			subTitle: 'Enter your information to register',
+			fields: {
+				email: {
+					label: 'Email',
+					errors: {
+						required: 'Email is required !',
+						format: 'The email you entered is incorrect.',
+						max: `The maximum length of email is ${MAX.EMAIL_LEN} characters.`,
+					},
+				},
+				name: {
+					label: 'Full name',
+					errors: {
+						required: 'Full name is required !',
+						max: `The maximum length of full name is ${MAX.USERNAME_LEN} characters.`,
+					},
+				},
+				password: {
+					label: 'Password',
+					errors: {
+						required: 'Password is required !',
+						min: `The minimum length of password is ${MIN.PASSWORD_LEN} characters.`,
+						max: `The maximum length of password is ${MAX.PASSWORD_LEN} characters.`,
+					},
+				},
+				confirmPwd: {
+					label: 'Confirm Password',
+					errors: {
+						noMatch: 'Password does not match',
+					},
+				},
+			},
+			submitBtn: 'Register',
 		},
 	},
 };
