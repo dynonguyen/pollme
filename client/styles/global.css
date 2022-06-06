@@ -9,6 +9,15 @@
 	body {
 		@apply font-inter bg-white dark:bg-d_bg dark:text-d_text_primary;
 	}
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		@apply text-text_title dark:text-d_text_title font-medium;
+	}
 }
 
 @layer components {
@@ -47,5 +56,13 @@
 
 	.bg-gradient {
 		@apply bg-gradient-to-r from-primary to-secondary dark:from-d_primary dark:to-d_secondary;
+	}
+
+	.text-color-normal {
+		@apply text-text_primary dark:text-d_text_primary;
+	}
+
+	.text-color-title {
+		@apply text-text_title dark:text-d_text_title;
 	}
 }

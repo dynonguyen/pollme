@@ -18,6 +18,10 @@ export default {
 			link: '/about-me',
 			label: 'Liên hệ',
 		},
+		{
+			link: '/faq',
+			label: 'FAQ',
+		},
 	],
 	button: {
 		login: 'Đăng nhập',
@@ -38,7 +42,7 @@ export default {
 			titleRoles: [
 				'người',
 				'nhà phát triển',
-				'nhà phân tích dữ liệu',
+				'nhà khoa học',
 				'quản trị viên',
 				'nhà thiết kế',
 			],
@@ -51,6 +55,47 @@ export default {
 			buttons: {
 				createPoll: 'Tạo khảo sát ngay',
 			},
+			introduction: [
+				{
+					title: 'Tạo một cuộc khảo sát dễ dàng',
+					content:
+						'Chỉ với vài bước, bạn có thể tạo một của khảo sát cho riêng mình và chia sẻ nó tới những người bạn của mình.',
+				},
+				{
+					title: 'Phân tích & báo cáo',
+					content:
+						'Phân tích kết quả thăm dò ý kiến thông qua bảng điều khiển và đồ thị toàn diện. Xuất tất cả sang Excel hoặc PDF.',
+				},
+				{
+					title: 'Giao diện đơn giản, dễ dùng',
+					content:
+						'Giao diện thân thiện với người dùng, đẹp, dễ sử dụng cho người mới bắt đầu. Đáp ứng tốt trên tất cả các thiết bị và màn hình.',
+				},
+			],
+			analytics: [
+				'Cuộc khảo sát',
+				'Người dùng',
+				'Truy cập / ngày',
+				'Bình luận',
+			],
+			featureTitle: 'Tính năng nổi bật',
+			features: [
+				{
+					title: 'Khả năng tuỳ chỉnh cao',
+					content:
+						'Có thể dễ dàng tùy chỉnh nhiều thuộc tính của một cuộc khảo sát.',
+				},
+				{
+					title: 'Công khai & Riêng tư',
+					content:
+						'Bạn có thể tạo một khảo sát dành cho tất cả mọi người hoặc riêng tư cho nhóm của bạn',
+				},
+				{
+					title: 'Thảo luận',
+					content:
+						'Pollme cho phép bạn chấm điểm lựa chọn của mình và thảo luận về nó trong cuộc khảo sát đó',
+				},
+			],
 		},
 	},
 };

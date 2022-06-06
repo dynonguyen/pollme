@@ -123,37 +123,39 @@ export default function Header(): JSX.Element {
 	const isAuth = false;
 
 	return (
-		<header className='px-3 md:px-5 py-4 border-b border-gray-200 flex items-center justify-between gap-2 sticky top-0 z-50 bg-white dark:bg-d_bg dark:border-gray-600'>
-			<div className='flex items-center gap-3'>
-				<MenuSlider />
-				<Link href='/'>
-					<a className='flex gap-2 cursor-pointer'>
-						<img src='/images/logo.svg' alt='Logo' className='w-6 h-6' />
-						<strong className='text-lg text-primary dark:text-d_primary tracking-wide'>
-							{APP_NAME}
-						</strong>
-					</a>
-				</Link>
-			</div>
-
-			<nav className='hidden gap-10 flex-grow md:flex mx-2'>
-				<Navbar />
-			</nav>
-
-			<div className='hidden md:flex md:gap-2 md:items-center'>
-				<div className='hidden xl:block w-44 lg:w-60 relative'>
-					<SearchBar />
+		<header className='border-b border-gray-200 dark:border-gray-600 sticky top-0 z-50 bg-white dark:bg-d_bg'>
+			<div className='px-3 md:px-5 py-4 flex items-center justify-between gap-2 xxl:container'>
+				<div className='flex items-center gap-3'>
+					<MenuSlider />
+					<Link href='/'>
+						<a className='flex gap-2 cursor-pointer'>
+							<img src='/images/logo.svg' alt='Logo' className='w-6 h-6' />
+							<strong className='text-lg text-primary dark:text-d_primary tracking-wide'>
+								{APP_NAME}
+							</strong>
+						</a>
+					</Link>
 				</div>
-				{isAuth ? <NavbarAccountAvatar /> : <LoginRegister />}
-				<div className='bg-gray-200 dark:bg-gray-600 w-[1px] mx-2 h-8'></div>
-			</div>
 
-			<div className='flex items-center gap-3'>
-				<MobileSearch />
-				<div className='flex-shrink-0'>
-					<ThemeModeButton />
+				<nav className='hidden gap-10 flex-grow md:flex ml-5'>
+					<Navbar />
+				</nav>
+
+				<div className='hidden md:flex md:gap-2 md:items-center'>
+					<div className='hidden xl:block w-44 lg:w-60 relative'>
+						<SearchBar />
+					</div>
+					{isAuth ? <NavbarAccountAvatar /> : <LoginRegister />}
+					<div className='bg-gray-200 dark:bg-gray-600 w-[1px] mx-2 h-8'></div>
 				</div>
-				<LanguageSelect />
+
+				<div className='flex items-center gap-3'>
+					<MobileSearch />
+					<div className='flex-shrink-0'>
+						<ThemeModeButton />
+					</div>
+					<LanguageSelect />
+				</div>
 			</div>
 		</header>
 	);
