@@ -8,14 +8,23 @@ import {
 import { onError } from '@apollo/client/link/error';
 import merge from 'deepmerge';
 import isEqual from 'lodash/isEqual';
+import {
+	GetServerSidePropsResult,
+	GetStaticPathsResult,
+	GetStaticPropsResult,
+} from 'next';
 import { useMemo } from 'react';
 import { APOLLO_SERVER_URI } from './../constants/index';
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
 
-interface ApolloStateProps {
+type ApolloStateProps = {
 	[APOLLO_STATE_PROP_NAME]?: NormalizedCacheObject;
-}
+};
+type ApolloResult =
+	| GetStaticPropsResult<any>
+	| GetServerSidePropsResult<any>
+	| GetStaticPathsResult<any>;
 
 let apolloClient: ApolloClient<NormalizedCacheObject>;
 
@@ -75,7 +84,7 @@ export function initializeApollo(
 
 export function addApolloState(
 	client: ApolloClient<NormalizedCacheObject>,
-	pageProps: { props: ApolloStateProps },
+	pageProps: { props: ApolloStateProps } & ApolloResult,
 ) {
 	if (pageProps?.props) {
 		pageProps.props[APOLLO_STATE_PROP_NAME] = client.cache.extract();

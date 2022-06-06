@@ -1,0 +1,8 @@
+query HomeAnalysis {
+	count {
+		poll
+		user
+		hashtag
+		comment
+	}
+}

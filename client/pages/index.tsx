@@ -3,28 +3,27 @@ import {
 	AnnotationIcon,
 	ChatAlt2Icon,
 	CheckCircleIcon,
-	CursorClickIcon,
 	PlusIcon,
 	ShieldCheckIcon,
+	TagIcon,
 	UserCircleIcon,
 } from '@heroicons/react/solid';
-import type { NextPage } from 'next';
+import type { GetStaticProps, NextPage } from 'next';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import HeadTitle from '../components/HeadTitle';
+import { STATIC_PROPS_REVALIDATE } from '../constants';
+import {
+	HomeAnalysisDocument,
+	useHomeAnalysisQuery,
+} from '../graphql-client/generated/graphql';
 import useLanguage from '../hooks/useLanguage';
+import { addApolloState, initializeApollo } from '../lib/apolloClient';
 import { numberFormat } from '../utils/format';
 import styles from './../styles/Home.module.css';
 const featureIcons = [AdjustmentsIcon, ShieldCheckIcon, ChatAlt2Icon];
-
-interface AnalysisProps {
-	poll: number;
-	user: number;
-	access: number;
-	comment: number;
-}
 
 function Heading(): JSX.Element {
 	const lang = useLanguage();
@@ -69,10 +68,13 @@ function Heading(): JSX.Element {
 	);
 }
 
-function Analysis(props: AnalysisProps): JSX.Element {
+function Analysis(): JSX.Element {
 	const lang = useLanguage();
 	const analyticsLang = lang.pages.home.analytics;
-	const { access = 0, poll = 0, user = 0, comment = 0 } = props;
+	const { data } = useHomeAnalysisQuery();
+	let count = data?.count || { poll: 0, comment: 0, user: 0, hashtag: 0 };
+	const { comment, hashtag, poll, user } = count;
+
 	const items: { Icon: Function; quantity: number; title: string }[] = [
 		{
 			Icon: CheckCircleIcon,
@@ -85,8 +87,8 @@ function Analysis(props: AnalysisProps): JSX.Element {
 			title: analyticsLang[1],
 		},
 		{
-			Icon: CursorClickIcon,
-			quantity: access,
+			Icon: TagIcon,
+			quantity: hashtag,
 			title: analyticsLang[2],
 		},
 		{
@@ -97,7 +99,7 @@ function Analysis(props: AnalysisProps): JSX.Element {
 	];
 
 	return (
-		<div className='bg-[url("https://demo.wphash.com/nexo/wp-content/uploads/2017/06/1-2.jpg")] my-14'>
+		<div className='bg-[url("/images/home-page/bg.jpg")] my-14'>
 			<div className='container py-24 gap-5 grid grid-cols-2 md:grid-cols-4'>
 				{items.map((item, index) => (
 					<div key={index} className='flex flex-col items-center text-white'>
@@ -198,7 +200,7 @@ const Home: NextPage = () => {
 			</section>
 
 			{/* Analytics */}
-			<Analysis poll={0} access={0} comment={0} user={0} />
+			<Analysis />
 
 			{/* Best features */}
 			<section className='mb-12'>
@@ -229,6 +231,25 @@ const Home: NextPage = () => {
 			<Footer />
 		</main>
 	);
+};
+
+export const getStaticProps: GetStaticProps = async () => {
+	try {
+		const apolloClient = initializeApollo();
+		await apolloClient.query({
+			query: HomeAnalysisDocument,
+		});
+		return addApolloState(apolloClient, {
+			props: {},
+			revalidate: STATIC_PROPS_REVALIDATE.HOME_PAGE,
+		});
+	} catch (error) {
+		console.log('Home Page GetStaticProps Error: ', error);
+		return {
+			props: {},
+			revalidate: STATIC_PROPS_REVALIDATE.HOME_PAGE,
+		};
+	}
 };
 
 export default Home;
