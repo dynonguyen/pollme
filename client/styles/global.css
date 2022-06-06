@@ -8,6 +8,8 @@
 	html,
 	body {
 		@apply font-inter bg-white dark:bg-d_bg dark:text-d_text_primary;
+		max-width: 100vw;
+		overflow-x: hidden;
 	}
 
 	h1,

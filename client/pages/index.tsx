@@ -12,8 +12,6 @@ import type { GetStaticProps, NextPage } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
-import Footer from '../components/Footer';
-import Header from '../components/Header';
 import HeadTitle from '../components/HeadTitle';
 import { STATIC_PROPS_REVALIDATE } from '../constants';
 import {
@@ -121,9 +119,8 @@ const Home: NextPage = () => {
 	const homeLang = lang.pages.home;
 
 	return (
-		<main>
+		<>
 			<HeadTitle title={lang.title.home} />
-			<Header />
 
 			{/* Heading */}
 			<section className='min-w-full h-[calc(100vh-67px)]	flex-center'>
@@ -237,9 +234,7 @@ const Home: NextPage = () => {
 					})}
 				</div>
 			</section>
-
-			<Footer />
-		</main>
+		</>
 	);
 };
 
