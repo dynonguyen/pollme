@@ -163,7 +163,7 @@ const Home: NextPage = () => {
 				<div className='grid gap-6 grid-cols-1 md:grid-cols-2 items-center mb-28'>
 					<div className='col-span-1'>
 						<img
-							src='/images/home-page/intro-2.svg'
+							src='/images/home-page/intro-2.png'
 							alt='Landing Page 1'
 							className='max-w-96 max-h-80 mx-auto mb-4 md:mb-0'
 						/>
@@ -205,7 +205,7 @@ const Home: NextPage = () => {
 				<h2 className='text-center text-3xl md:text-4xl mb-12 capitalize'>
 					{homeLang.featureTitle}
 				</h2>
-				<div className='container flex justify-between gap-7 flex-wrap'>
+				<div className='container flex justify-center gap-7 flex-wrap'>
 					{homeLang.features.map((f, index) => {
 						const Icon = featureIcons[index];
 						return (

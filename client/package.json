@@ -8,17 +8,25 @@
 		"dev": "next dev -p 8080",
 		"build": "next build",
 		"start": "next start -p $PORT",
-		"lint": "next lint"
+		"lint": "next lint",
+		"graphql-gen": "graphql-codegen --config codegen.yml"
 	},
 	"dependencies": {
 		"@apollo/client": "^3.6.6",
 		"@heroicons/react": "^1.0.6",
+		"deepmerge": "^4.2.2",
 		"graphql": "^16.5.0",
+		"lodash": "^4.17.21",
 		"next": "12.1.6",
 		"react": "18.1.0",
 		"react-dom": "18.1.0"
 	},
 	"devDependencies": {
+		"@graphql-codegen/cli": "2.6.2",
+		"@graphql-codegen/typescript": "2.4.11",
+		"@graphql-codegen/typescript-operations": "2.4.0",
+		"@graphql-codegen/typescript-react-apollo": "3.2.14",
+		"@types/lodash": "^4.14.182",
 		"@types/node": "17.0.38",
 		"@types/react": "18.0.10",
 		"@types/react-dom": "18.0.5",
