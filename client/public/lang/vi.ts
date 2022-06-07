@@ -8,15 +8,15 @@ export default {
 	},
 	navbarItems: [
 		{
-			link: '/discover',
+			link: '/kham-pha',
 			label: 'Khám phá',
 		},
 		{
-			link: '/new-vote',
+			link: '/tao-khao-sat',
 			label: 'Tạo khảo sát',
 		},
 		{
-			link: '/about-me',
+			link: '/lien-he',
 			label: 'Liên hệ',
 		},
 		{
@@ -40,6 +40,7 @@ export default {
 			backHomeBtn: 'Quay về trang chủ',
 		},
 		home: {
+			link: '/',
 			titleRoles: [
 				'người',
 				'nhà phát triển',
@@ -94,6 +95,7 @@ export default {
 			],
 		},
 		register: {
+			link: '/dang-ky',
 			title: 'Đăng ký',
 			subTitle: 'Nhập thông tin của bạn để đăng ký',
 			fields: {
@@ -132,6 +134,9 @@ export default {
 				failed: 'Đăng ký thất bại, thử lại.',
 				success: 'Đăng ký thành công.',
 			},
+		},
+		login: {
+			link: '/dang-nhap',
 		},
 	},
 };

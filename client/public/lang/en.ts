@@ -40,6 +40,7 @@ export default {
 			backHomeBtn: 'back to home page',
 		},
 		home: {
+			link: '/',
 			titleRoles: [
 				'one',
 				'developer',
@@ -94,6 +95,7 @@ export default {
 			],
 		},
 		register: {
+			link: '/register',
 			title: 'Register',
 			subTitle: 'Enter your information to register',
 			fields: {
@@ -132,6 +134,9 @@ export default {
 				failed: 'Registration failed. Try again.',
 				success: 'Registration successful.',
 			},
+		},
+		login: {
+			link: '/login',
 		},
 	},
 };

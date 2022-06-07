@@ -28,7 +28,7 @@ const Register: NextPage = () => {
 
 			if (response.data?.register.code === SUCCESS_CODE.CREATED) {
 				toast.show({ message: registerLang.message.success, type: 'success' });
-				router.push('/login');
+				router.push(lang.pages.login.link);
 			} else {
 				toast.show({
 					message:
@@ -47,7 +47,7 @@ const Register: NextPage = () => {
 
 	return (
 		<>
-			<HeadTitle title='Register' />
+			<HeadTitle title={registerLang.title} />
 
 			<div className='min-h-[calc(100vh-67px)] flex items-center flex-col my-16'>
 				<h1 className='text-2xl md:text-4xl font-extrabold text-center tracking-[1px] mb-2'>

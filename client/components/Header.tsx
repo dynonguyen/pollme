@@ -15,14 +15,14 @@ function LoginRegister(): JSX.Element {
 
 	return (
 		<>
-			<Link href='/login'>
+			<Link href={lang.pages.register.link}>
 				<a>
 					<button className='btn-outline rounded-full font-medium text-gray-600'>
 						{lang.button.login}
 					</button>
 				</a>
 			</Link>
-			<Link href='/register'>
+			<Link href={lang.pages.register.link}>
 				<a>
 					<button className='btn-primary rounded-full font-medium'>
 						{lang.button.register}
