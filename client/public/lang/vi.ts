@@ -128,6 +128,10 @@ export default {
 				},
 			},
 			submitBtn: 'Đăng ký',
+			message: {
+				failed: 'Đăng ký thất bại, thử lại.',
+				success: 'Đăng ký thành công.',
+			},
 		},
 	},
 };

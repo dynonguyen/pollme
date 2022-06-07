@@ -1,5 +1,7 @@
 query HomeAnalysis {
 	count {
+		code
+		message
 		poll
 		user
 		hashtag

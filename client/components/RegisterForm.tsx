@@ -3,18 +3,25 @@ import React, { useMemo } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { MAX, MIN } from '../constants/validation';
+import { RegisterInput } from '../graphql-client/generated/graphql';
 import useLanguage from '../hooks/useLanguage';
-import InputFieldRegister from './core/InputFieldRegister';
+import InputFieldRegister, {
+	PasswordFieldRegister,
+} from './core/InputFieldRegister';
 import OAuthLogin from './OAuthLogin';
 
 interface FieldInputs {
 	email: string;
 	name: string;
 	password: string;
-	confirmPwd: string;
+	confirmPwd?: string;
 }
 
-export default function RegisterForm(): JSX.Element {
+interface RegisterProps {
+	onSubmit: (fields: RegisterInput) => void;
+}
+
+export default function RegisterForm({ onSubmit }: RegisterProps): JSX.Element {
 	const lang = useLanguage();
 	const registerLang = lang.pages.register;
 
@@ -53,14 +60,16 @@ export default function RegisterForm(): JSX.Element {
 		formState: { errors },
 	} = useForm<FieldInputs>({ resolver: yupResolver(schema) });
 
-	const onSubmit: SubmitHandler<FieldInputs> = fields => {
-		console.log(fields);
+	const handleFormSubmit: SubmitHandler<FieldInputs> = async fields => {
+		delete fields.confirmPwd;
+		const registerFields: RegisterInput = fields;
+		onSubmit(registerFields);
 	};
 
 	return (
 		<form
 			className='w-11/12 sm:w-[420px] px-6 py-5 rounded-lg shadow-md dark:shadow-none dark:border dark:border-gray-700'
-			onSubmit={handleSubmit(onSubmit)}
+			onSubmit={handleSubmit(handleFormSubmit)}
 		>
 			<InputFieldRegister
 				rootClassName='mb-4'
@@ -78,15 +87,16 @@ export default function RegisterForm(): JSX.Element {
 				label={registerLang.fields.name.label}
 				error={errors.name?.message}
 			/>
-			<InputFieldRegister
+			<PasswordFieldRegister
 				rootClassName='mb-4'
 				name='password'
+				type='password'
 				register={register}
 				placeholder='********'
 				label={registerLang.fields.password.label}
 				error={errors.password?.message}
 			/>
-			<InputFieldRegister
+			<PasswordFieldRegister
 				rootClassName='mb-4'
 				name='confirmPwd'
 				register={register}

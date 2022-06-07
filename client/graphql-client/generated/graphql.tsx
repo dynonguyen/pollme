@@ -15,28 +15,124 @@ export type Scalars = {
   Float: number;
 };
 
-export type CountingAggregationResponse = {
-  __typename?: 'CountingAggregationResponse';
+export type CountingAggregation = QueryResponse & {
+  __typename?: 'CountingAggregation';
+  code: Scalars['Int'];
   comment: Scalars['Float'];
   hashtag: Scalars['Float'];
+  message?: Maybe<Scalars['String']>;
   poll: Scalars['Float'];
   user: Scalars['Float'];
 };
 
+export type Mutation = {
+  __typename?: 'Mutation';
+  register: UserMutationResponse;
+};
+
+
+export type MutationRegisterArgs = {
+  fields: RegisterInput;
+};
+
+export type MutationResponse = {
+  code: Scalars['Int'];
+  message?: Maybe<Scalars['String']>;
+  success: Scalars['Boolean'];
+};
+
 export type Query = {
   __typename?: 'Query';
-  count: CountingAggregationResponse;
+  count: CountingAggregation;
 };
+
+export type QueryResponse = {
+  code: Scalars['Int'];
+  message?: Maybe<Scalars['String']>;
+};
+
+export type RegisterInput = {
+  email: Scalars['String'];
+  name: Scalars['String'];
+  password: Scalars['String'];
+};
+
+export type User = {
+  __typename?: 'User';
+  _id: Scalars['ID'];
+  email: Scalars['String'];
+  favorites: Array<Scalars['String']>;
+  name: Scalars['String'];
+  oauthId?: Maybe<Scalars['String']>;
+  voted: Array<Scalars['String']>;
+  votes: Array<Scalars['String']>;
+};
+
+export type UserMutationResponse = MutationResponse & {
+  __typename?: 'UserMutationResponse';
+  code: Scalars['Int'];
+  message?: Maybe<Scalars['String']>;
+  success: Scalars['Boolean'];
+  user?: Maybe<User>;
+};
+
+export type RegisterMutationVariables = Exact<{
+  fields: RegisterInput;
+}>;
+
+
+export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserMutationResponse', code: number, message?: string | null, user?: { __typename?: 'User', _id: string, email: string, name: string } | null } };
 
 export type HomeAnalysisQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type HomeAnalysisQuery = { __typename?: 'Query', count: { __typename?: 'CountingAggregationResponse', poll: number, user: number, hashtag: number, comment: number } };
+export type HomeAnalysisQuery = { __typename?: 'Query', count: { __typename?: 'CountingAggregation', code: number, message?: string | null, poll: number, user: number, hashtag: number, comment: number } };
 
 
+export const RegisterDocument = gql`
+    mutation Register($fields: RegisterInput!) {
+  register(fields: $fields) {
+    code
+    message
+    user {
+      _id
+      email
+      name
+    }
+  }
+}
+    `;
+export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
+
+/**
+ * __useRegisterMutation__
+ *
+ * To run a mutation, you first call `useRegisterMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRegisterMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [registerMutation, { data, loading, error }] = useRegisterMutation({
+ *   variables: {
+ *      fields: // value for 'fields'
+ *   },
+ * });
+ */
+export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<RegisterMutation, RegisterMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, options);
+      }
+export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
+export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
+export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
 export const HomeAnalysisDocument = gql`
     query HomeAnalysis {
   count {
+    code
+    message
     poll
     user
     hashtag

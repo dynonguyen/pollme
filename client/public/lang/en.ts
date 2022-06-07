@@ -128,6 +128,10 @@ export default {
 				},
 			},
 			submitBtn: 'Register',
+			message: {
+				failed: 'Registration failed. Try again.',
+				success: 'Registration successful.',
+			},
 		},
 	},
 };

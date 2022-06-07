@@ -89,7 +89,7 @@ function SearchBar(): JSX.Element {
 			<input
 				type='text'
 				autoFocus
-				className='field pl-9 py-1 rounded-full text-gray-700 dark:text-d_text_title dark:bg-transparent'
+				className='field pl-9 py-1 rounded-full text-gray-700 dark:text-d_text_title'
 				placeholder={lang.placeholder.search}
 				onChange={e => (searchInput.current = e.target.value)}
 				onKeyDown={handlePressEnter}

@@ -1,6 +1,8 @@
 import { ApolloProvider } from '@apollo/client';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
+import React from 'react';
+import { ToastContainer } from 'react-toastify';
 import Layout from '../components/Layout';
 import { APP_NAME } from '../constants';
 import { useApollo } from '../lib/apolloClient';
@@ -15,6 +17,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 				<title>{APP_NAME}</title>
 			</Head>
 			<Layout>
+				<ToastContainer />
 				<Component {...pageProps} />
 			</Layout>
 		</ApolloProvider>

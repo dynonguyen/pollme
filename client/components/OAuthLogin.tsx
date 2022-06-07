@@ -11,7 +11,7 @@ export default function OAuthLogin(): JSX.Element {
 				</div>
 			</div>
 			<div className='flex gap-2'>
-				<button className='btn-outline btn-lg w-1/2'>Facebook</button>
+				<button className='btn-outline btn-lg w-1/2'>Google</button>
 				<button className='btn-outline btn-lg w-1/2'>Github</button>
 			</div>
 		</>
