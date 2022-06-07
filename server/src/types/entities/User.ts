@@ -12,6 +12,9 @@ class User {
 	@Field()
 	email: string;
 
+	@Field({ nullable: true })
+	avt?: string;
+
 	password?: string;
 
 	@Field({ nullable: true })
@@ -26,5 +29,10 @@ class User {
 	@Field(_type => [String])
 	favorites: MongoID[];
 }
+
+export type CoreUserInfo = Pick<
+	Partial<User>,
+	'_id' | 'email' | 'name' | 'avt'
+>;
 
 export default User;

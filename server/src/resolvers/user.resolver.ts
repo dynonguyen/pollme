@@ -1,13 +1,15 @@
 import bcrypt from 'bcrypt';
-import { Arg, Ctx, Mutation, Resolver } from 'type-graphql';
+import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import UserModel from '../models/user.model';
+import User from '../types/entities/User';
 import { COOKIE, SALT_PASSWORD } from './../constants/index';
 import { ERROR_CODE, SUCCESS_CODE } from './../constants/status';
 import { ExpressContext } from './../types/core/ExpressContext';
+import { ROLES } from './../types/core/Role';
 import { LoginInput } from './../types/input/LoginInput';
 import { RegisterInput } from './../types/input/RegisterInput';
 import { UserMutationResponse } from './../types/response/UserResponse';
-import { jwtEncode } from './../utils/jwt';
+import { jwtAccessTokenEncode } from './../utils/jwt';
 
 @Resolver()
 export class UserResolver {
@@ -69,7 +71,12 @@ export class UserResolver {
 				};
 			}
 
-			const accessToken = jwtEncode(existingUser._id);
+			const accessToken = jwtAccessTokenEncode({
+				_id: existingUser._id,
+				name: existingUser.name,
+				avt: existingUser.avt,
+				email,
+			});
 			res.cookie(COOKIE.ACCESS_KEY, accessToken, {
 				maxAge: COOKIE.ACCESS_MAX_AGE,
 				httpOnly: true,
@@ -88,5 +95,24 @@ export class UserResolver {
 				message: 'Login failed',
 			};
 		}
+	}
+
+	@Query(_return => User, { nullable: true })
+	async user(@Arg('userId') userId: String): Promise<User | null> {
+		try {
+			const user = await UserModel.findById(userId);
+			return user;
+		} catch (error) {
+			console.log('USER_RESOLVER - USER QUERY FAILED:', error);
+			return null;
+		}
+	}
+
+	@Authorized([ROLES.USER, ROLES.ADMIN])
+	@Query(_return => User, { nullable: true })
+	me(@Ctx() { res }: ExpressContext): User | null {
+		const { user } = res.locals;
+		if (user) return user;
+		return null;
 	}
 }

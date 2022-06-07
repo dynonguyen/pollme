@@ -13,6 +13,10 @@ const schema: Schema = new Schema({
 		required: true,
 		maxlength: MAX.USER_EMAIL,
 	},
+	avt: {
+		type: String,
+		required: false,
+	},
 	password: {
 		type: String,
 		required: false,
