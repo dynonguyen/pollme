@@ -1,5 +1,17 @@
-mutation Register($fields: RegisterInput!) {
-	register(fields: $fields) {
+mutation Register($registerInput: RegisterInput!) {
+	register(registerInput: $registerInput) {
+		code
+		message
+		user {
+			_id
+			email
+			name
+		}
+	}
+}
+
+mutation Login($loginInput: LoginInput!) {
+	login(loginInput: $loginInput) {
 		code
 		message
 		user {

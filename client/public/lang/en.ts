@@ -137,6 +137,32 @@ export default {
 		},
 		login: {
 			link: '/login',
+			title: 'Log in',
+			subTitle: 'Enter your information to register',
+			fields: {
+				email: {
+					label: 'Email',
+					errors: {
+						required: 'Email is required !',
+						format: 'The email you entered is incorrect.',
+						max: `The maximum length of email is ${MAX.EMAIL_LEN} characters.`,
+					},
+				},
+
+				password: {
+					label: 'Password',
+					errors: {
+						required: 'Password is required !',
+						min: `The minimum length of password is ${MIN.PASSWORD_LEN} characters.`,
+						max: `The maximum length of password is ${MAX.PASSWORD_LEN} characters.`,
+					},
+				},
+			},
+			submitBtn: 'Login',
+			message: {
+				failed: 'Login failed. Try again.',
+				success: 'Login successful.',
+			},
 		},
 	},
 };

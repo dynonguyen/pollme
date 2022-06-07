@@ -16,8 +16,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 			<Head>
 				<title>{APP_NAME}</title>
 			</Head>
+			<ToastContainer newestOnTop />
 			<Layout>
-				<ToastContainer />
 				<Component {...pageProps} />
 			</Layout>
 		</ApolloProvider>

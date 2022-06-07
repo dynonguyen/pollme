@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useState } from 'react';
 import HeadTitle from '../components/HeadTitle';
 import RegisterForm from '../components/RegisterForm';
 import { SUCCESS_CODE } from '../constants/status';
@@ -14,15 +14,17 @@ import useToast from '../hooks/useToast';
 const Register: NextPage = () => {
 	const lang = useLanguage();
 	const toast = useToast();
-	const [registerUser] = useRegisterMutation();
+	const [registerMutation] = useRegisterMutation();
 	const registerLang = lang.pages.register;
 	const router = useRouter();
+	const [submitting, setSubmitting] = useState(false);
 
 	const handleFormSubmit = async (registerFields: RegisterInput) => {
 		try {
-			const response = await registerUser({
+			setSubmitting(true);
+			const response = await registerMutation({
 				variables: {
-					fields: registerFields,
+					registerInput: registerFields,
 				},
 			});
 
@@ -42,6 +44,8 @@ const Register: NextPage = () => {
 				message: registerLang.message.failed,
 				type: 'error',
 			});
+		} finally {
+			setSubmitting(false);
 		}
 	};
 
@@ -49,7 +53,11 @@ const Register: NextPage = () => {
 		<>
 			<HeadTitle title={registerLang.title} />
 
-			<div className='min-h-[calc(100vh-67px)] flex items-center flex-col my-16'>
+			<div
+				className={`min-h-[calc(100vh-67px)] flex items-center flex-col my-16 ${
+					submitting ? 'disabled' : ''
+				}`}
+			>
 				<h1 className='text-2xl md:text-4xl font-extrabold text-center tracking-[1px] mb-2'>
 					{registerLang.title}
 				</h1>

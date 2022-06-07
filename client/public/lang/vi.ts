@@ -137,6 +137,30 @@ export default {
 		},
 		login: {
 			link: '/dang-nhap',
+			title: 'Đăng nhập',
+			fields: {
+				email: {
+					label: 'Email',
+					errors: {
+						required: 'Email là bắt buộc !',
+						format: 'Email vừa nhập không chính xác.',
+						max: `Email tối đa ${MAX.EMAIL_LEN} ký tự.`,
+					},
+				},
+				password: {
+					label: 'Mật khẩu',
+					errors: {
+						required: 'Mật khẩu là bắt buộc !',
+						min: `Mật khẩu tối thiểu ${MIN.PASSWORD_LEN} ký tự.`,
+						max: `Mật khẩu tối đa ${MAX.PASSWORD_LEN} ký tự.`,
+					},
+				},
+			},
+			submitBtn: 'Đăng nhập',
+			message: {
+				failed: 'Đăng nhập thất bại, thử lại.',
+				success: 'Đăng nhập thành công.',
+			},
 		},
 	},
 };

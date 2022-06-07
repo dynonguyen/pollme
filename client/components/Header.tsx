@@ -15,7 +15,7 @@ function LoginRegister(): JSX.Element {
 
 	return (
 		<>
-			<Link href={lang.pages.register.link}>
+			<Link href={lang.pages.login.link}>
 				<a>
 					<button className='btn-outline rounded-full font-medium text-gray-600'>
 						{lang.button.login}

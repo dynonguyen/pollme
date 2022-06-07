@@ -25,14 +25,25 @@ export type CountingAggregation = QueryResponse & {
   user: Scalars['Float'];
 };
 
+export type LoginInput = {
+  email: Scalars['String'];
+  password: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
+  login: UserMutationResponse;
   register: UserMutationResponse;
 };
 
 
+export type MutationLoginArgs = {
+  loginInput: LoginInput;
+};
+
+
 export type MutationRegisterArgs = {
-  fields: RegisterInput;
+  registerInput: RegisterInput;
 };
 
 export type MutationResponse = {
@@ -77,11 +88,18 @@ export type UserMutationResponse = MutationResponse & {
 };
 
 export type RegisterMutationVariables = Exact<{
-  fields: RegisterInput;
+  registerInput: RegisterInput;
 }>;
 
 
 export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserMutationResponse', code: number, message?: string | null, user?: { __typename?: 'User', _id: string, email: string, name: string } | null } };
+
+export type LoginMutationVariables = Exact<{
+  loginInput: LoginInput;
+}>;
+
+
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserMutationResponse', code: number, message?: string | null, user?: { __typename?: 'User', _id: string, email: string, name: string } | null } };
 
 export type HomeAnalysisQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -90,8 +108,8 @@ export type HomeAnalysisQuery = { __typename?: 'Query', count: { __typename?: 'C
 
 
 export const RegisterDocument = gql`
-    mutation Register($fields: RegisterInput!) {
-  register(fields: $fields) {
+    mutation Register($registerInput: RegisterInput!) {
+  register(registerInput: $registerInput) {
     code
     message
     user {
@@ -117,7 +135,7 @@ export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, Regis
  * @example
  * const [registerMutation, { data, loading, error }] = useRegisterMutation({
  *   variables: {
- *      fields: // value for 'fields'
+ *      registerInput: // value for 'registerInput'
  *   },
  * });
  */
@@ -128,6 +146,45 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const LoginDocument = gql`
+    mutation Login($loginInput: LoginInput!) {
+  login(loginInput: $loginInput) {
+    code
+    message
+    user {
+      _id
+      email
+      name
+    }
+  }
+}
+    `;
+export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
+
+/**
+ * __useLoginMutation__
+ *
+ * To run a mutation, you first call `useLoginMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLoginMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [loginMutation, { data, loading, error }] = useLoginMutation({
+ *   variables: {
+ *      loginInput: // value for 'loginInput'
+ *   },
+ * });
+ */
+export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, options);
+      }
+export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
+export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
+export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
 export const HomeAnalysisDocument = gql`
     query HomeAnalysis {
   count {
