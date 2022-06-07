@@ -1,8 +1,11 @@
 import { MenuIcon, SearchIcon, XIcon } from '@heroicons/react/outline';
 import Link from 'next/link';
 import React, { useRef, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import { APP_NAME } from '../constants';
+import { UserInfoFragment } from '../graphql-client/generated/graphql';
 import useLanguage from '../hooks/useLanguage';
+import userAtom from '../recoil/atoms/user.atom';
 import LanguageSelect from './LanguageSelect';
 import NavbarAccountAvatar from './NavbarAccountAvatar';
 import ThemeModeButton from './ThemeModeButton';
@@ -119,9 +122,14 @@ function MobileSearch(): JSX.Element {
 	);
 }
 
-export default function Header(): JSX.Element {
-	const isAuth = false;
+function NavbarAction(): JSX.Element {
+	const userInfo = useRecoilValue<UserInfoFragment>(userAtom);
+	const isAuth = Boolean(userInfo._id);
 
+	return <>{isAuth ? <NavbarAccountAvatar /> : <LoginRegister />}</>;
+}
+
+export default function Header(): JSX.Element {
 	return (
 		<header className='border-b border-gray-200 dark:border-gray-600 sticky top-0 z-50 bg-white dark:bg-d_bg'>
 			<div className='px-3 md:px-5 py-4 flex items-center justify-between gap-2 xxl:container'>
@@ -145,7 +153,7 @@ export default function Header(): JSX.Element {
 					<div className='hidden xl:block w-44 lg:w-60 relative'>
 						<SearchBar />
 					</div>
-					{isAuth ? <NavbarAccountAvatar /> : <LoginRegister />}
+					<NavbarAction />
 					<div className='bg-gray-200 dark:bg-gray-600 w-[1px] mx-2 h-8'></div>
 				</div>
 

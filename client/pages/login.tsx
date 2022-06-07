@@ -51,7 +51,7 @@ const Login: NextPage = () => {
 					isSubmitting ? 'disabled' : ''
 				}`}
 			>
-				<h1 className='text-2xl md:text-4xl font-extrabold text-center tracking-[1px] mb-2'>
+				<h1 className='text-2xl md:text-4xl font-extrabold text-center tracking-[1px] mb-6'>
 					{loginLang.title}
 				</h1>
 

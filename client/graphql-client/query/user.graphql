@@ -1,0 +1,11 @@
+query GetCoreUserInfo($userId: String!) {
+	user(userId: $userId) {
+		...userInfo
+	}
+}
+
+query GetMe {
+	me {
+		...userInfo
+	}
+}

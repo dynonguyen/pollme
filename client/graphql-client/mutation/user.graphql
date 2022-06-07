@@ -1,23 +1,17 @@
 mutation Register($registerInput: RegisterInput!) {
 	register(registerInput: $registerInput) {
-		code
-		message
+		...mutationStatus
 		user {
-			_id
-			email
-			name
+			...userInfo
 		}
 	}
 }
 
 mutation Login($loginInput: LoginInput!) {
 	login(loginInput: $loginInput) {
-		code
-		message
+		...mutationStatus
 		user {
-			_id
-			email
-			name
+			...userInfo
 		}
 	}
 }

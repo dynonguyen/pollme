@@ -55,6 +55,13 @@ export type MutationResponse = {
 export type Query = {
   __typename?: 'Query';
   count: CountingAggregation;
+  me?: Maybe<User>;
+  user?: Maybe<User>;
+};
+
+
+export type QueryUserArgs = {
+  userId: Scalars['String'];
 };
 
 export type QueryResponse = {
@@ -71,6 +78,7 @@ export type RegisterInput = {
 export type User = {
   __typename?: 'User';
   _id: Scalars['ID'];
+  avt?: Maybe<Scalars['String']>;
   email: Scalars['String'];
   favorites: Array<Scalars['String']>;
   name: Scalars['String'];
@@ -87,39 +95,67 @@ export type UserMutationResponse = MutationResponse & {
   user?: Maybe<User>;
 };
 
+export type MutationStatusFragment = { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null };
+
+export type UserInfoFragment = { __typename?: 'User', _id: string, email: string, name: string, avt?: string | null };
+
 export type RegisterMutationVariables = Exact<{
   registerInput: RegisterInput;
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserMutationResponse', code: number, message?: string | null, user?: { __typename?: 'User', _id: string, email: string, name: string } | null } };
+export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null, user?: { __typename?: 'User', _id: string, email: string, name: string, avt?: string | null } | null } };
 
 export type LoginMutationVariables = Exact<{
   loginInput: LoginInput;
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserMutationResponse', code: number, message?: string | null, user?: { __typename?: 'User', _id: string, email: string, name: string } | null } };
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null, user?: { __typename?: 'User', _id: string, email: string, name: string, avt?: string | null } | null } };
 
 export type HomeAnalysisQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type HomeAnalysisQuery = { __typename?: 'Query', count: { __typename?: 'CountingAggregation', code: number, message?: string | null, poll: number, user: number, hashtag: number, comment: number } };
 
+export type GetCoreUserInfoQueryVariables = Exact<{
+  userId: Scalars['String'];
+}>;
 
+
+export type GetCoreUserInfoQuery = { __typename?: 'Query', user?: { __typename?: 'User', _id: string, email: string, name: string, avt?: string | null } | null };
+
+export type GetMeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetMeQuery = { __typename?: 'Query', me?: { __typename?: 'User', _id: string, email: string, name: string, avt?: string | null } | null };
+
+export const MutationStatusFragmentDoc = gql`
+    fragment mutationStatus on MutationResponse {
+  code
+  success
+  message
+}
+    `;
+export const UserInfoFragmentDoc = gql`
+    fragment userInfo on User {
+  _id
+  email
+  name
+  avt
+}
+    `;
 export const RegisterDocument = gql`
     mutation Register($registerInput: RegisterInput!) {
   register(registerInput: $registerInput) {
-    code
-    message
+    ...mutationStatus
     user {
-      _id
-      email
-      name
+      ...userInfo
     }
   }
 }
-    `;
+    ${MutationStatusFragmentDoc}
+${UserInfoFragmentDoc}`;
 export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
 
 /**
@@ -149,16 +185,14 @@ export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutatio
 export const LoginDocument = gql`
     mutation Login($loginInput: LoginInput!) {
   login(loginInput: $loginInput) {
-    code
-    message
+    ...mutationStatus
     user {
-      _id
-      email
-      name
+      ...userInfo
     }
   }
 }
-    `;
+    ${MutationStatusFragmentDoc}
+${UserInfoFragmentDoc}`;
 export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
 
 /**
@@ -224,3 +258,72 @@ export function useHomeAnalysisLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type HomeAnalysisQueryHookResult = ReturnType<typeof useHomeAnalysisQuery>;
 export type HomeAnalysisLazyQueryHookResult = ReturnType<typeof useHomeAnalysisLazyQuery>;
 export type HomeAnalysisQueryResult = Apollo.QueryResult<HomeAnalysisQuery, HomeAnalysisQueryVariables>;
+export const GetCoreUserInfoDocument = gql`
+    query GetCoreUserInfo($userId: String!) {
+  user(userId: $userId) {
+    ...userInfo
+  }
+}
+    ${UserInfoFragmentDoc}`;
+
+/**
+ * __useGetCoreUserInfoQuery__
+ *
+ * To run a query within a React component, call `useGetCoreUserInfoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCoreUserInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCoreUserInfoQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useGetCoreUserInfoQuery(baseOptions: Apollo.QueryHookOptions<GetCoreUserInfoQuery, GetCoreUserInfoQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCoreUserInfoQuery, GetCoreUserInfoQueryVariables>(GetCoreUserInfoDocument, options);
+      }
+export function useGetCoreUserInfoLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCoreUserInfoQuery, GetCoreUserInfoQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCoreUserInfoQuery, GetCoreUserInfoQueryVariables>(GetCoreUserInfoDocument, options);
+        }
+export type GetCoreUserInfoQueryHookResult = ReturnType<typeof useGetCoreUserInfoQuery>;
+export type GetCoreUserInfoLazyQueryHookResult = ReturnType<typeof useGetCoreUserInfoLazyQuery>;
+export type GetCoreUserInfoQueryResult = Apollo.QueryResult<GetCoreUserInfoQuery, GetCoreUserInfoQueryVariables>;
+export const GetMeDocument = gql`
+    query GetMe {
+  me {
+    ...userInfo
+  }
+}
+    ${UserInfoFragmentDoc}`;
+
+/**
+ * __useGetMeQuery__
+ *
+ * To run a query within a React component, call `useGetMeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMeQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetMeQuery(baseOptions?: Apollo.QueryHookOptions<GetMeQuery, GetMeQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMeQuery, GetMeQueryVariables>(GetMeDocument, options);
+      }
+export function useGetMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMeQuery, GetMeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMeQuery, GetMeQueryVariables>(GetMeDocument, options);
+        }
+export type GetMeQueryHookResult = ReturnType<typeof useGetMeQuery>;
+export type GetMeLazyQueryHookResult = ReturnType<typeof useGetMeLazyQuery>;
+export type GetMeQueryResult = Apollo.QueryResult<GetMeQuery, GetMeQueryVariables>;
