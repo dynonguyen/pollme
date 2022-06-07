@@ -1,5 +1,4 @@
 import { ClassType, Field, Int, InterfaceType, ObjectType } from 'type-graphql';
-import PaginatedResponse from './PaginatedResponse';
 
 @InterfaceType()
 export abstract class QueryResponse {
@@ -10,15 +9,20 @@ export abstract class QueryResponse {
 	message?: string;
 }
 
-export function QueryPaginationResponse<T>(TClass: ClassType<T>) {
-	// `isAbstract` decorator option is mandatory to prevent registering in schema
+export function PaginatedResponse<T>(TClass: ClassType<T>) {
 	@ObjectType({ isAbstract: true, implements: QueryResponse })
-	abstract class QueryPaginationResponseClass
-		extends PaginatedResponse(TClass)
-		implements QueryResponse
-	{
-		code: number;
-		message?: string;
+	abstract class PaginatedResponseClass extends QueryResponse {
+		@Field(_type => [TClass])
+		docs: T[];
+
+		@Field(_type => Int)
+		page: number;
+
+		@Field(_type => Int)
+		total: number;
+
+		@Field(_type => Int)
+		pageSize: number;
 	}
-	return QueryPaginationResponseClass;
+	return PaginatedResponseClass;
 }

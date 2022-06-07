@@ -1,5 +1,5 @@
 import { Field, ID, Int, ObjectType } from 'type-graphql';
-import { MongoID } from '../types/commons';
+import { MongoID } from '../commons';
 
 @ObjectType()
 class VoteOfUser {

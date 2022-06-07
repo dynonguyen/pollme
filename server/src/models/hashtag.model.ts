@@ -1,5 +1,5 @@
 import { Model, model, Schema } from 'mongoose';
-import HashTag from '../entities/hashtag';
+import HashTag from '../types/entities/Hashtag';
 import { MAX } from './../constants/validation';
 
 const schema: Schema = new Schema({

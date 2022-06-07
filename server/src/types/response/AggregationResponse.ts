@@ -1,7 +1,8 @@
 import { Field, ObjectType } from 'type-graphql';
+import { QueryResponse } from '../core/QueryResponse';
 
-@ObjectType()
-export class CountingAggregationResponse {
+@ObjectType({ implements: QueryResponse })
+export class CountingAggregation extends QueryResponse {
 	@Field()
 	poll: number;
 

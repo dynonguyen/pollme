@@ -1,5 +1,5 @@
 import { Field, ID, ObjectType } from 'type-graphql';
-import { MongoID } from '../types/commons';
+import { MongoID } from '../commons';
 
 @ObjectType()
 class User {
@@ -11,6 +11,8 @@ class User {
 
 	@Field()
 	email: string;
+
+	password?: string;
 
 	@Field({ nullable: true })
 	oauthId?: string;

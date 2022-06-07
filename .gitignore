@@ -6,3 +6,4 @@ client/.env.local
 server/.env
 .vscode/
 dist/
+yarn-error.log

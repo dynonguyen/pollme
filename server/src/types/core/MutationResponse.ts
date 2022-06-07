@@ -2,13 +2,13 @@ import { Field, Int, InterfaceType } from 'type-graphql';
 
 @InterfaceType()
 abstract class MutationResponse {
-	@Field(_type => Int, { defaultValue: 200 })
-	code: number = 200;
+	@Field(_type => Int)
+	code: number;
 
-	@Field({ defaultValue: true })
-	success: boolean = true;
+	@Field(_type => Boolean)
+	success: boolean;
 
-	@Field({ nullable: true })
+	@Field(_type => String, { nullable: true })
 	message?: string;
 }
 

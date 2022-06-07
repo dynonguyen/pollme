@@ -1,6 +1,6 @@
 import { model, Model, Schema } from 'mongoose';
-import User from '../entities/user';
-import { MAX } from './../constants/validation';
+import { MAX } from '../constants/validation';
+import User from '../types/entities/User';
 
 const schema: Schema = new Schema({
 	name: {
@@ -12,6 +12,10 @@ const schema: Schema = new Schema({
 		type: String,
 		required: true,
 		maxlength: MAX.USER_EMAIL,
+	},
+	password: {
+		type: String,
+		required: false,
 	},
 	oauthId: {
 		type: String,

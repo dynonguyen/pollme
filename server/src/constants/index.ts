@@ -11,3 +11,6 @@ export const CORS_ORIGINS: string[] = [
 export const APP_NAME = process.env.APP_NAME || 'Pollme_Api';
 export const SESSION_SECRET = process.env.SESSION_SECRET || 'Secret';
 export const __PROD__ = process.env.NODE_ENV === 'production';
+export const SALT_PASSWORD = process.env.SALT_PASSWORD
+	? Number(process.env.SALT_PASSWORD)
+	: 10;

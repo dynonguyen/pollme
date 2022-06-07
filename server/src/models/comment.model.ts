@@ -1,5 +1,5 @@
 import { Model, model, Schema } from 'mongoose';
-import Comment from '../entities/comment';
+import Comment from '../types/entities/Comment';
 import { MAX } from './../constants/validation';
 
 const schema: Schema = new Schema({

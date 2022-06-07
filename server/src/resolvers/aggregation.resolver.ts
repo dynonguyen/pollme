@@ -1,15 +1,16 @@
 import { Query, Resolver } from 'type-graphql';
 import CommentModel from '../models/comment.model';
 import HashTagModel from '../models/hashtag.model';
-import UserModel from '../models/user.mode';
+import UserModel from '../models/user.model';
 import VoteModel from '../models/vote.model';
-import { CountingAggregationResponse } from '../types/entities/AggregationResponse';
+import { CountingAggregation } from '../types/response/AggregationResponse';
 
 @Resolver()
 export class AggregationResolver {
-	@Query(_return => CountingAggregationResponse)
-	async count(): Promise<CountingAggregationResponse> {
-		let result: CountingAggregationResponse = {
+	@Query(_return => CountingAggregation)
+	async count(): Promise<CountingAggregation> {
+		let result: CountingAggregation = {
+			code: 200,
 			poll: 0,
 			comment: 0,
 			user: 0,

@@ -1,5 +1,5 @@
 import { Field, ID, ObjectType } from 'type-graphql';
-import { MongoID } from '../types/commons';
+import { MongoID } from '../commons';
 
 @ObjectType()
 export class CommentReply {

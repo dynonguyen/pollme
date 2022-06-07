@@ -1,5 +1,5 @@
 import { Model, model, Schema } from 'mongoose';
-import Vote from '../entities/vote';
+import Vote from '../types/entities/Vote';
 import { DEFAULT } from './../constants/default';
 import { VOTE_TYPE } from './../constants/index';
 import { MAX } from './../constants/validation';
