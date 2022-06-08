@@ -6,10 +6,10 @@ import { COOKIE, SALT_PASSWORD } from './../constants/index';
 import { ERROR_CODE, SUCCESS_CODE } from './../constants/status';
 import { ExpressContext } from './../types/core/ExpressContext';
 import { ROLES } from './../types/core/Role';
-import { LoginInput } from './../types/input/LoginInput';
+import { LoginInput, OAuthLoginInput } from './../types/input/LoginInput';
 import { RegisterInput } from './../types/input/RegisterInput';
 import { UserMutationResponse } from './../types/response/UserResponse';
-import { jwtAccessTokenEncode } from './../utils/jwt';
+import { onLoginSuccess } from './../utils/helper';
 
 @Resolver()
 export class UserResolver {
@@ -48,7 +48,7 @@ export class UserResolver {
 	@Mutation(_return => UserMutationResponse)
 	async login(
 		@Arg('loginInput') { email, password }: LoginInput,
-		@Ctx() { res }: ExpressContext,
+		@Ctx() { res, req }: ExpressContext,
 	): Promise<UserMutationResponse> {
 		try {
 			const existingUser = await UserModel.findOne({ email });
@@ -71,17 +71,7 @@ export class UserResolver {
 				};
 			}
 
-			const accessToken = jwtAccessTokenEncode({
-				_id: existingUser._id,
-				name: existingUser.name,
-				avt: existingUser.avt,
-				email,
-			});
-			res.cookie(COOKIE.ACCESS_KEY, accessToken, {
-				maxAge: COOKIE.ACCESS_MAX_AGE,
-				httpOnly: true,
-			});
-
+			onLoginSuccess({ req, res }, existingUser);
 			return {
 				code: SUCCESS_CODE.OK,
 				success: true,
@@ -101,6 +91,35 @@ export class UserResolver {
 	logout(@Ctx() { res }: ExpressContext): boolean {
 		res.clearCookie(COOKIE.ACCESS_KEY);
 		return true;
+	}
+
+	@Mutation(_return => UserMutationResponse)
+	async loginWithOAuth(
+		@Arg('loginInput') { email, avt, name, oauthId }: OAuthLoginInput,
+		@Ctx() { res, req }: ExpressContext,
+	): Promise<UserMutationResponse> {
+		try {
+			const existingUser = await UserModel.findOne({ email });
+			let user = existingUser;
+
+			if (!user) {
+				user = await UserModel.create({ name, avt, oauthId, email });
+			}
+
+			onLoginSuccess({ res, req }, user);
+			return {
+				code: SUCCESS_CODE.OK,
+				success: true,
+				user,
+			};
+		} catch (error) {
+			console.log('USER_RESOLVER - OAUTH LOGIN MUTATION FAILED:', error);
+			return {
+				code: ERROR_CODE.INTERNAL_ERROR,
+				success: false,
+				message: 'Login failed',
+			};
+		}
 	}
 
 	@Query(_return => User, { nullable: true })

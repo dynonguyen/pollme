@@ -8,7 +8,7 @@ import useLanguage from '../hooks/useLanguage';
 import InputFieldRegister, {
 	PasswordFieldRegister,
 } from './core/InputFieldRegister';
-import OAuthLogin from './OAuthLogin';
+import GoogleLogin from './GoogleLogin';
 
 interface FieldInputs {
 	email: string;
@@ -110,7 +110,7 @@ export default function RegisterForm({ onSubmit }: RegisterProps): JSX.Element {
 				{registerLang.submitBtn}
 			</button>
 
-			<OAuthLogin />
+			<GoogleLogin />
 		</form>
 	);
 }

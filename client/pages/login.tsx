@@ -57,7 +57,7 @@ const Login: NextPage = () => {
 			}`}
 		>
 			<h1 className='text-2xl md:text-4xl font-extrabold text-center tracking-[1px] mb-6'>
-				{loginLang.title}
+				{lang.pageSEO.login.title}
 			</h1>
 
 			<LoginForm onSubmit={handleFormSubmit} />

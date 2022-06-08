@@ -189,7 +189,10 @@ export default {
 		login: {
 			pathname: '/login',
 			title: 'Đăng nhập',
-			desc: `Đăng nhập vào ${APP_NAME} để trải nghiệm những tính năng tuyệt vời mà ứng dụng này mang lại cho bạn.`,
+			desc: `Đăng nhập vào ${APP_NAME} để trải nghiệm những tính năng tuyệt vời mà ứng dụng này mang lại cho bạn. Dễ dàng đăng nhập với Google, Github`,
 		},
+	},
+	others: {
+		loginOAuthBreak: 'Hoặc tiếp tục với',
 	},
 };

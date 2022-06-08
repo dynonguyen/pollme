@@ -16,6 +16,14 @@ mutation Login($loginInput: LoginInput!) {
 	}
 }
 
+mutation LoginOAuth($loginInput: OAuthLoginInput!) {
+	loginWithOAuth(loginInput: $loginInput) {
+		...mutationStatus
+		user {
+			...userInfo
+		}
+	}
+}
 mutation Logout {
 	logout
 }

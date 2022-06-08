@@ -181,17 +181,20 @@ export default {
 		home: {
 			pathname: '/',
 			title: 'Home Page',
-			desc: 'Pollme - A great app that lets you easily create surveys as quickly, efficiently as possible. Pollme provides a beautiful, easy-to-use and user-friendly interface.',
+			desc: `${APP_NAME} - A great app that lets you easily create surveys as quickly, efficiently as possible. ${APP_NAME} provides a beautiful, easy-to-use and user-friendly interface.`,
 		},
 		register: {
 			pathname: '/register',
 			title: 'Register',
-			desc: 'With just a few simple steps, you can immediately register yourself for an account in Pollme so you can create surveys, help others survey now.',
+			desc: `With just a few simple steps, you can immediately register yourself for an account in ${APP_NAME} so you can create surveys, help others survey now.`,
 		},
 		login: {
 			pathname: '/login',
 			title: 'Log in',
-			desc: 'Sign in to Pollme to experience the great features this app has to offer you.',
+			desc: `Sign in to ${APP_NAME} to experience the great features this app has to offer you. Easy login with Google, Github.`,
 		},
+	},
+	others: {
+		loginOAuthBreak: 'Or continue with',
 	},
 };

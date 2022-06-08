@@ -55,7 +55,7 @@ const Register: NextPage = () => {
 			}`}
 		>
 			<h1 className='text-2xl md:text-4xl font-extrabold text-center tracking-[1px] mb-2'>
-				{registerLang.title}
+				{lang.pageSEO.register.title}
 			</h1>
 			<p className='text-center mb-5 text-gray-400 dark:text-gray-300 md:text-lg'>
 				{registerLang.subTitle}
