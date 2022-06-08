@@ -97,6 +97,12 @@ export class UserResolver {
 		}
 	}
 
+	@Mutation(_return => Boolean)
+	logout(@Ctx() { res }: ExpressContext): boolean {
+		res.clearCookie(COOKIE.ACCESS_KEY);
+		return true;
+	}
+
 	@Query(_return => User, { nullable: true })
 	async user(@Arg('userId') userId: String): Promise<User | null> {
 		try {

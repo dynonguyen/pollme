@@ -131,7 +131,7 @@ const Home: NextPage = () => {
 						{homeLang.subTitles[1]} <br />
 						{homeLang.subTitles[2]}
 					</p>
-					<Link href='/new-vote'>
+					<Link href={lang.navbarItems[1].link}>
 						<button className='btn-primary py-2 md:btn-lg flex items-center mt-5 md:mt-10 font-medium'>
 							<PlusIcon className='w-5 mr-2' />
 							<span className='capitalize'>{homeLang.buttons.createPoll}</span>

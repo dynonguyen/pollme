@@ -35,6 +35,7 @@ module.exports = {
 
 				// dark mode
 				d_bg: '#0f172a',
+				d_bg_hover: '#15203d',
 				d_primary: '#50b8d5',
 				d_secondary: '#aed7eb',
 				d_accent: '#ee9f46',

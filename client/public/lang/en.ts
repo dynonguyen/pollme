@@ -27,10 +27,24 @@ export default {
 	button: {
 		login: 'Log in',
 		register: 'Sign up',
+		logout: 'Log out',
 	},
 	placeholder: {
 		defaultSelect: 'Choose an option',
 		search: 'Search',
+	},
+	accountMenu: [
+		{
+			to: '/my-polls',
+			title: 'My Polls',
+		},
+		{
+			to: '/account-settings',
+			title: 'Account Settings',
+		},
+	],
+	messages: {
+		logoutSuccess: 'Logout Successful',
 	},
 	pages: {
 		notfound: {
@@ -161,7 +175,7 @@ export default {
 			submitBtn: 'Login',
 			message: {
 				failed: 'Login failed. Try again.',
-				success: 'Login successful.',
+				success: (username: string) => `Hello, ${username} 👋`,
 			},
 		},
 	},

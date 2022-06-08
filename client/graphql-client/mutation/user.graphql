@@ -15,3 +15,7 @@ mutation Login($loginInput: LoginInput!) {
 		}
 	}
 }
+
+mutation Logout {
+	logout
+}

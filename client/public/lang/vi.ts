@@ -27,10 +27,24 @@ export default {
 	button: {
 		login: 'Đăng nhập',
 		register: 'Đăng ký',
+		logout: 'Đăng xuất',
 	},
 	placeholder: {
 		defaultSelect: 'Chọn một lựa chọn',
 		search: 'Tìm kiếm',
+	},
+	accountMenu: [
+		{
+			to: '/khao-sat-cua-toi',
+			title: 'Khảo sát của tôi',
+		},
+		{
+			to: '/cai-dat-tai-khoan',
+			title: 'Cài đặt tài khoản',
+		},
+	],
+	messages: {
+		logoutSuccess: 'Đăng xuất thành công',
 	},
 	pages: {
 		notfound: {
@@ -159,7 +173,7 @@ export default {
 			submitBtn: 'Đăng nhập',
 			message: {
 				failed: 'Đăng nhập thất bại, thử lại.',
-				success: 'Đăng nhập thành công.',
+				success: (username: string) => `Xin chào, ${username} 👋`,
 			},
 		},
 	},

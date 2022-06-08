@@ -1,15 +1,18 @@
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
+import { useSetRecoilState } from 'recoil';
 import HeadTitle from '../components/HeadTitle';
 import LoginForm from '../components/LoginForm';
 import { SUCCESS_CODE } from '../constants/status';
 import {
 	LoginInput,
 	useLoginMutation,
+	UserInfoFragment,
 } from '../graphql-client/generated/graphql';
 import useLanguage from '../hooks/useLanguage';
 import useToast from '../hooks/useToast';
+import userAtom from '../recoil/atoms/user.atom';
 
 const Login: NextPage = () => {
 	const lang = useLanguage();
@@ -18,13 +21,19 @@ const Login: NextPage = () => {
 	const router = useRouter();
 	const [loginMutation] = useLoginMutation();
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const setUserInfoAtom = useSetRecoilState(userAtom);
 
 	const handleFormSubmit = async (loginInput: LoginInput) => {
 		try {
 			setIsSubmitting(true);
 			const response = await loginMutation({ variables: { loginInput } });
 			if (response.data?.login.code === SUCCESS_CODE.OK) {
-				toast.show({ type: 'success', message: loginLang.message.success });
+				const user = response.data.login.user as UserInfoFragment;
+				setUserInfoAtom({ ...user });
+				toast.show({
+					type: 'success',
+					message: loginLang.message.success(user.name),
+				});
 				router.push('/');
 			} else {
 				toast.show({

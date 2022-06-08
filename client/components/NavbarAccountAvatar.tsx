@@ -1,16 +1,57 @@
+import Link from 'next/link';
 import React from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { DEFAULT } from '../constants/default';
-import { UserInfoFragment } from '../graphql-client/generated/graphql';
-import userAtom from '../recoil/atoms/user.atom';
+import {
+	useLogoutMutation,
+	UserInfoFragment,
+} from '../graphql-client/generated/graphql';
+import useLanguage from '../hooks/useLanguage';
+import useToast from '../hooks/useToast';
+import userAtom, { userAtomDefault } from '../recoil/atoms/user.atom';
 
 export default function NavbarAccountAvatar(): JSX.Element {
 	const userInfo = useRecoilValue<UserInfoFragment>(userAtom);
 	const userAvt = userInfo.avt ? userInfo.avt : DEFAULT.USER_AVT;
+	const lang = useLanguage();
+	const { accountMenu } = lang;
+	const [logoutMutation] = useLogoutMutation();
+	const toast = useToast();
+	const setUserInfoAtom = useSetRecoilState(userAtom);
+
+	const onLogout = async () => {
+		const response = await logoutMutation();
+		if (response.data) {
+			toast.show({ message: lang.messages.logoutSuccess, type: 'success' });
+			setUserInfoAtom(userAtomDefault);
+		}
+	};
 
 	return (
-		<>
-			<img src={userAvt} className='w-10 h-10 cursor-pointer' alt='Username' />
-		</>
+		<div className='relative inline-block group'>
+			<img
+				src={userAvt}
+				className='w-10 h-10 cursor-pointer rounded-full'
+				alt='Username'
+			/>
+			<div className='hidden pt-2 group-hover:block absolute left:0 md:right-0 w-56 rounded-lg shadow-lg focus:outline-none'>
+				<ul className='bg-slate-50 dark:bg-d_bg'>
+					{accountMenu.map((item, index) => (
+						<Link href={item.to} key={index}>
+							<a className='duration-150 block px-4 py-2 capitalize text-gray-600 dark:text-d_text_primary hover:bg-slate-200 dark:hover:bg-d_bg_hover text-sm md:text-base'>
+								<li>{item.title}</li>
+							</a>
+						</Link>
+					))}
+
+					<li
+						className='duration-150 block px-4 py-2 capitalize text-gray-600 dark:text-d_text_primary hover:bg-slate-200 dark:hover:bg-d_bg_hover text-sm md:text-base cursor-pointer'
+						onClick={onLogout}
+					>
+						{lang.button.logout}
+					</li>
+				</ul>
+			</div>
+		</div>
 	);
 }

@@ -51,6 +51,13 @@ function Navbar(): JSX.Element {
 	);
 }
 
+function NavbarAction(): JSX.Element {
+	const userInfo = useRecoilValue<UserInfoFragment>(userAtom);
+	const isAuth = Boolean(userInfo._id);
+
+	return <>{isAuth ? <NavbarAccountAvatar /> : <LoginRegister />}</>;
+}
+
 function MenuSlider(): JSX.Element {
 	const [showMenu, setShowMenu] = useState(false);
 
@@ -64,7 +71,7 @@ function MenuSlider(): JSX.Element {
 						onClick={() => setShowMenu(false)}
 					/>
 					<div className='flex gap-3 mt-5 mb-8'>
-						<LoginRegister />
+						<NavbarAction />
 					</div>
 					<nav className='gap-6 flex flex-col pl-1'>
 						<Navbar />
@@ -120,13 +127,6 @@ function MobileSearch(): JSX.Element {
 			</div>
 		</div>
 	);
-}
-
-function NavbarAction(): JSX.Element {
-	const userInfo = useRecoilValue<UserInfoFragment>(userAtom);
-	const isAuth = Boolean(userInfo._id);
-
-	return <>{isAuth ? <NavbarAccountAvatar /> : <LoginRegister />}</>;
 }
 
 export default function Header(): JSX.Element {
