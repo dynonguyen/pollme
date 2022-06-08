@@ -2,7 +2,6 @@ import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
-import HeadTitle from '../components/HeadTitle';
 import LoginForm from '../components/LoginForm';
 import { SUCCESS_CODE } from '../constants/status';
 import {
@@ -52,21 +51,17 @@ const Login: NextPage = () => {
 	};
 
 	return (
-		<>
-			<HeadTitle title={loginLang.title} />
+		<div
+			className={`min-h-[calc(100vh-67px)] flex items-center flex-col my-16 ${
+				isSubmitting ? 'disabled' : ''
+			}`}
+		>
+			<h1 className='text-2xl md:text-4xl font-extrabold text-center tracking-[1px] mb-6'>
+				{loginLang.title}
+			</h1>
 
-			<div
-				className={`min-h-[calc(100vh-67px)] flex items-center flex-col my-16 ${
-					isSubmitting ? 'disabled' : ''
-				}`}
-			>
-				<h1 className='text-2xl md:text-4xl font-extrabold text-center tracking-[1px] mb-6'>
-					{loginLang.title}
-				</h1>
-
-				<LoginForm onSubmit={handleFormSubmit} />
-			</div>
-		</>
+			<LoginForm onSubmit={handleFormSubmit} />
+		</div>
 	);
 };
 

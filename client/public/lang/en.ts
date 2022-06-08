@@ -110,7 +110,6 @@ export default {
 		},
 		register: {
 			link: '/register',
-			title: 'Register',
 			subTitle: 'Enter your information to register',
 			fields: {
 				email: {
@@ -151,7 +150,6 @@ export default {
 		},
 		login: {
 			link: '/login',
-			title: 'Log in',
 			subTitle: 'Enter your information to register',
 			fields: {
 				email: {
@@ -177,6 +175,23 @@ export default {
 				failed: 'Login failed. Try again.',
 				success: (username: string) => `Hello, ${username} 👋`,
 			},
+		},
+	},
+	pageSEO: {
+		home: {
+			pathname: '/',
+			title: 'Home Page',
+			desc: 'Pollme - A great app that lets you easily create surveys as quickly, efficiently as possible. Pollme provides a beautiful, easy-to-use and user-friendly interface.',
+		},
+		register: {
+			pathname: '/register',
+			title: 'Register',
+			desc: 'With just a few simple steps, you can immediately register yourself for an account in Pollme so you can create surveys, help others survey now.',
+		},
+		login: {
+			pathname: '/login',
+			title: 'Log in',
+			desc: 'Sign in to Pollme to experience the great features this app has to offer you.',
 		},
 	},
 };

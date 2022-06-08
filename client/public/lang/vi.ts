@@ -110,7 +110,6 @@ export default {
 		},
 		register: {
 			link: '/dang-ky',
-			title: 'Đăng ký',
 			subTitle: 'Nhập thông tin của bạn để đăng ký',
 			fields: {
 				email: {
@@ -151,7 +150,6 @@ export default {
 		},
 		login: {
 			link: '/dang-nhap',
-			title: 'Đăng nhập',
 			fields: {
 				email: {
 					label: 'Email',
@@ -175,6 +173,23 @@ export default {
 				failed: 'Đăng nhập thất bại, thử lại.',
 				success: (username: string) => `Xin chào, ${username} 👋`,
 			},
+		},
+	},
+	pageSEO: {
+		home: {
+			pathname: '/',
+			title: 'Trang chủ',
+			desc: `${APP_NAME} - Một ứng dụng tuyệt vời cho phép bạn dễ dàng tạo các cuộc khảo sát nhanh chóng, hiệu quả nhất có thể. ${APP_NAME} cung cấp giao diện đẹp, dễ dùng và thân thiện với người dùng.`,
+		},
+		register: {
+			pathname: '/register',
+			title: 'Đăng ký',
+			desc: `Chỉ với vài bước đơn giản, bạn có thể đăng ký ngay cho mình một tài khoản trong ${APP_NAME} để có thể tạo các cuộc khảo sát, giúp người khác khảo sát ngay bây giờ.`,
+		},
+		login: {
+			pathname: '/login',
+			title: 'Đăng nhập',
+			desc: `Đăng nhập vào ${APP_NAME} để trải nghiệm những tính năng tuyệt vời mà ứng dụng này mang lại cho bạn.`,
 		},
 	},
 };

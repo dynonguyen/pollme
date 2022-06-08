@@ -12,7 +12,6 @@ import type { GetStaticProps, NextPage } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
-import HeadTitle from '../components/HeadTitle';
 import { STATIC_PROPS_REVALIDATE } from '../constants';
 import {
 	HomeAnalysisDocument,
@@ -120,8 +119,6 @@ const Home: NextPage = () => {
 
 	return (
 		<>
-			<HeadTitle title={lang.title.home} />
-
 			{/* Heading */}
 			<section className='min-w-full h-[calc(100vh-67px)]	flex-center'>
 				<div className='container px-3'>
