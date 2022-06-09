@@ -10,6 +10,10 @@ const schema: Schema = new Schema({
 		required: true,
 		maxlength: MAX.VOTE_TITLE,
 	},
+	slug: {
+		type: String,
+		required: true,
+	},
 	type: {
 		type: Number,
 		required: true,
@@ -24,11 +28,12 @@ const schema: Schema = new Schema({
 		required: true,
 		default: DEFAULT.VOTE_IS_PRIVATE,
 	},
-	hashtag: [String],
-	catalogId: {
-		type: Schema.Types.ObjectId,
-		ref: 'Catalog',
-	},
+	tags: [
+		{
+			name: String,
+			slug: String,
+		},
+	],
 	items: [
 		{
 			id: Number,

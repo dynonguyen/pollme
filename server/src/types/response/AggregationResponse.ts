@@ -10,7 +10,7 @@ export class CountingAggregation extends QueryResponse {
 	user: number;
 
 	@Field()
-	hashtag: number;
+	tag: number;
 
 	@Field()
 	comment: number;

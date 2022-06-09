@@ -26,8 +26,8 @@
 - Apollo Client - GraphQL
 - TypeScript
 - Internationalization (i18n)
-- SWR: React Hooks for Data Fetching
 - TailwindCSS
+- React Recoil
 
 ## Back-end
 

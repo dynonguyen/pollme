@@ -26,12 +26,24 @@ export class VoteItem {
 }
 
 @ObjectType()
+class TagInVote {
+	@Field()
+	name: string;
+
+	@Field()
+	slug: string;
+}
+
+@ObjectType()
 class Vote {
 	@Field(_type => ID)
 	_id: MongoID;
 
-	@Field()
-	title!: string;
+	@Field(_type => String)
+	title: string;
+
+	@Field(_type => String)
+	slug: string;
 
 	@Field(_type => Int)
 	type: number;
@@ -39,37 +51,34 @@ class Vote {
 	@Field()
 	desc?: string;
 
-	@Field()
+	@Field(_type => Boolean)
 	isPrivate: boolean;
 
-	@Field()
-	hashtag: string[];
+	@Field(_type => [TagInVote])
+	tags: TagInVote[];
 
-	@Field()
-	catalogId: string;
-
-	@Field()
+	@Field(_type => [VoteItem])
 	items: VoteItem[];
 
-	@Field()
+	@Field(_type => Date)
 	createdAt: Date;
 
-	@Field()
+	@Field(_type => Date)
 	updatedAt?: Date;
 
 	@Field({ nullable: true })
 	endDate?: Date;
 
-	@Field()
+	@Field(_type => Boolean)
 	isLoginRequired: boolean;
 
-	@Field()
+	@Field(_type => Boolean)
 	allowAddItem: boolean;
 
-	@Field()
+	@Field(_type => Boolean)
 	allowChooseMultiple: boolean;
 
-	@Field()
+	@Field(_type => Boolean)
 	allowMark: boolean;
 
 	@Field(_type => Int)

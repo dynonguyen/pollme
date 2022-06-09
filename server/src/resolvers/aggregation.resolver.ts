@@ -1,6 +1,6 @@
 import { Query, Resolver } from 'type-graphql';
 import CommentModel from '../models/comment.model';
-import HashTagModel from '../models/hashtag.model';
+import TagModel from '../models/tag.model';
 import UserModel from '../models/user.model';
 import VoteModel from '../models/vote.model';
 import { CountingAggregation } from '../types/response/AggregationResponse';
@@ -14,7 +14,7 @@ export class AggregationResolver {
 			poll: 0,
 			comment: 0,
 			user: 0,
-			hashtag: 0,
+			tag: 0,
 		};
 
 		try {
@@ -32,9 +32,7 @@ export class AggregationResolver {
 				),
 			);
 			promises.push(
-				HashTagModel.countDocuments().then(
-					nHashtag => (result.hashtag = nHashtag),
-				),
+				TagModel.countDocuments().then(nTag => (result.tag = nTag)),
 			);
 
 			await Promise.all(promises);
