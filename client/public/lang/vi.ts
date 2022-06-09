@@ -2,14 +2,14 @@ import { MAX, MIN } from '../../constants/validation';
 import { APP_NAME } from './../../constants/index';
 
 export default {
-	title: {
-		home: 'Trang chủ',
-		notfound: 'Không tìm thấy trang',
-	},
 	navbarItems: [
 		{
 			link: '/kham-pha',
 			label: 'Khám phá',
+		},
+		{
+			link: '/tags',
+			label: 'Tags',
 		},
 		{
 			link: '/tao-khao-sat',
@@ -190,6 +190,11 @@ export default {
 			pathname: '/login',
 			title: 'Đăng nhập',
 			desc: `Đăng nhập vào ${APP_NAME} để trải nghiệm những tính năng tuyệt vời mà ứng dụng này mang lại cho bạn. Dễ dàng đăng nhập với Google, Github`,
+		},
+		discovery: {
+			pathname: '/discover',
+			title: 'Khám phá',
+			desc: `Cùng khám phá các bài khảo sát được nhiều người quan tâm trên ${APP_NAME} nhất nhé, biết đâu bạn cũng quan tâm đến nó.`,
 		},
 	},
 	others: {

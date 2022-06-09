@@ -12,6 +12,10 @@ export default {
 			label: 'Discover',
 		},
 		{
+			link: '/tags',
+			label: 'Tags',
+		},
+		{
 			link: '/new-vote',
 			label: 'New vote',
 		},
@@ -88,7 +92,7 @@ export default {
 						'User-friendly interface, beautiful, easy to use for beginners. Beautiful across all devices and screens.',
 				},
 			],
-			analytics: ['Poll', 'Active user', 'Hashtag', 'Comment'],
+			analytics: ['Poll', 'Active user', 'Tag', 'Comment'],
 			featureTitle: 'Best Features',
 			features: [
 				{
@@ -192,6 +196,11 @@ export default {
 			pathname: '/login',
 			title: 'Log in',
 			desc: `Sign in to ${APP_NAME} to experience the great features this app has to offer you. Easy login with Google, Github.`,
+		},
+		discovery: {
+			pathname: '/discover',
+			title: 'Discover',
+			desc: `Let's explore the surveys that are most interested in ${APP_NAME}, maybe you are also interested in it.`,
 		},
 	},
 	others: {

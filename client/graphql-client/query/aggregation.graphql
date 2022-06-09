@@ -4,7 +4,7 @@ query HomeAnalysis {
 		message
 		poll
 		user
-		hashtag
+		tag
 		comment
 	}
 }

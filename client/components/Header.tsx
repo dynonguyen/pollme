@@ -42,7 +42,7 @@ function Navbar(): JSX.Element {
 		<>
 			{lang.navbarItems.map((item, index) => (
 				<Link href={item.link} key={index}>
-					<a className='font-medium capitalize text-gray-500 dark:text-d_text_title hover:text-gray-700 duration-300'>
+					<a className='font-medium capitalize text-gray-500 dark:text-d_text_title hover:text-gray-800 duration-300'>
 						{item.label}
 					</a>
 				</Link>
@@ -62,7 +62,7 @@ function MenuSlider(): JSX.Element {
 	const [showMenu, setShowMenu] = useState(false);
 
 	return (
-		<div className='md:hidden'>
+		<div className='lg:hidden'>
 			<MenuIcon className={ICON_STYLES} onClick={() => setShowMenu(true)} />
 			<div className={`bg-overlay ${showMenu ? '' : 'hidden'}`}>
 				<div className='bg-white dark:bg-d_bg p-5 max-w-xs h-full'>
@@ -145,12 +145,12 @@ export default function Header(): JSX.Element {
 					</Link>
 				</div>
 
-				<nav className='hidden gap-5 lg:gap-10 flex-grow md:flex ml-2 lg:ml-5'>
+				<nav className='hidden lg:flex gap-5 lg:gap-8 flex-grow ml-2 lg:ml-5'>
 					<Navbar />
 				</nav>
 
-				<div className='hidden md:flex md:gap-2 md:items-center'>
-					<div className='hidden xl:block w-44 lg:w-60 relative'>
+				<div className='hidden lg:flex md:gap-2 md:items-center'>
+					<div className='hidden xl:block w-44 lg:w-56 relative'>
 						<SearchBar />
 					</div>
 					<NavbarAction />

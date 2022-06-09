@@ -35,7 +35,7 @@ export default function Footer(): JSX.Element {
 		<footer className='bg-d_bg py-4 dark:border-t dark:border-gray-600'>
 			<div className='container'>
 				<div className='text-center'>
-					<strong className='uppercase text-xl md:text-3xl text-white tracking-[1px]'>
+					<strong className='uppercase text-xl md:text-3xl text-slate-300 tracking-[1px]'>
 						{APP_NAME}
 					</strong>
 				</div>
@@ -54,7 +54,7 @@ export default function Footer(): JSX.Element {
 						</li>
 					))}
 				</ul>
-				<p className='text-white text-center text-sm md:text-lg'>
+				<p className='text-slate-300 text-center text-sm md:text-lg'>
 					Copyright© {new Date().getFullYear()} {APP_NAME}. All Rights Reserved.
 				</p>
 			</div>

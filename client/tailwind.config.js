@@ -39,8 +39,8 @@ module.exports = {
 				d_primary: '#50b8d5',
 				d_secondary: '#aed7eb',
 				d_accent: '#ee9f46',
-				d_text_title: '#e8e9ea',
-				d_text_primary: '#979899',
+				d_text_title: '#e9e9e9',
+				d_text_primary: '#c1c1c1',
 			},
 
 			fontFamily: {
@@ -48,5 +48,5 @@ module.exports = {
 			},
 		},
 	},
-	plugins: [],
+	plugins: [require('@tailwindcss/line-clamp')],
 };

@@ -23,7 +23,7 @@ export default function Layout(props: LayoutProps): JSX.Element {
 			<SEOCustomize />
 			<ToastContainer newestOnTop limit={TOAST_LIMIT} />
 			<Header />
-			<main>{props.children}</main>
+			<main className='min-h-[calc(100vh-67px)]'>{props.children}</main>
 			<Footer />
 		</>
 	);

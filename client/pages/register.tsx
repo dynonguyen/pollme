@@ -50,7 +50,7 @@ const Register: NextPage = () => {
 
 	return (
 		<div
-			className={`min-h-[calc(100vh-67px)] flex items-center flex-col my-16 ${
+			className={`flex items-center flex-col my-16 ${
 				submitting ? 'disabled' : ''
 			}`}
 		>

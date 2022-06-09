@@ -70,8 +70,8 @@ function Analysis(): JSX.Element {
 	const lang = useLanguage();
 	const analyticsLang = lang.pages.home.analytics;
 	const { data } = useHomeAnalysisQuery();
-	let count = data?.count || { poll: 0, comment: 0, user: 0, hashtag: 0 };
-	const { comment, hashtag, poll, user } = count;
+	let count = data?.count || { poll: 0, comment: 0, user: 0, tag: 0 };
+	const { comment, tag, poll, user } = count;
 
 	const items: { Icon: Function; quantity: number; title: string }[] = [
 		{
@@ -86,7 +86,7 @@ function Analysis(): JSX.Element {
 		},
 		{
 			Icon: TagIcon,
-			quantity: hashtag,
+			quantity: tag,
 			title: analyticsLang[2],
 		},
 		{

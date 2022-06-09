@@ -22,6 +22,10 @@
 	h6 {
 		@apply text-text_title dark:text-d_text_title font-medium;
 	}
+
+	h1 {
+		@apply text-2xl md:text-3xl lg:text-4xl;
+	}
 }
 
 @layer components {
@@ -32,7 +36,7 @@
 		@apply !py-2 text-lg;
 	}
 	.btn-outline {
-		@apply btn border-solid border-gray-200 dark:border-gray-700 border dark:text-d_text_title;
+		@apply btn border-solid border-gray-200 dark:border-gray-700 border text-gray-600 dark:text-d_text_primary;
 	}
 	.btn-primary {
 		@apply btn bg-primary text-white dark:bg-d_primary dark:text-gray-50;
@@ -44,9 +48,11 @@
 	.field-error {
 		@apply border-red-600 dark:border-red-400;
 	}
-}
 
-@layer utilities {
+	.filter-item {
+		@apply cursor-pointer p-3 rounded-lg duration-300 text-gray-500 hover:text-gray-800 dark:hover:text-d_text_title hover:bg-gray-100 dark:hover:bg-d_bg_hover;
+	}
+
 	.flex-center {
 		@apply flex items-center justify-center;
 	}
@@ -54,23 +60,19 @@
 	.bg-overlay {
 		@apply fixed top-0 left-0 w-full h-full z-[99] bg-black bg-opacity-40 dark:bg-opacity-80;
 	}
-
-	.text-gradient {
-		@apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary dark:from-d_primary dark:to-d_secondary;
-	}
-
 	.bg-gradient {
 		@apply bg-gradient-to-r from-primary to-secondary dark:from-d_primary dark:to-d_secondary;
 	}
 
+	.text-gradient {
+		@apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary dark:from-d_primary dark:to-d_secondary;
+	}
 	.text-color-normal {
 		@apply text-text_primary dark:text-d_text_primary;
 	}
-
 	.text-color-title {
 		@apply text-text_title dark:text-d_text_title;
 	}
-
 	.error-text {
 		@apply !text-red-600 dark:!text-red-400;
 	}
@@ -78,4 +80,34 @@
 	.disabled {
 		@apply opacity-75 cursor-no-drop pointer-events-none;
 	}
+
+	.no-scrollbar::-webkit-scrollbar {
+		display: none;
+		-ms-overflow-style: none; /* IE and Edge */
+		scrollbar-width: none; /* Firefox */
+	}
+
+	.menu {
+		@apply hidden pt-2 group-hover:block absolute rounded-lg shadow-lg focus:outline-none;
+	}
+	.menu ul {
+		@apply bg-slate-50 dark:bg-d_bg;
+	}
+	.menu-item {
+		@apply duration-150 block px-4 py-2 capitalize text-gray-600 dark:text-d_text_primary hover:bg-slate-200 dark:hover:bg-d_bg_hover text-sm md:text-base cursor-pointer;
+	}
+
+	.tag-link {
+		@apply py-1 px-2 bg-primary/10 dark:bg-d_primary/10 rounded-md text-primary dark:text-d_primary text-sm hover:brightness-90 duration-300;
+	}
+
+	.poll-summary__bg {
+		@apply bg-slate-100 dark:bg-slate-800 w-full rounded-lg shadow-md py-3 px-5 md:py-5 md:px-8;
+	}
+	.poll-summary__title {
+		@apply text-lg md:text-xl font-normal text-primary dark:text-d_primary duration-300 hover:brightness-90;
+	}
+}
+
+@layer utilities {
 }

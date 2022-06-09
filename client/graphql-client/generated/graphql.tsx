@@ -19,9 +19,9 @@ export type CountingAggregation = QueryResponse & {
   __typename?: 'CountingAggregation';
   code: Scalars['Int'];
   comment: Scalars['Float'];
-  hashtag: Scalars['Float'];
   message?: Maybe<Scalars['String']>;
   poll: Scalars['Float'];
+  tag: Scalars['Float'];
   user: Scalars['Float'];
 };
 
@@ -142,7 +142,7 @@ export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
 export type HomeAnalysisQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type HomeAnalysisQuery = { __typename?: 'Query', count: { __typename?: 'CountingAggregation', code: number, message?: string | null, poll: number, user: number, hashtag: number, comment: number } };
+export type HomeAnalysisQuery = { __typename?: 'Query', count: { __typename?: 'CountingAggregation', code: number, message?: string | null, poll: number, user: number, tag: number, comment: number } };
 
 export type GetCoreUserInfoQueryVariables = Exact<{
   userId: Scalars['String'];
@@ -319,7 +319,7 @@ export const HomeAnalysisDocument = gql`
     message
     poll
     user
-    hashtag
+    tag
     comment
   }
 }

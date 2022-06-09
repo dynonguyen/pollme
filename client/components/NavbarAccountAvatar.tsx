@@ -34,20 +34,16 @@ export default function NavbarAccountAvatar(): JSX.Element {
 				className='w-10 h-10 cursor-pointer rounded-full'
 				alt='Username'
 			/>
-			<div className='hidden pt-2 group-hover:block absolute left:0 md:right-0 w-56 rounded-lg shadow-lg focus:outline-none'>
-				<ul className='bg-slate-50 dark:bg-d_bg'>
+			<div className='menu w-56 left-0 md:right-0 md:left-auto'>
+				<ul>
 					{accountMenu.map((item, index) => (
 						<Link href={item.to} key={index}>
-							<a className='duration-150 block px-4 py-2 capitalize text-gray-600 dark:text-d_text_primary hover:bg-slate-200 dark:hover:bg-d_bg_hover text-sm md:text-base'>
+							<a className='menu-item'>
 								<li>{item.title}</li>
 							</a>
 						</Link>
 					))}
-
-					<li
-						className='duration-150 block px-4 py-2 capitalize text-gray-600 dark:text-d_text_primary hover:bg-slate-200 dark:hover:bg-d_bg_hover text-sm md:text-base cursor-pointer'
-						onClick={onLogout}
-					>
+					<li className='menu-item' onClick={onLogout}>
 						{lang.button.logout}
 					</li>
 				</ul>
