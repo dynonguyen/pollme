@@ -1,4 +1,5 @@
 import {
+	CheckIcon,
 	FilterIcon,
 	SortAscendingIcon as SortIcon,
 } from '@heroicons/react/outline';
@@ -11,6 +12,7 @@ import { useRouter } from 'next/router';
 import Pagination from '../components/core/Pagination';
 import PollSummary from '../components/PollSummary';
 import { DEFAULT } from '../constants/default';
+import { QUERY_KEY } from '../constants/key';
 import {
 	DiscoverDocument,
 	DiscoverQuery,
@@ -20,14 +22,6 @@ import { initializeApollo } from '../lib/apolloClient';
 import { getPageQuery } from '../utils/helper';
 
 const filterOptions: string[] = ['All', 'Newest', 'Unpolled', 'Most frequent'];
-const sortOptions: string[] = [
-	'Title (A-Z)',
-	'Title (Z-A)',
-	'Polls Ascending',
-	'Polls Descending',
-	'Newest',
-	'Oldest',
-];
 
 function FilterButton(): JSX.Element {
 	return (
@@ -63,6 +57,21 @@ function FilterButton(): JSX.Element {
 }
 
 function SortButton(): JSX.Element {
+	const lang = useLanguage();
+	const discoverLang = lang.pages.discover;
+	const { sortOptions } = discoverLang;
+	const router = useRouter();
+	const currentSort = router.query[QUERY_KEY.SORT] || '';
+
+	const handleSortOptionChange = (key: string = '') => {
+		if (key !== currentSort) {
+			if (key === '') delete router.query[QUERY_KEY.SORT];
+			else router.query[QUERY_KEY.SORT] = key;
+			router.pathname = discoverLang.link;
+			router.push(router);
+		}
+	};
+
 	return (
 		<div className='relative group w-1/2 md:w-[120px]'>
 			<button className='btn-outline w-full flex-center gap-2'>
@@ -72,8 +81,15 @@ function SortButton(): JSX.Element {
 			<div className='menu z-50 w-56 right-0'>
 				<ul>
 					{sortOptions.map((option, index) => (
-						<li key={index} className='menu-item'>
-							{option}
+						<li
+							key={index}
+							className='menu-item flex justify-between'
+							onClick={() => handleSortOptionChange(option.key)}
+						>
+							{option.title}
+							{option.key === currentSort && (
+								<CheckIcon className='w-5 text-green-700 dark:text-green-400' />
+							)}
 						</li>
 					))}
 				</ul>
@@ -93,17 +109,15 @@ const Discover: NextPage<
 	const totalPage = Math.ceil(total / pageSize);
 	const router = useRouter();
 	const lang = useLanguage();
+	const discoverLang = lang.pages.discover;
 
 	const handlePageChange = ({ selected }: { selected: number }) => {
 		const pageSelected = selected + 1;
 		if (pageSelected !== page) {
-			router.push({
-				pathname: lang.pages.discover.link,
-				query: {
-					page: pageSelected,
-					pageSize,
-				},
-			});
+			router.query[QUERY_KEY.PAGE] = pageSelected.toString();
+			router.query[QUERY_KEY.PAGE_SIZE] = pageSize.toString();
+			router.pathname = discoverLang.link;
+			router.push(router);
 		}
 	};
 
@@ -111,7 +125,7 @@ const Discover: NextPage<
 		<div className='container'>
 			{/* introduction */}
 			<div className='grid grid-cols-1 gap-3 md:grid-cols-4 flex-wrap mt-6 pb-3 border-b border-gray-300 dark:border-gray-600'>
-				<h1 className='font-normal md:col-span-4'>Pollme Discover</h1>
+				<h1 className='font-normal md:col-span-4'>{discoverLang.title}</h1>
 				<div className='flex flex-grow gap-2 items-center md:col-span-3 md:col-start-2'>
 					<FilterButton />
 					<SortButton />
@@ -155,8 +169,9 @@ const Discover: NextPage<
 export const getServerSideProps: GetServerSideProps<{
 	votes: DiscoverQuery;
 }> = async ({ query }) => {
-	const page = getPageQuery(query, 'page');
-	const pageSize = getPageQuery(query, 'pageSize');
+	const page = getPageQuery(query, QUERY_KEY.PAGE);
+	const pageSize = getPageQuery(query, QUERY_KEY.PAGE_SIZE);
+	const sort = query[QUERY_KEY.SORT] || '';
 
 	const apolloClient = initializeApollo();
 
@@ -165,6 +180,7 @@ export const getServerSideProps: GetServerSideProps<{
 		variables: {
 			page,
 			pageSize,
+			sort,
 		},
 	});
 	const votes: DiscoverQuery = response.data;

@@ -1,11 +1,11 @@
 import { Args, FieldResolver, Query, Resolver, Root } from 'type-graphql';
-import { DEFAULT } from '../constants/default';
 import UserModel from '../models/user.model';
 import VoteModel from '../models/vote.model';
 import User from '../types/entities/User';
 import Vote from '../types/entities/Vote';
 import { VotePaginatedResponse } from '../types/response/VoteResponse';
 import mongoosePaginate from '../utils/mongoose-paginate';
+import { DEFAULT } from './../constants/default';
 import { SUCCESS_CODE } from './../constants/status';
 import { PaginationArgs } from './../types/input/PaginationArg';
 
@@ -19,7 +19,7 @@ export class VoteResolver {
 
 	@Query(_return => VotePaginatedResponse, { nullable: true })
 	async publicVotes(
-		@Args() { page = 1, pageSize = DEFAULT.PAGE_SIZE }: PaginationArgs,
+		@Args() { page = 1, pageSize = DEFAULT.PAGE_SIZE, sort }: PaginationArgs,
 	): Promise<VotePaginatedResponse> {
 		try {
 			if (page < 1) page = 1;
@@ -29,11 +29,12 @@ export class VoteResolver {
 				VoteModel,
 				{ isPrivate: false },
 				{ page, pageSize },
-				{ sort: 'name' },
+				{ sort },
 			);
 
 			return {
 				code: SUCCESS_CODE.OK,
+				sort,
 				...votes,
 			};
 		} catch (error) {
@@ -41,6 +42,7 @@ export class VoteResolver {
 			return {
 				code: SUCCESS_CODE.OK,
 				docs: [],
+				sort,
 				page,
 				pageSize,
 				total: 0,

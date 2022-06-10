@@ -1,9 +1,10 @@
-query Discover($page: Int, $pageSize: Int) {
-	publicVotes(page: $page, pageSize: $pageSize) {
+query Discover($page: Int, $pageSize: Int, $sort: String) {
+	publicVotes(page: $page, pageSize: $pageSize, sort: $sort) {
 		code
 		page
 		pageSize
 		total
+		sort
 		docs {
 			_id
 			title

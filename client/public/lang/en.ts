@@ -182,6 +182,18 @@ export default {
 		},
 		discover: {
 			link: '/discover',
+			title: `${APP_NAME} Discover`,
+			sortOptions: [
+				{ title: 'By default', key: '' },
+				{ title: 'Title (A-Z)', key: 'title' },
+				{ title: 'Title (Z-A)', key: '-title' },
+				{ title: 'Vote Ascending', key: 'totalVote' },
+				{ title: 'Vote Descending', key: '-totalVote' },
+				{ title: 'Comment Ascending', key: 'totalComment' },
+				{ title: 'Comment Descending', key: '-totalComment' },
+				{ title: 'Newest', key: 'createdAt' },
+				{ title: 'Oldest', key: '-createdAt' },
+			],
 		},
 	},
 	pageSEO: {

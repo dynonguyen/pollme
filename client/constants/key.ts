@@ -3,3 +3,9 @@ export const LS_KEY = {
 };
 
 export const GOOGLE_API_ID = process.env.NEXT_PUBLIC_GOOGLE_API_ID || '';
+
+export const QUERY_KEY = {
+	PAGE: 'page',
+	PAGE_SIZE: 'pageSize',
+	SORT: 'sort',
+};

@@ -80,6 +80,7 @@ export type Query = {
 export type QueryPublicVotesArgs = {
   page?: InputMaybe<Scalars['Int']>;
   pageSize?: InputMaybe<Scalars['Int']>;
+  sort?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -170,6 +171,7 @@ export type VotePaginatedResponse = QueryResponse & {
   message?: Maybe<Scalars['String']>;
   page: Scalars['Int'];
   pageSize: Scalars['Int'];
+  sort?: Maybe<Scalars['String']>;
   total: Scalars['Int'];
 };
 
@@ -223,10 +225,11 @@ export type GetMeQuery = { __typename?: 'Query', me?: { __typename?: 'User', _id
 export type DiscoverQueryVariables = Exact<{
   page?: InputMaybe<Scalars['Int']>;
   pageSize?: InputMaybe<Scalars['Int']>;
+  sort?: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type DiscoverQuery = { __typename?: 'Query', publicVotes?: { __typename?: 'VotePaginatedResponse', code: number, page: number, pageSize: number, total: number, docs: Array<{ __typename?: 'Vote', _id: string, title: string, desc: string, createdAt: any, slug: string, totalComment: number, totalVote: number, tags: Array<{ __typename?: 'TagInVote', name: string, slug: string }>, owner?: { __typename?: 'User', _id: string, avt?: string | null, name: string } | null }> } | null };
+export type DiscoverQuery = { __typename?: 'Query', publicVotes?: { __typename?: 'VotePaginatedResponse', code: number, page: number, pageSize: number, total: number, sort?: string | null, docs: Array<{ __typename?: 'Vote', _id: string, title: string, desc: string, createdAt: any, slug: string, totalComment: number, totalVote: number, tags: Array<{ __typename?: 'TagInVote', name: string, slug: string }>, owner?: { __typename?: 'User', _id: string, avt?: string | null, name: string } | null }> } | null };
 
 export const MutationStatusFragmentDoc = gql`
     fragment mutationStatus on MutationResponse {
@@ -493,12 +496,13 @@ export type GetMeQueryHookResult = ReturnType<typeof useGetMeQuery>;
 export type GetMeLazyQueryHookResult = ReturnType<typeof useGetMeLazyQuery>;
 export type GetMeQueryResult = Apollo.QueryResult<GetMeQuery, GetMeQueryVariables>;
 export const DiscoverDocument = gql`
-    query Discover($page: Int, $pageSize: Int) {
-  publicVotes(page: $page, pageSize: $pageSize) {
+    query Discover($page: Int, $pageSize: Int, $sort: String) {
+  publicVotes(page: $page, pageSize: $pageSize, sort: $sort) {
     code
     page
     pageSize
     total
+    sort
     docs {
       _id
       title
@@ -535,6 +539,7 @@ export const DiscoverDocument = gql`
  *   variables: {
  *      page: // value for 'page'
  *      pageSize: // value for 'pageSize'
+ *      sort: // value for 'sort'
  *   },
  * });
  */

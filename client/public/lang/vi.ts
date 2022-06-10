@@ -177,6 +177,18 @@ export default {
 		discover: {
 			link: '/kham-pha',
 			title: `${APP_NAME} Khám phá`,
+			sortOptions: [
+				{ title: 'Mặc định', key: '' },
+				{ title: 'Tiêu đề (A-Z)', key: 'title' },
+				{ title: 'Tiêu đề (Z-A)', key: '-title' },
+				{ title: 'Lượt vote tăng dần', key: 'totalVote' },
+				{ title: 'Lượt vote giảm dần', key: '-totalVote' },
+				{ title: 'Bình luận tăng dần', key: 'totalComment' },
+				{ title: 'Bình luận giảm dần', key: '-totalComment' },
+				{ title: 'Mới nhất', key: 'createdAt' },
+				{ title: 'Cũ nhất', key: '-createdAt' },
+			],
+			filterOptions: [],
 		},
 	},
 	pageSEO: {
