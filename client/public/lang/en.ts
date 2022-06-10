@@ -180,6 +180,9 @@ export default {
 				success: (username: string) => `Hello, ${username} 👋`,
 			},
 		},
+		discover: {
+			link: '/discover',
+		},
 	},
 	pageSEO: {
 		home: {

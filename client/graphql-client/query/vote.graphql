@@ -1,0 +1,26 @@
+query Discover($page: Int, $pageSize: Int) {
+	publicVotes(page: $page, pageSize: $pageSize) {
+		code
+		page
+		pageSize
+		total
+		docs {
+			_id
+			title
+			desc
+			createdAt
+			slug
+			tags {
+				name
+				slug
+			}
+			totalComment
+			totalVote
+			owner {
+				_id
+				avt
+				name
+			}
+		}
+	}
+}

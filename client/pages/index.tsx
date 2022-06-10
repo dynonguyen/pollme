@@ -8,14 +8,14 @@ import {
 	TagIcon,
 	UserCircleIcon,
 } from '@heroicons/react/solid';
-import type { GetStaticProps, NextPage } from 'next';
+import type { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { STATIC_PROPS_REVALIDATE } from '../constants';
 import {
 	HomeAnalysisDocument,
-	useHomeAnalysisQuery,
+	HomeAnalysisQuery,
 } from '../graphql-client/generated/graphql';
 import useLanguage from '../hooks/useLanguage';
 import { addApolloState, initializeApollo } from '../lib/apolloClient';
@@ -66,11 +66,10 @@ function Heading(): JSX.Element {
 	);
 }
 
-function Analysis(): JSX.Element {
+function Analysis(props: HomeAnalysisQuery): JSX.Element {
 	const lang = useLanguage();
 	const analyticsLang = lang.pages.home.analytics;
-	const { data } = useHomeAnalysisQuery();
-	let count = data?.count || { poll: 0, comment: 0, user: 0, tag: 0 };
+	const { count } = props;
 	const { comment, tag, poll, user } = count;
 
 	const items: { Icon: Function; quantity: number; title: string }[] = [
@@ -113,7 +112,9 @@ function Analysis(): JSX.Element {
 	);
 }
 
-const Home: NextPage = () => {
+const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
+	homeAnalysis,
+}) => {
 	const lang = useLanguage();
 	const homeLang = lang.pages.home;
 
@@ -204,7 +205,7 @@ const Home: NextPage = () => {
 			</section>
 
 			{/* Analytics */}
-			<Analysis />
+			<Analysis count={homeAnalysis.count} />
 
 			{/* Best features */}
 			<section className='mb-12'>
@@ -235,20 +236,31 @@ const Home: NextPage = () => {
 	);
 };
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps<{
+	homeAnalysis: HomeAnalysisQuery;
+}> = async () => {
 	try {
 		const apolloClient = initializeApollo();
-		await apolloClient.query({
+		const response = await apolloClient.query({
 			query: HomeAnalysisDocument,
 		});
-		return addApolloState(apolloClient, {
-			props: {},
+		const homeAnalysis: HomeAnalysisQuery = response.data;
+
+		addApolloState(apolloClient, { props: {} });
+		return {
+			props: {
+				homeAnalysis,
+			},
 			revalidate: STATIC_PROPS_REVALIDATE.HOME_PAGE,
-		});
+		};
 	} catch (error) {
 		console.log('Home Page GetStaticProps Error: ', error);
 		return {
-			props: {},
+			props: {
+				homeAnalysis: {
+					count: { code: 200, comment: 0, poll: 0, tag: 0, user: 0 },
+				},
+			},
 			revalidate: STATIC_PROPS_REVALIDATE.HOME_PAGE,
 		};
 	}

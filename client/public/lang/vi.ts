@@ -174,6 +174,10 @@ export default {
 				success: (username: string) => `Xin chào, ${username} 👋`,
 			},
 		},
+		discover: {
+			link: '/kham-pha',
+			title: `${APP_NAME} Khám phá`,
+		},
 	},
 	pageSEO: {
 		home: {

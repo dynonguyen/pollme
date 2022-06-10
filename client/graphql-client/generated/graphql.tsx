@@ -13,6 +13,8 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
+  DateTime: any;
 };
 
 export type CountingAggregation = QueryResponse & {
@@ -70,7 +72,14 @@ export type Query = {
   __typename?: 'Query';
   count: CountingAggregation;
   me?: Maybe<User>;
+  publicVotes?: Maybe<VotePaginatedResponse>;
   user?: Maybe<User>;
+};
+
+
+export type QueryPublicVotesArgs = {
+  page?: InputMaybe<Scalars['Int']>;
+  pageSize?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -87,6 +96,12 @@ export type RegisterInput = {
   email: Scalars['String'];
   name: Scalars['String'];
   password: Scalars['String'];
+};
+
+export type TagInVote = {
+  __typename?: 'TagInVote';
+  name: Scalars['String'];
+  slug: Scalars['String'];
 };
 
 export type User = {
@@ -107,6 +122,55 @@ export type UserMutationResponse = MutationResponse & {
   message?: Maybe<Scalars['String']>;
   success: Scalars['Boolean'];
   user?: Maybe<User>;
+};
+
+export type Vote = {
+  __typename?: 'Vote';
+  _id: Scalars['ID'];
+  allowAddItem: Scalars['Boolean'];
+  allowChooseMultiple: Scalars['Boolean'];
+  allowMark: Scalars['Boolean'];
+  createdAt: Scalars['DateTime'];
+  desc: Scalars['String'];
+  endDate?: Maybe<Scalars['DateTime']>;
+  isLoginRequired: Scalars['Boolean'];
+  isPrivate: Scalars['Boolean'];
+  items: Array<VoteItem>;
+  maxScore?: Maybe<Scalars['Int']>;
+  maxVote: Scalars['Int'];
+  owner?: Maybe<User>;
+  ownerId: Scalars['String'];
+  slug: Scalars['String'];
+  tags: Array<TagInVote>;
+  title: Scalars['String'];
+  totalComment: Scalars['Int'];
+  totalVote: Scalars['Int'];
+  type: Scalars['Int'];
+  updatedAt: Scalars['DateTime'];
+};
+
+export type VoteItem = {
+  __typename?: 'VoteItem';
+  desc: Scalars['String'];
+  id: Scalars['Float'];
+  label: Scalars['String'];
+  voteList: Array<VoteOfUser>;
+};
+
+export type VoteOfUser = {
+  __typename?: 'VoteOfUser';
+  score: Scalars['Float'];
+  userId: Scalars['String'];
+};
+
+export type VotePaginatedResponse = QueryResponse & {
+  __typename?: 'VotePaginatedResponse';
+  code: Scalars['Int'];
+  docs: Array<Vote>;
+  message?: Maybe<Scalars['String']>;
+  page: Scalars['Int'];
+  pageSize: Scalars['Int'];
+  total: Scalars['Int'];
 };
 
 export type MutationStatusFragment = { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null };
@@ -155,6 +219,14 @@ export type GetMeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetMeQuery = { __typename?: 'Query', me?: { __typename?: 'User', _id: string, email: string, name: string, avt?: string | null } | null };
+
+export type DiscoverQueryVariables = Exact<{
+  page?: InputMaybe<Scalars['Int']>;
+  pageSize?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type DiscoverQuery = { __typename?: 'Query', publicVotes?: { __typename?: 'VotePaginatedResponse', code: number, page: number, pageSize: number, total: number, docs: Array<{ __typename?: 'Vote', _id: string, title: string, desc: string, createdAt: any, slug: string, totalComment: number, totalVote: number, tags: Array<{ __typename?: 'TagInVote', name: string, slug: string }>, owner?: { __typename?: 'User', _id: string, avt?: string | null, name: string } | null }> } | null };
 
 export const MutationStatusFragmentDoc = gql`
     fragment mutationStatus on MutationResponse {
@@ -420,3 +492,60 @@ export function useGetMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetM
 export type GetMeQueryHookResult = ReturnType<typeof useGetMeQuery>;
 export type GetMeLazyQueryHookResult = ReturnType<typeof useGetMeLazyQuery>;
 export type GetMeQueryResult = Apollo.QueryResult<GetMeQuery, GetMeQueryVariables>;
+export const DiscoverDocument = gql`
+    query Discover($page: Int, $pageSize: Int) {
+  publicVotes(page: $page, pageSize: $pageSize) {
+    code
+    page
+    pageSize
+    total
+    docs {
+      _id
+      title
+      desc
+      createdAt
+      slug
+      tags {
+        name
+        slug
+      }
+      totalComment
+      totalVote
+      owner {
+        _id
+        avt
+        name
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useDiscoverQuery__
+ *
+ * To run a query within a React component, call `useDiscoverQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDiscoverQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDiscoverQuery({
+ *   variables: {
+ *      page: // value for 'page'
+ *      pageSize: // value for 'pageSize'
+ *   },
+ * });
+ */
+export function useDiscoverQuery(baseOptions?: Apollo.QueryHookOptions<DiscoverQuery, DiscoverQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<DiscoverQuery, DiscoverQueryVariables>(DiscoverDocument, options);
+      }
+export function useDiscoverLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<DiscoverQuery, DiscoverQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<DiscoverQuery, DiscoverQueryVariables>(DiscoverDocument, options);
+        }
+export type DiscoverQueryHookResult = ReturnType<typeof useDiscoverQuery>;
+export type DiscoverLazyQueryHookResult = ReturnType<typeof useDiscoverLazyQuery>;
+export type DiscoverQueryResult = Apollo.QueryResult<DiscoverQuery, DiscoverQueryVariables>;

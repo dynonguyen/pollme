@@ -2,8 +2,22 @@ import {
 	FilterIcon,
 	SortAscendingIcon as SortIcon,
 } from '@heroicons/react/outline';
-import { NextPage } from 'next';
+import {
+	GetServerSideProps,
+	InferGetServerSidePropsType,
+	NextPage,
+} from 'next';
+import { useRouter } from 'next/router';
+import Pagination from '../components/core/Pagination';
 import PollSummary from '../components/PollSummary';
+import { DEFAULT } from '../constants/default';
+import {
+	DiscoverDocument,
+	DiscoverQuery,
+} from '../graphql-client/generated/graphql';
+import useLanguage from '../hooks/useLanguage';
+import { initializeApollo } from '../lib/apolloClient';
+import { getPageQuery } from '../utils/helper';
 
 const filterOptions: string[] = ['All', 'Newest', 'Unpolled', 'Most frequent'];
 const sortOptions: string[] = [
@@ -68,9 +82,34 @@ function SortButton(): JSX.Element {
 	);
 }
 
-const Discover: NextPage = () => {
+const Discover: NextPage<
+	InferGetServerSidePropsType<typeof getServerSideProps>
+> = ({ votes }) => {
+	const { publicVotes } = votes;
+	const voteDocs = publicVotes?.docs || [];
+	const page = publicVotes?.page || 1;
+	const pageSize = publicVotes?.pageSize || DEFAULT.PAGE_SIZE;
+	const total = publicVotes?.total || 0;
+	const totalPage = Math.ceil(total / pageSize);
+	const router = useRouter();
+	const lang = useLanguage();
+
+	const handlePageChange = ({ selected }: { selected: number }) => {
+		const pageSelected = selected + 1;
+		if (pageSelected !== page) {
+			router.push({
+				pathname: lang.pages.discover.link,
+				query: {
+					page: pageSelected,
+					pageSize,
+				},
+			});
+		}
+	};
+
 	return (
 		<div className='container'>
+			{/* introduction */}
 			<div className='grid grid-cols-1 gap-3 md:grid-cols-4 flex-wrap mt-6 pb-3 border-b border-gray-300 dark:border-gray-600'>
 				<h1 className='font-normal md:col-span-4'>Pollme Discover</h1>
 				<div className='flex flex-grow gap-2 items-center md:col-span-3 md:col-start-2'>
@@ -86,39 +125,55 @@ const Discover: NextPage = () => {
 				</h3>
 			</div>
 
-			<div className='grid grid-cols-1 lg:grid-cols-2 my-6 gap-8'>
-				<PollSummary
-					content="I am currently trying to split the Value of a Variable to select. Variable = 'test;test1;test2;test3' I would like it to look like this"
-					createdAt={new Date()}
-					pollId='79102'
-					pollSlug='oracle-sql-select-a-variable-and-split-it-by-semicolon'
-					title='Oracle SQL Select a Variable and split it by semicolon'
-					totalVote={100}
-					totalComment={20}
-					user={{ name: 'Tuấn Nguyễn' }}
-					tags={[
-						{ link: 'sql', name: 'Sql' },
-						{ link: 'oracle', name: 'Oracle' },
-					]}
-				/>
-
-				<PollSummary
-					content="I am currently trying to split the Value of a Variable to select. Variable = 'test;test1;test2;test3' I would like it to look like this"
-					createdAt={new Date()}
-					pollId='79102'
-					pollSlug='oracle-sql-select-a-variable-and-split-it-by-semicolon'
-					title='Oracle SQL Select a Variable and split it by semicolon Oracle SQL Select a Variable and split it by semicolon '
-					totalVote={100}
-					totalComment={20}
-					user={{ name: 'Tuấn Nguyễn' }}
-					tags={[
-						{ link: 'sql', name: 'Sql' },
-						{ link: 'oracle', name: 'Oracle' },
-					]}
-				/>
+			{/* poll list */}
+			<div className='grid grid-cols-1 lg:grid-cols-2 mt-6 gap-8'>
+				{voteDocs.map(vote => (
+					<PollSummary
+						key={vote._id}
+						title={vote.title}
+						content={vote.desc}
+						createdAt={vote.createdAt}
+						pollId={vote._id}
+						pollSlug={vote.slug}
+						totalVote={vote.totalVote}
+						totalComment={vote.totalComment}
+						user={{ name: vote.owner?.name || '', avt: vote.owner?.avt || '' }}
+						tags={vote.tags}
+					/>
+				))}
 			</div>
+
+			<Pagination
+				pageCount={totalPage}
+				initialPage={page - 1}
+				onPageChange={handlePageChange}
+			/>
 		</div>
 	);
+};
+
+export const getServerSideProps: GetServerSideProps<{
+	votes: DiscoverQuery;
+}> = async ({ query }) => {
+	const page = getPageQuery(query, 'page');
+	const pageSize = getPageQuery(query, 'pageSize');
+
+	const apolloClient = initializeApollo();
+
+	const response = await apolloClient.query({
+		query: DiscoverDocument,
+		variables: {
+			page,
+			pageSize,
+		},
+	});
+	const votes: DiscoverQuery = response.data;
+
+	return {
+		props: {
+			votes,
+		},
+	};
 };
 
 export default Discover;
