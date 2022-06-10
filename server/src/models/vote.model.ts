@@ -5,6 +5,11 @@ import { VOTE_TYPE } from './../constants/index';
 import { MAX } from './../constants/validation';
 
 const schema: Schema = new Schema({
+	ownerId: {
+		type: Schema.Types.ObjectId,
+		required: true,
+		ref: 'User',
+	},
 	title: {
 		type: String,
 		required: true,
@@ -76,6 +81,16 @@ const schema: Schema = new Schema({
 	maxScore: {
 		type: Number,
 		default: DEFAULT.VOTE_MAX_SCORE,
+	},
+	totalVote: {
+		type: Number,
+		required: true,
+		default: 0,
+	},
+	totalComment: {
+		type: Number,
+		required: true,
+		default: 0,
 	},
 });
 

@@ -1,5 +1,6 @@
 import { Field, ID, Int, ObjectType } from 'type-graphql';
 import { MongoID } from '../commons';
+import User from './User';
 
 @ObjectType()
 class VoteOfUser {
@@ -38,6 +39,9 @@ class TagInVote {
 class Vote {
 	@Field(_type => ID)
 	_id: MongoID;
+
+	@Field(_type => String)
+	ownerId: MongoID;
 
 	@Field(_type => String)
 	title: string;
@@ -86,6 +90,19 @@ class Vote {
 
 	@Field(_type => Int, { nullable: true })
 	maxScore?: boolean;
+
+	@Field(_type => Int)
+	totalVote: number;
+
+	@Field(_type => Int)
+	totalComment: number;
+
+	// Mongoose fields for field resolver (can't access itself directly)
+	_doc?: Vote;
+
+	// Fields need to resolve
+	@Field(_type => User, { nullable: true })
+	owner?: User;
 }
 
 export default Vote;

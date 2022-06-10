@@ -26,6 +26,9 @@ class Comment {
 
 	@Field(_type => [CommentReply])
 	replies: CommentReply[];
+
+	// Mongoose fields for field resolver (can't access itself directly)
+	_doc?: Comment;
 }
 
 export default Comment;

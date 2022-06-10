@@ -28,6 +28,9 @@ class User {
 
 	@Field(_type => [String])
 	favorites: MongoID[];
+
+	// Mongoose fields for field resolver (can't access itself directly)
+	_doc?: User;
 }
 
 export type CoreUserInfo = Pick<

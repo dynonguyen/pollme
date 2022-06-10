@@ -2,6 +2,7 @@ import { ApolloServer } from 'apollo-server-express';
 import cookieParser from 'cookie-parser';
 import 'dotenv/config';
 import express from 'express';
+import morgan from 'morgan';
 import 'reflect-metadata';
 import { buildSchema } from 'type-graphql';
 import corsConfig from './config/cors';
@@ -14,6 +15,7 @@ mongooseConnect()
 	.then(async () => {
 		const app = express();
 		app.use(cookieParser());
+		app.use(morgan('tiny'));
 
 		const graphqlSchema = await buildSchema({
 			resolvers: Resolvers,
