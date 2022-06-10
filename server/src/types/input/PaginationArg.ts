@@ -8,10 +8,4 @@ export class PaginationArgs {
 
 	@Field(_type => Int, { nullable: true, defaultValue: DEFAULT.PAGE_SIZE })
 	pageSize?: number;
-
-	@Field(_type => String, {
-		nullable: true,
-		defaultValue: DEFAULT.VOTE_SORT_FIELD,
-	})
-	sort?: string;
 }

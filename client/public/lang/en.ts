@@ -1,3 +1,4 @@
+import { VoteFilterOptions } from '../../constants/enum';
 import { MAX, MIN } from '../../constants/validation';
 import { APP_NAME } from './../../constants/index';
 
@@ -194,6 +195,13 @@ export default {
 				{ title: 'Newest', key: 'createdAt' },
 				{ title: 'Oldest', key: '-createdAt' },
 			],
+			filterOptions: [
+				{ title: 'All', key: VoteFilterOptions.ALL },
+				{ title: 'Unvote', key: VoteFilterOptions.UNVOTE },
+				{ title: 'Active', key: VoteFilterOptions.ACTIVE },
+				{ title: 'Closed', key: VoteFilterOptions.CLOSED },
+			],
+			pollNotfound: 'No polls found',
 		},
 	},
 	pageSEO: {
@@ -220,5 +228,7 @@ export default {
 	},
 	others: {
 		loginOAuthBreak: 'Or continue with',
+		poll: 'Polls',
+		closed: 'Closed',
 	},
 };

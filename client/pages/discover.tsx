@@ -12,6 +12,7 @@ import { useRouter } from 'next/router';
 import Pagination from '../components/core/Pagination';
 import PollSummary from '../components/PollSummary';
 import { DEFAULT } from '../constants/default';
+import { VoteFilterOptions } from '../constants/enum';
 import { QUERY_KEY } from '../constants/key';
 import {
 	DiscoverDocument,
@@ -19,11 +20,26 @@ import {
 } from '../graphql-client/generated/graphql';
 import useLanguage from '../hooks/useLanguage';
 import { initializeApollo } from '../lib/apolloClient';
+import { numberFormat } from '../utils/format';
 import { getPageQuery } from '../utils/helper';
 
-const filterOptions: string[] = ['All', 'Newest', 'Unpolled', 'Most frequent'];
-
 function FilterButton(): JSX.Element {
+	const lang = useLanguage();
+	const discoverLang = lang.pages.discover;
+	const { filterOptions } = discoverLang;
+	const router = useRouter();
+	const currentFilter = router.query[QUERY_KEY.FILTER] || '';
+
+	const handleFilterOptionChange = (key: string) => {
+		if (key !== currentFilter) {
+			if (key === VoteFilterOptions.ALL) delete router.query[QUERY_KEY.FILTER];
+			else router.query[QUERY_KEY.FILTER] = key;
+			router.query[QUERY_KEY.PAGE] = '1';
+			router.pathname = discoverLang.link;
+			router.push(router);
+		}
+	};
+
 	return (
 		<div className='flex-grow group relative'>
 			<button className='md:hidden w-full btn-outline flex items-center justify-center gap-2'>
@@ -32,21 +48,36 @@ function FilterButton(): JSX.Element {
 			</button>
 
 			{/* desktop menu */}
-			<ul className='hidden md:flex justify-end'>
+			<ul className='hidden md:flex justify-end gap-2'>
 				{filterOptions.map((option, index) => (
-					<li key={index} className='filter-item'>
-						{option}
+					<li
+						key={index}
+						className={`filter-item ${
+							option.key === currentFilter
+								? 'text-gray-800 dark:text-d_text_title bg-gray-100 dark:bg-d_bg_hover'
+								: ''
+						}`}
+						onClick={() => handleFilterOptionChange(option.key)}
+					>
+						{option.title}
 					</li>
 				))}
 			</ul>
 
 			{/* mobile menu */}
 			<div className='md:hidden'>
-				<div className='menu w-full'>
+				<div className='menu w-full z-50'>
 					<ul>
 						{filterOptions.map((option, index) => (
-							<li key={index} className='menu-item'>
-								{option}
+							<li
+								key={index}
+								className='menu-item flex justify-between'
+								onClick={() => handleFilterOptionChange(option.key)}
+							>
+								{option.title}
+								{option.key === currentFilter && (
+									<CheckIcon className='w-5 text-green-700 dark:text-green-400' />
+								)}
 							</li>
 						))}
 					</ul>
@@ -131,37 +162,50 @@ const Discover: NextPage<
 					<SortButton />
 				</div>
 				<h3 className='text-xl md:row-start-2 md:self-center'>
-					<strong className='text-accent dark:text-d_accent'>22,667,678</strong>
+					<strong className='text-accent dark:text-d_accent'>
+						{numberFormat(total)}
+					</strong>
 					&nbsp;
 					<span className='font-normal text-text_primary dark:text-d_text_primary'>
-						Polls
+						{lang.others.poll}
 					</span>
 				</h3>
 			</div>
 
 			{/* poll list */}
-			<div className='grid grid-cols-1 lg:grid-cols-2 mt-6 gap-8'>
-				{voteDocs.map(vote => (
-					<PollSummary
-						key={vote._id}
-						title={vote.title}
-						content={vote.shortDesc || ''}
-						createdAt={vote.createdAt}
-						pollId={vote._id}
-						pollSlug={vote.slug}
-						totalVote={vote.totalVote}
-						totalComment={vote.totalComment}
-						user={{ name: vote.owner?.name || '', avt: vote.owner?.avt || '' }}
-						tags={vote.tags}
+			{voteDocs.length > 0 ? (
+				<>
+					<div className='grid grid-cols-1 lg:grid-cols-2 mt-6 gap-8'>
+						{voteDocs.map(vote => (
+							<PollSummary
+								key={vote._id}
+								title={vote.title}
+								content={vote.shortDesc || ''}
+								createdAt={vote.createdAt}
+								endDate={vote.endDate}
+								pollId={vote._id}
+								pollSlug={vote.slug}
+								totalVote={vote.totalVote}
+								totalComment={vote.totalComment}
+								user={{
+									name: vote.owner?.name || '',
+									avt: vote.owner?.avt || '',
+								}}
+								tags={vote.tags}
+							/>
+						))}
+					</div>
+					<Pagination
+						pageCount={totalPage}
+						initialPage={page - 1}
+						onPageChange={handlePageChange}
 					/>
-				))}
-			</div>
-
-			<Pagination
-				pageCount={totalPage}
-				initialPage={page - 1}
-				onPageChange={handlePageChange}
-			/>
+				</>
+			) : (
+				<p className='mt-5 text-center text-lg md:text-xl'>
+					{discoverLang.pollNotfound}
+				</p>
+			)}
 		</div>
 	);
 };
@@ -172,6 +216,7 @@ export const getServerSideProps: GetServerSideProps<{
 	const page = getPageQuery(query, QUERY_KEY.PAGE);
 	const pageSize = getPageQuery(query, QUERY_KEY.PAGE_SIZE);
 	const sort = query[QUERY_KEY.SORT] || '';
+	const filter = query[QUERY_KEY.FILTER] || VoteFilterOptions.ALL;
 
 	const apolloClient = initializeApollo();
 
@@ -181,6 +226,7 @@ export const getServerSideProps: GetServerSideProps<{
 			page,
 			pageSize,
 			sort,
+			filter,
 		},
 	});
 	const votes: DiscoverQuery = response.data;

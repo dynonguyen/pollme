@@ -1,3 +1,4 @@
+import { VoteFilterOptions } from '../../constants/enum';
 import { MAX, MIN } from '../../constants/validation';
 import { APP_NAME } from './../../constants/index';
 
@@ -188,7 +189,13 @@ export default {
 				{ title: 'Mới nhất', key: 'createdAt' },
 				{ title: 'Cũ nhất', key: '-createdAt' },
 			],
-			filterOptions: [],
+			filterOptions: [
+				{ title: 'Tất cả', key: VoteFilterOptions.ALL },
+				{ title: 'Chưa vote', key: VoteFilterOptions.UNVOTE },
+				{ title: 'Đang mở', key: VoteFilterOptions.ACTIVE },
+				{ title: 'Đã đóng', key: VoteFilterOptions.CLOSED },
+			],
+			pollNotfound: 'Không tìm thấy khảo sát nào phù hợp',
 		},
 	},
 	pageSEO: {
@@ -215,5 +222,7 @@ export default {
 	},
 	others: {
 		loginOAuthBreak: 'Hoặc tiếp tục với',
+		poll: 'Khảo sát',
+		closed: 'Đã đóng',
 	},
 };

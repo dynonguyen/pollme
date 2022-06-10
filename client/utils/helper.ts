@@ -17,3 +17,11 @@ export const getPageQuery = (
 	}
 	return pageOrPageSize;
 };
+
+export const isPollClosed = (endDate?: string | Date) => {
+	if (!endDate) return false;
+	const date = new Date(endDate);
+	if (isNaN(date.getTime())) return false;
+	if (date.getTime() > Date.now()) return false;
+	return true;
+};

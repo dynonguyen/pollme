@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { DEFAULT } from '../constants/default';
+import useLanguage from '../hooks/useLanguage';
 import { dateFormat } from '../utils/format';
+import { isPollClosed } from '../utils/helper';
 
 interface PollSummaryProps {
 	pollId: string;
@@ -12,6 +14,7 @@ interface PollSummaryProps {
 		name: string;
 	};
 	createdAt: string | Date;
+	endDate?: string | Date;
 	tags: { slug: string; name: string }[];
 	totalComment: number;
 	totalVote: number;
@@ -27,17 +30,27 @@ export default function PollSummary(props: PollSummaryProps): JSX.Element {
 		totalComment,
 		totalVote,
 		createdAt,
+		endDate,
 		user,
 	} = props;
 
 	const userAvt = user.avt || DEFAULT.USER_AVT;
+	const isClosed = isPollClosed(endDate);
+	const lang = useLanguage();
 
 	return (
 		<div className='poll-summary__bg flex flex-col gap-2'>
 			<div>
 				<h3 className='poll-summary__title'>
 					<Link href={`/poll/${pollId}/${pollSlug}`}>
-						<a>{title}</a>
+						<a>
+							{title}
+							{isClosed && (
+								<span className='ml-2 text-red-700 dark:text-red-400'>
+									{`[${lang.others.closed}]`}
+								</span>
+							)}
+						</a>
 					</Link>
 				</h3>
 				<p className='line-clamp-2 my-1 text-gray-600 dark:text-gray-400'>
@@ -53,7 +66,7 @@ export default function PollSummary(props: PollSummaryProps): JSX.Element {
 						</li>
 					))}
 				</ul>
-				<div className='flex items-center justify-between gap-2'>
+				<div className='flex items-center justify-between gap-2 flex-wrap'>
 					<div className='flex justify-end items-center gap-1 md:gap-2 xl:col-span-2'>
 						<img
 							src={userAvt}
@@ -69,7 +82,7 @@ export default function PollSummary(props: PollSummaryProps): JSX.Element {
 							{dateFormat(createdAt, false)}
 						</span>
 					</div>
-					<div className='font-medium text-gray-500 dark:text-gray-400 text-base md:text-lg text-right'>
+					<div className='font-medium text-gray-500 dark:text-gray-400 text-base md:text-md text-right'>
 						<span className='mr-3'>{totalComment} Comments</span>
 						<span>{totalVote} Votes</span>
 					</div>

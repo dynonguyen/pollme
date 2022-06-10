@@ -4,11 +4,13 @@ import UserModel from '../models/user.model';
 import VoteModel from '../models/vote.model';
 import User from '../types/entities/User';
 import Vote from '../types/entities/Vote';
+import { VotePaginationArg } from '../types/input/VoteArg';
 import { VotePaginatedResponse } from '../types/response/VoteResponse';
 import mongoosePaginate from '../utils/mongoose-paginate';
 import { DEFAULT } from './../constants/default';
+import { VoteFilterOptions } from './../constants/enum';
 import { SUCCESS_CODE } from './../constants/status';
-import { PaginationArgs } from './../types/input/PaginationArg';
+import { voteFilterToQuery } from './../utils/helper';
 
 @Resolver(_of => Vote)
 export class VoteResolver {
@@ -29,15 +31,22 @@ export class VoteResolver {
 
 	@Query(_return => VotePaginatedResponse, { nullable: true })
 	async publicVotes(
-		@Args() { page = 1, pageSize = DEFAULT.PAGE_SIZE, sort }: PaginationArgs,
+		@Args()
+		{
+			page = 1,
+			pageSize = DEFAULT.PAGE_SIZE,
+			sort,
+			filter = VoteFilterOptions.ALL,
+		}: VotePaginationArg,
 	): Promise<VotePaginatedResponse> {
 		try {
 			if (page < 1) page = 1;
 			if (pageSize < 1) pageSize = DEFAULT.PAGE_SIZE;
+			const filterQuery = voteFilterToQuery(filter);
 
 			const votes = await mongoosePaginate(
 				VoteModel,
-				{ isPrivate: false },
+				{ isPrivate: false, ...filterQuery },
 				{ page, pageSize },
 				{ sort },
 			);
@@ -45,6 +54,7 @@ export class VoteResolver {
 			return {
 				code: SUCCESS_CODE.OK,
 				sort,
+				filter,
 				...votes,
 			};
 		} catch (error) {
@@ -54,6 +64,7 @@ export class VoteResolver {
 				docs: [],
 				sort,
 				page,
+				filter,
 				pageSize,
 				total: 0,
 			};

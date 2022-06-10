@@ -8,4 +8,5 @@ export const QUERY_KEY = {
 	PAGE: 'page',
 	PAGE_SIZE: 'pageSize',
 	SORT: 'sort',
+	FILTER: 'filter',
 };

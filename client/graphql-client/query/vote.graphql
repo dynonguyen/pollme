@@ -1,15 +1,17 @@
-query Discover($page: Int, $pageSize: Int, $sort: String) {
-	publicVotes(page: $page, pageSize: $pageSize, sort: $sort) {
+query Discover($page: Int, $pageSize: Int, $sort: String, $filter: String) {
+	publicVotes(page: $page, pageSize: $pageSize, sort: $sort, filter: $filter) {
 		code
 		page
 		pageSize
 		total
 		sort
+		filter
 		docs {
 			_id
 			title
 			shortDesc
 			createdAt
+			endDate
 			slug
 			tags {
 				name

@@ -6,4 +6,7 @@ import Vote from '../entities/Vote';
 export class VotePaginatedResponse extends PaginatedResponse<Vote>(Vote) {
 	@Field(_type => String, { nullable: true })
 	sort?: string;
+
+	@Field(_type => String, { nullable: true })
+	filter?: string;
 }
