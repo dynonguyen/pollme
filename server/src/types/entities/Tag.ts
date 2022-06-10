@@ -6,17 +6,17 @@ class Tag {
 	@Field(_type => ID)
 	_id: MongoID;
 
-	@Field()
+	@Field(_type => String)
 	name: string;
 
-	@Field()
+	@Field(_type => String)
 	desc: string;
 
-	@Field()
+	@Field(_type => String)
 	slug: string;
 
-	@Field()
-	totalPoll: number;
+	@Field(_type => Number)
+	totalVote: number;
 }
 
 export default Tag;

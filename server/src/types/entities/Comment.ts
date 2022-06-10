@@ -3,13 +3,13 @@ import { MongoID } from '../commons';
 
 @ObjectType()
 export class CommentReply {
-	@Field()
+	@Field(_type => String)
 	username: string;
 
-	@Field()
+	@Field(_type => String)
 	content: string;
 
-	@Field()
+	@Field(_type => Date)
 	createdAt: Date;
 }
 
@@ -18,10 +18,10 @@ class Comment {
 	@Field(_type => ID)
 	_id: MongoID;
 
-	@Field()
+	@Field(_type => String)
 	content: string;
 
-	@Field()
+	@Field(_type => Date)
 	createdAt: Date;
 
 	@Field(_type => [CommentReply])

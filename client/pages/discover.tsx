@@ -145,7 +145,7 @@ const Discover: NextPage<
 					<PollSummary
 						key={vote._id}
 						title={vote.title}
-						content={vote.desc}
+						content={vote.shortDesc || ''}
 						createdAt={vote.createdAt}
 						pollId={vote._id}
 						pollSlug={vote.slug}

@@ -1,17 +1,17 @@
-import { Field, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from 'type-graphql';
 import { QueryResponse } from '../core/QueryResponse';
 
 @ObjectType({ implements: QueryResponse })
 export class CountingAggregation extends QueryResponse {
-	@Field()
+	@Field(_type => Int)
 	poll: number;
 
-	@Field()
+	@Field(_type => Int)
 	user: number;
 
-	@Field()
+	@Field(_type => Int)
 	tag: number;
 
-	@Field()
+	@Field(_type => Int)
 	comment: number;
 }

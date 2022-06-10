@@ -1,4 +1,5 @@
 import { Args, FieldResolver, Query, Resolver, Root } from 'type-graphql';
+import { MAX } from '../constants/validation';
 import UserModel from '../models/user.model';
 import VoteModel from '../models/vote.model';
 import User from '../types/entities/User';
@@ -13,8 +14,17 @@ import { PaginationArgs } from './../types/input/PaginationArg';
 export class VoteResolver {
 	@FieldResolver(_return => User, { nullable: true })
 	async owner(@Root() vote: Vote): Promise<User | null> {
-		if (vote._doc?.owner) return null;
-		return await UserModel.findById(vote._doc?.ownerId);
+		if (!vote._doc?.ownerId) return null;
+		return await UserModel.findById(vote._doc.ownerId);
+	}
+
+	@FieldResolver(_return => String, { nullable: true })
+	shortDesc(@Root() vote: Vote): string {
+		const desc = vote._doc?.desc || '';
+		if (desc && desc.length > MAX.VOTE_SHORT_DESC) {
+			return `${desc.slice(0, MAX.VOTE_SHORT_DESC)}...`;
+		}
+		return desc;
 	}
 
 	@Query(_return => VotePaginatedResponse, { nullable: true })

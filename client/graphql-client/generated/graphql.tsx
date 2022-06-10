@@ -20,11 +20,11 @@ export type Scalars = {
 export type CountingAggregation = QueryResponse & {
   __typename?: 'CountingAggregation';
   code: Scalars['Int'];
-  comment: Scalars['Float'];
+  comment: Scalars['Int'];
   message?: Maybe<Scalars['String']>;
-  poll: Scalars['Float'];
-  tag: Scalars['Float'];
-  user: Scalars['Float'];
+  poll: Scalars['Int'];
+  tag: Scalars['Int'];
+  user: Scalars['Int'];
 };
 
 export type LoginInput = {
@@ -141,6 +141,7 @@ export type Vote = {
   maxVote: Scalars['Int'];
   owner?: Maybe<User>;
   ownerId: Scalars['String'];
+  shortDesc?: Maybe<Scalars['String']>;
   slug: Scalars['String'];
   tags: Array<TagInVote>;
   title: Scalars['String'];
@@ -153,14 +154,14 @@ export type Vote = {
 export type VoteItem = {
   __typename?: 'VoteItem';
   desc: Scalars['String'];
-  id: Scalars['Float'];
+  id: Scalars['Int'];
   label: Scalars['String'];
   voteList: Array<VoteOfUser>;
 };
 
 export type VoteOfUser = {
   __typename?: 'VoteOfUser';
-  score: Scalars['Float'];
+  score: Scalars['Int'];
   userId: Scalars['String'];
 };
 
@@ -229,7 +230,7 @@ export type DiscoverQueryVariables = Exact<{
 }>;
 
 
-export type DiscoverQuery = { __typename?: 'Query', publicVotes?: { __typename?: 'VotePaginatedResponse', code: number, page: number, pageSize: number, total: number, sort?: string | null, docs: Array<{ __typename?: 'Vote', _id: string, title: string, desc: string, createdAt: any, slug: string, totalComment: number, totalVote: number, tags: Array<{ __typename?: 'TagInVote', name: string, slug: string }>, owner?: { __typename?: 'User', _id: string, avt?: string | null, name: string } | null }> } | null };
+export type DiscoverQuery = { __typename?: 'Query', publicVotes?: { __typename?: 'VotePaginatedResponse', code: number, page: number, pageSize: number, total: number, sort?: string | null, docs: Array<{ __typename?: 'Vote', _id: string, title: string, shortDesc?: string | null, createdAt: any, slug: string, totalComment: number, totalVote: number, tags: Array<{ __typename?: 'TagInVote', name: string, slug: string }>, owner?: { __typename?: 'User', _id: string, avt?: string | null, name: string } | null }> } | null };
 
 export const MutationStatusFragmentDoc = gql`
     fragment mutationStatus on MutationResponse {
@@ -506,7 +507,7 @@ export const DiscoverDocument = gql`
     docs {
       _id
       title
-      desc
+      shortDesc
       createdAt
       slug
       tags {

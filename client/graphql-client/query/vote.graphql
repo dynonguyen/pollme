@@ -8,7 +8,7 @@ query Discover($page: Int, $pageSize: Int, $sort: String) {
 		docs {
 			_id
 			title
-			desc
+			shortDesc
 			createdAt
 			slug
 			tags {

@@ -4,22 +4,22 @@ import User from './User';
 
 @ObjectType()
 class VoteOfUser {
-	@Field()
+	@Field(_type => String)
 	userId: string;
 
-	@Field()
+	@Field(_type => Int)
 	score?: number;
 }
 
 @ObjectType()
 export class VoteItem {
-	@Field()
+	@Field(_type => Int)
 	id: number;
 
-	@Field()
+	@Field(_type => String)
 	label: string;
 
-	@Field()
+	@Field(_type => String)
 	desc: string;
 
 	@Field(_type => [VoteOfUser])
@@ -28,10 +28,10 @@ export class VoteItem {
 
 @ObjectType()
 class TagInVote {
-	@Field()
+	@Field(_type => String)
 	name: string;
 
-	@Field()
+	@Field(_type => String)
 	slug: string;
 }
 
@@ -52,7 +52,7 @@ class Vote {
 	@Field(_type => Int)
 	type: number;
 
-	@Field()
+	@Field(_type => String)
 	desc?: string;
 
 	@Field(_type => Boolean)
@@ -103,6 +103,9 @@ class Vote {
 	// Fields need to resolve
 	@Field(_type => User, { nullable: true })
 	owner?: User;
+
+	@Field(_type => String, { nullable: true })
+	shortDesc?: string;
 }
 
 export default Vote;

@@ -17,7 +17,7 @@ const schema: Schema = new Schema({
 		type: String,
 		required: true,
 	},
-	totalPoll: {
+	totalVote: {
 		type: Number,
 		required: true,
 		default: 0,

@@ -6,10 +6,10 @@ class User {
 	@Field(_type => ID)
 	_id: MongoID;
 
-	@Field()
+	@Field(_type => String)
 	name: string;
 
-	@Field()
+	@Field(_type => String)
 	email: string;
 
 	@Field({ nullable: true })
