@@ -8,4 +8,5 @@ export const DEFAULT = {
 	VOTE_MAX_SCORE: 10,
 	PAGE_SIZE: 10,
 	VOTE_SORT_FIELD: 'title',
+	TAG_SORT_FIELD: 'name',
 };

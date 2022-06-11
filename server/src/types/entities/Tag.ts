@@ -10,7 +10,10 @@ class Tag {
 	name: string;
 
 	@Field(_type => String)
-	desc: string;
+	viDesc: string;
+
+	@Field(_type => String)
+	enDesc: string;
 
 	@Field(_type => String)
 	slug: string;

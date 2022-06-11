@@ -8,7 +8,12 @@ const schema: Schema = new Schema({
 		required: true,
 		maxlength: MAX.TAG_NAME,
 	},
-	desc: {
+	viDesc: {
+		type: String,
+		required: false,
+		default: '',
+	},
+	enDesc: {
 		type: String,
 		required: false,
 		default: '',
