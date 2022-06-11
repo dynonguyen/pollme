@@ -211,6 +211,7 @@ export default {
 				{ title: 'By name (A-Z)', key: 'name' },
 				{ title: 'By name (Z-A)', key: '-name' },
 			],
+			pollNotfound: 'Not tags found',
 		},
 	},
 	pageSEO: {

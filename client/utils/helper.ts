@@ -25,3 +25,17 @@ export const isPollClosed = (endDate?: string | Date) => {
 	if (date.getTime() > Date.now()) return false;
 	return true;
 };
+
+export const debounce = (
+	timer: any,
+	delay: number = 250,
+	callbackFn: Function,
+): number => {
+	if (timer) clearTimeout(timer);
+
+	timer = setTimeout(() => {
+		callbackFn();
+	}, delay);
+
+	return timer;
+};

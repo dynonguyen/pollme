@@ -5,6 +5,7 @@ import {
 	NextPage,
 } from 'next';
 import { useRouter } from 'next/router';
+import { useRef } from 'react';
 import Pagination from '../components/core/Pagination';
 import TagCard from '../components/TagCard';
 import { DEFAULT } from '../constants/default';
@@ -18,9 +19,40 @@ import {
 } from '../graphql-client/generated/graphql';
 import useLanguage from '../hooks/useLanguage';
 import { addApolloState, initializeApollo } from '../lib/apolloClient';
-import { getPageQuery } from '../utils/helper';
+import { debounce, getPageQuery } from '../utils/helper';
 
 function TagSearch(): JSX.Element {
+	const searchInput = useRef('');
+	const router = useRouter();
+	const currentSearch = router.query[QUERY_KEY.SEARCH] || '';
+	const lang = useLanguage();
+	const tagsLang = lang.pages.tags;
+	const timer = useRef(0);
+
+	const handleSearch = (keyword: string) => {
+		if (keyword !== currentSearch) {
+			if (keyword === '') delete router.query[QUERY_KEY.SEARCH];
+			else router.query[QUERY_KEY.SEARCH] = keyword;
+			router.query[QUERY_KEY.PAGE] = '1';
+			router.pathname = tagsLang.link;
+			router.push(router);
+		}
+	};
+
+	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const value = e.target.value.trim();
+		searchInput.current = value;
+		timer.current = debounce(timer.current, 500, () => {
+			handleSearch(searchInput.current);
+		});
+	};
+
+	const handlePressEnter = (e: React.KeyboardEvent) => {
+		if (e.key === 'Enter') {
+			handleSearch(searchInput.current);
+		}
+	};
+
 	return (
 		<div className='max-w-xs relative'>
 			<SearchIcon className='w-5 h-5 absolute top-1/2 left-3 text-gray-400 dark:text-gray-500 font-normal -translate-y-1/2' />
@@ -28,6 +60,8 @@ function TagSearch(): JSX.Element {
 				type='text'
 				className='field pl-9'
 				placeholder='Filter by tag name'
+				onChange={handleInputChange}
+				onKeyDown={handlePressEnter}
 			/>
 		</div>
 	);
@@ -70,6 +104,7 @@ const Tags: NextPage<
 	InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ tags }) => {
 	const lang = useLanguage();
+	const tagsLang = lang.pages.tags;
 	const router = useRouter();
 	const { locale } = router;
 	const page = tags?.page || 1;
@@ -97,26 +132,33 @@ const Tags: NextPage<
 				<SortButtonGroup />
 			</div>
 
-			<ul className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5'>
-				{tags.docs?.map(tag => {
-					const descTag = tag as any;
-					return (
-						<TagCard
-							key={tag._id}
-							link={`/tag/${tag.slug}`}
-							nPolls={tag.totalVote}
-							title={tag.name}
-							desc={locale === 'vi' ? descTag.viDesc : descTag.enDesc}
-						/>
-					);
-				})}
-			</ul>
-
-			<Pagination
-				pageCount={totalPage}
-				initialPage={page - 1}
-				onPageChange={handlePageChange}
-			/>
+			{tags.docs.length > 0 ? (
+				<>
+					<ul className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5'>
+						{tags.docs?.map(tag => {
+							const descTag = tag as any;
+							return (
+								<TagCard
+									key={tag._id}
+									link={`/tag/${tag.slug}`}
+									nPolls={tag.totalVote}
+									title={tag.name}
+									desc={locale === 'vi' ? descTag.viDesc : descTag.enDesc}
+								/>
+							);
+						})}
+					</ul>
+					<Pagination
+						pageCount={totalPage}
+						initialPage={page - 1}
+						onPageChange={handlePageChange}
+					/>
+				</>
+			) : (
+				<p className='mt-6 text-center text-lg md:text-xl'>
+					{tagsLang.pollNotfound}
+				</p>
+			)}
 		</div>
 	);
 };

@@ -205,6 +205,7 @@ export default {
 				{ title: 'Theo tên (A-Z)', key: 'name' },
 				{ title: 'Theo tên (Z-A)', key: '-name' },
 			],
+			pollNotfound: 'Không tìm thấy tag nào phù hợp',
 		},
 	},
 	pageSEO: {
