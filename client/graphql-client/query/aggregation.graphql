@@ -1,7 +1,6 @@
 query HomeAnalysis {
 	count {
-		code
-		message
+		...queryStatus
 		poll
 		user
 		tag

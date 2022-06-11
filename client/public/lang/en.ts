@@ -203,6 +203,15 @@ export default {
 			],
 			pollNotfound: 'No polls found',
 		},
+		tags: {
+			link: '/tags',
+			sortOptions: [
+				{ title: 'By default', key: '' },
+				{ title: 'Popular', key: '-totalVote' },
+				{ title: 'By name (A-Z)', key: 'name' },
+				{ title: 'By name (Z-A)', key: '-name' },
+			],
+		},
 	},
 	pageSEO: {
 		home: {
@@ -224,6 +233,11 @@ export default {
 			pathname: '/discover',
 			title: 'Discover',
 			desc: `Let's explore the surveys that are most interested in ${APP_NAME}, maybe you are also interested in it.`,
+		},
+		tags: {
+			pathname: '/tags',
+			title: 'Tags',
+			desc: `A tag is a keyword or label that categorizes your question with other, similar questions. Using the right tags makes it easier for others to find and answer your question.`,
 		},
 	},
 	others: {

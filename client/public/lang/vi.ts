@@ -197,6 +197,15 @@ export default {
 			],
 			pollNotfound: 'Không tìm thấy khảo sát nào phù hợp',
 		},
+		tags: {
+			link: '/tags',
+			sortOptions: [
+				{ title: 'Mặc định', key: '' },
+				{ title: 'Phổ biến nhất', key: '-totalVote' },
+				{ title: 'Theo tên (A-Z)', key: 'name' },
+				{ title: 'Theo tên (Z-A)', key: '-name' },
+			],
+		},
 	},
 	pageSEO: {
 		home: {
@@ -218,6 +227,11 @@ export default {
 			pathname: '/discover',
 			title: 'Khám phá',
 			desc: `Cùng khám phá các bài khảo sát được nhiều người quan tâm trên ${APP_NAME} nhất nhé, biết đâu bạn cũng quan tâm đến nó.`,
+		},
+		tags: {
+			pathname: '/tags',
+			title: 'Tags',
+			desc: `Tag là một từ khóa hoặc nhãn phân loại khảo sát của bạn với các khảo sát tương tự khác. Sử dụng các thẻ phù hợp giúp người khác dễ dàng tìm và trả lời câu hỏi của bạn hơn.`,
 		},
 	},
 	others: {

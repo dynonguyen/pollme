@@ -1,6 +1,6 @@
 query Discover($page: Int, $pageSize: Int, $sort: String, $filter: String) {
 	publicVotes(page: $page, pageSize: $pageSize, sort: $sort, filter: $filter) {
-		code
+		...queryStatus
 		page
 		pageSize
 		total

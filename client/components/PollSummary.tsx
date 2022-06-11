@@ -46,7 +46,7 @@ export default function PollSummary(props: PollSummaryProps): JSX.Element {
 						<a>
 							{title}
 							{isClosed && (
-								<span className='ml-2 text-red-700 dark:text-red-400'>
+								<span className='ml-2 brightness-90'>
 									{`[${lang.others.closed}]`}
 								</span>
 							)}

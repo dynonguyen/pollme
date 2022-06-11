@@ -73,6 +73,7 @@ export type Query = {
   count: CountingAggregation;
   me?: Maybe<User>;
   publicVotes?: Maybe<VotePaginatedResponse>;
+  tags: TagPaginatedResponse;
   user?: Maybe<User>;
 };
 
@@ -81,6 +82,14 @@ export type QueryPublicVotesArgs = {
   filter?: InputMaybe<Scalars['String']>;
   page?: InputMaybe<Scalars['Int']>;
   pageSize?: InputMaybe<Scalars['Int']>;
+  sort?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryTagsArgs = {
+  page?: InputMaybe<Scalars['Int']>;
+  pageSize?: InputMaybe<Scalars['Int']>;
+  search?: InputMaybe<Scalars['String']>;
   sort?: InputMaybe<Scalars['String']>;
 };
 
@@ -100,10 +109,32 @@ export type RegisterInput = {
   password: Scalars['String'];
 };
 
+export type Tag = {
+  __typename?: 'Tag';
+  _id: Scalars['ID'];
+  enDesc: Scalars['String'];
+  name: Scalars['String'];
+  slug: Scalars['String'];
+  totalVote: Scalars['Float'];
+  viDesc: Scalars['String'];
+};
+
 export type TagInVote = {
   __typename?: 'TagInVote';
   name: Scalars['String'];
   slug: Scalars['String'];
+};
+
+export type TagPaginatedResponse = QueryResponse & {
+  __typename?: 'TagPaginatedResponse';
+  code: Scalars['Int'];
+  docs: Array<Tag>;
+  message?: Maybe<Scalars['String']>;
+  page: Scalars['Int'];
+  pageSize: Scalars['Int'];
+  search?: Maybe<Scalars['String']>;
+  sort?: Maybe<Scalars['String']>;
+  total: Scalars['Int'];
 };
 
 export type User = {
@@ -180,6 +211,14 @@ export type VotePaginatedResponse = QueryResponse & {
 
 export type MutationStatusFragment = { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null };
 
+type QueryStatus_CountingAggregation_Fragment = { __typename?: 'CountingAggregation', code: number, message?: string | null };
+
+type QueryStatus_TagPaginatedResponse_Fragment = { __typename?: 'TagPaginatedResponse', code: number, message?: string | null };
+
+type QueryStatus_VotePaginatedResponse_Fragment = { __typename?: 'VotePaginatedResponse', code: number, message?: string | null };
+
+export type QueryStatusFragment = QueryStatus_CountingAggregation_Fragment | QueryStatus_TagPaginatedResponse_Fragment | QueryStatus_VotePaginatedResponse_Fragment;
+
 export type UserInfoFragment = { __typename?: 'User', _id: string, email: string, name: string, avt?: string | null };
 
 export type RegisterMutationVariables = Exact<{
@@ -211,7 +250,27 @@ export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
 export type HomeAnalysisQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type HomeAnalysisQuery = { __typename?: 'Query', count: { __typename?: 'CountingAggregation', code: number, message?: string | null, poll: number, user: number, tag: number, comment: number } };
+export type HomeAnalysisQuery = { __typename?: 'Query', count: { __typename?: 'CountingAggregation', poll: number, user: number, tag: number, comment: number, code: number, message?: string | null } };
+
+export type ViTagsQueryVariables = Exact<{
+  page?: InputMaybe<Scalars['Int']>;
+  pageSize?: InputMaybe<Scalars['Int']>;
+  sort?: InputMaybe<Scalars['String']>;
+  search?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type ViTagsQuery = { __typename?: 'Query', tags: { __typename?: 'TagPaginatedResponse', page: number, pageSize: number, total: number, sort?: string | null, search?: string | null, code: number, message?: string | null, docs: Array<{ __typename?: 'Tag', _id: string, name: string, slug: string, totalVote: number, viDesc: string }> } };
+
+export type EnTagsQueryVariables = Exact<{
+  page?: InputMaybe<Scalars['Int']>;
+  pageSize?: InputMaybe<Scalars['Int']>;
+  sort?: InputMaybe<Scalars['String']>;
+  search?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type EnTagsQuery = { __typename?: 'Query', tags: { __typename?: 'TagPaginatedResponse', page: number, pageSize: number, total: number, sort?: string | null, search?: string | null, code: number, message?: string | null, docs: Array<{ __typename?: 'Tag', _id: string, name: string, slug: string, totalVote: number, enDesc: string }> } };
 
 export type GetCoreUserInfoQueryVariables = Exact<{
   userId: Scalars['String'];
@@ -233,12 +292,18 @@ export type DiscoverQueryVariables = Exact<{
 }>;
 
 
-export type DiscoverQuery = { __typename?: 'Query', publicVotes?: { __typename?: 'VotePaginatedResponse', code: number, page: number, pageSize: number, total: number, sort?: string | null, filter?: string | null, docs: Array<{ __typename?: 'Vote', _id: string, title: string, shortDesc?: string | null, createdAt: any, endDate?: any | null, slug: string, totalComment: number, totalVote: number, tags: Array<{ __typename?: 'TagInVote', name: string, slug: string }>, owner?: { __typename?: 'User', _id: string, avt?: string | null, name: string } | null }> } | null };
+export type DiscoverQuery = { __typename?: 'Query', publicVotes?: { __typename?: 'VotePaginatedResponse', page: number, pageSize: number, total: number, sort?: string | null, filter?: string | null, code: number, message?: string | null, docs: Array<{ __typename?: 'Vote', _id: string, title: string, shortDesc?: string | null, createdAt: any, endDate?: any | null, slug: string, totalComment: number, totalVote: number, tags: Array<{ __typename?: 'TagInVote', name: string, slug: string }>, owner?: { __typename?: 'User', _id: string, avt?: string | null, name: string } | null }> } | null };
 
 export const MutationStatusFragmentDoc = gql`
     fragment mutationStatus on MutationResponse {
   code
   success
+  message
+}
+    `;
+export const QueryStatusFragmentDoc = gql`
+    fragment queryStatus on QueryResponse {
+  code
   message
 }
     `;
@@ -394,15 +459,14 @@ export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, L
 export const HomeAnalysisDocument = gql`
     query HomeAnalysis {
   count {
-    code
-    message
+    ...queryStatus
     poll
     user
     tag
     comment
   }
 }
-    `;
+    ${QueryStatusFragmentDoc}`;
 
 /**
  * __useHomeAnalysisQuery__
@@ -430,6 +494,106 @@ export function useHomeAnalysisLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type HomeAnalysisQueryHookResult = ReturnType<typeof useHomeAnalysisQuery>;
 export type HomeAnalysisLazyQueryHookResult = ReturnType<typeof useHomeAnalysisLazyQuery>;
 export type HomeAnalysisQueryResult = Apollo.QueryResult<HomeAnalysisQuery, HomeAnalysisQueryVariables>;
+export const ViTagsDocument = gql`
+    query ViTags($page: Int, $pageSize: Int, $sort: String, $search: String) {
+  tags(page: $page, pageSize: $pageSize, sort: $sort, search: $search) {
+    ...queryStatus
+    page
+    pageSize
+    total
+    sort
+    search
+    docs {
+      _id
+      name
+      slug
+      totalVote
+      viDesc
+    }
+  }
+}
+    ${QueryStatusFragmentDoc}`;
+
+/**
+ * __useViTagsQuery__
+ *
+ * To run a query within a React component, call `useViTagsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useViTagsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useViTagsQuery({
+ *   variables: {
+ *      page: // value for 'page'
+ *      pageSize: // value for 'pageSize'
+ *      sort: // value for 'sort'
+ *      search: // value for 'search'
+ *   },
+ * });
+ */
+export function useViTagsQuery(baseOptions?: Apollo.QueryHookOptions<ViTagsQuery, ViTagsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ViTagsQuery, ViTagsQueryVariables>(ViTagsDocument, options);
+      }
+export function useViTagsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ViTagsQuery, ViTagsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ViTagsQuery, ViTagsQueryVariables>(ViTagsDocument, options);
+        }
+export type ViTagsQueryHookResult = ReturnType<typeof useViTagsQuery>;
+export type ViTagsLazyQueryHookResult = ReturnType<typeof useViTagsLazyQuery>;
+export type ViTagsQueryResult = Apollo.QueryResult<ViTagsQuery, ViTagsQueryVariables>;
+export const EnTagsDocument = gql`
+    query EnTags($page: Int, $pageSize: Int, $sort: String, $search: String) {
+  tags(page: $page, pageSize: $pageSize, sort: $sort, search: $search) {
+    ...queryStatus
+    page
+    pageSize
+    total
+    sort
+    search
+    docs {
+      _id
+      name
+      slug
+      totalVote
+      enDesc
+    }
+  }
+}
+    ${QueryStatusFragmentDoc}`;
+
+/**
+ * __useEnTagsQuery__
+ *
+ * To run a query within a React component, call `useEnTagsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useEnTagsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useEnTagsQuery({
+ *   variables: {
+ *      page: // value for 'page'
+ *      pageSize: // value for 'pageSize'
+ *      sort: // value for 'sort'
+ *      search: // value for 'search'
+ *   },
+ * });
+ */
+export function useEnTagsQuery(baseOptions?: Apollo.QueryHookOptions<EnTagsQuery, EnTagsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<EnTagsQuery, EnTagsQueryVariables>(EnTagsDocument, options);
+      }
+export function useEnTagsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<EnTagsQuery, EnTagsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<EnTagsQuery, EnTagsQueryVariables>(EnTagsDocument, options);
+        }
+export type EnTagsQueryHookResult = ReturnType<typeof useEnTagsQuery>;
+export type EnTagsLazyQueryHookResult = ReturnType<typeof useEnTagsLazyQuery>;
+export type EnTagsQueryResult = Apollo.QueryResult<EnTagsQuery, EnTagsQueryVariables>;
 export const GetCoreUserInfoDocument = gql`
     query GetCoreUserInfo($userId: String!) {
   user(userId: $userId) {
@@ -502,7 +666,7 @@ export type GetMeQueryResult = Apollo.QueryResult<GetMeQuery, GetMeQueryVariable
 export const DiscoverDocument = gql`
     query Discover($page: Int, $pageSize: Int, $sort: String, $filter: String) {
   publicVotes(page: $page, pageSize: $pageSize, sort: $sort, filter: $filter) {
-    code
+    ...queryStatus
     page
     pageSize
     total
@@ -529,7 +693,7 @@ export const DiscoverDocument = gql`
     }
   }
 }
-    `;
+    ${QueryStatusFragmentDoc}`;
 
 /**
  * __useDiscoverQuery__

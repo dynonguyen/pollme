@@ -1,0 +1,4 @@
+fragment queryStatus on QueryResponse {
+	code
+	message
+}

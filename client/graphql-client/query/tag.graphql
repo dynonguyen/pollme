@@ -1,0 +1,35 @@
+query ViTags($page: Int, $pageSize: Int, $sort: String, $search: String) {
+	tags(page: $page, pageSize: $pageSize, sort: $sort, search: $search) {
+		...queryStatus
+		page
+		pageSize
+		total
+		sort
+		search
+		docs {
+			_id
+			name
+			slug
+			totalVote
+			viDesc
+		}
+	}
+}
+
+query EnTags($page: Int, $pageSize: Int, $sort: String, $search: String) {
+	tags(page: $page, pageSize: $pageSize, sort: $sort, search: $search) {
+		...queryStatus
+		page
+		pageSize
+		total
+		sort
+		search
+		docs {
+			_id
+			name
+			slug
+			totalVote
+			enDesc
+		}
+	}
+}

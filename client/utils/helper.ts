@@ -1,4 +1,3 @@
-import { DEFAULT } from '../constants/default';
 import { QUERY_KEY } from './../constants/key';
 
 export const getTheme = (): 'dark' | 'light' => {
@@ -10,10 +9,11 @@ export const getTheme = (): 'dark' | 'light' => {
 export const getPageQuery = (
 	query: any,
 	key: string = QUERY_KEY.PAGE,
+	defaultValue: number = 1,
 ): number => {
 	const pageOrPageSize = Number(query[key]);
 	if (!pageOrPageSize || isNaN(pageOrPageSize) || pageOrPageSize < 1) {
-		return key === QUERY_KEY.PAGE ? 1 : DEFAULT.PAGE_SIZE;
+		return defaultValue;
 	}
 	return pageOrPageSize;
 };

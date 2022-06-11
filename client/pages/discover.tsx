@@ -17,9 +17,10 @@ import { QUERY_KEY } from '../constants/key';
 import {
 	DiscoverDocument,
 	DiscoverQuery,
+	DiscoverQueryVariables,
 } from '../graphql-client/generated/graphql';
 import useLanguage from '../hooks/useLanguage';
-import { initializeApollo } from '../lib/apolloClient';
+import { addApolloState, initializeApollo } from '../lib/apolloClient';
 import { numberFormat } from '../utils/format';
 import { getPageQuery } from '../utils/helper';
 
@@ -76,7 +77,7 @@ function FilterButton(): JSX.Element {
 							>
 								{option.title}
 								{option.key === currentFilter && (
-									<CheckIcon className='w-5 text-green-700 dark:text-green-400' />
+									<CheckIcon className='w-5 success-text' />
 								)}
 							</li>
 						))}
@@ -119,7 +120,7 @@ function SortButton(): JSX.Element {
 						>
 							{option.title}
 							{option.key === currentSort && (
-								<CheckIcon className='w-5 text-green-700 dark:text-green-400' />
+								<CheckIcon className='w-5 success-text' />
 							)}
 						</li>
 					))}
@@ -213,14 +214,17 @@ const Discover: NextPage<
 export const getServerSideProps: GetServerSideProps<{
 	votes: DiscoverQuery;
 }> = async ({ query }) => {
-	const page = getPageQuery(query, QUERY_KEY.PAGE);
-	const pageSize = getPageQuery(query, QUERY_KEY.PAGE_SIZE);
-	const sort = query[QUERY_KEY.SORT] || '';
-	const filter = query[QUERY_KEY.FILTER] || VoteFilterOptions.ALL;
+	const page = getPageQuery(query, QUERY_KEY.PAGE, 1);
+	const pageSize = getPageQuery(query, QUERY_KEY.PAGE_SIZE, 10);
+	const sort = (query[QUERY_KEY.SORT] as string) || '';
+	const filter = (query[QUERY_KEY.FILTER] as string) || VoteFilterOptions.ALL;
 
 	const apolloClient = initializeApollo();
 
-	const response = await apolloClient.query({
+	const response = await apolloClient.query<
+		DiscoverQuery,
+		DiscoverQueryVariables
+	>({
 		query: DiscoverDocument,
 		variables: {
 			page,
@@ -230,6 +234,7 @@ export const getServerSideProps: GetServerSideProps<{
 		},
 	});
 	const votes: DiscoverQuery = response.data;
+	addApolloState(apolloClient, { props: {} });
 
 	return {
 		props: {

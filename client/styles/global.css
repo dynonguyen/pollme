@@ -76,6 +76,9 @@
 	.error-text {
 		@apply !text-red-600 dark:!text-red-400;
 	}
+	.success-text {
+		@apply text-green-700 dark:text-green-400;
+	}
 
 	.disabled {
 		@apply opacity-75 cursor-no-drop pointer-events-none;

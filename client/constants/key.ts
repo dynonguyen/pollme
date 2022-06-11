@@ -9,4 +9,5 @@ export const QUERY_KEY = {
 	PAGE_SIZE: 'pageSize',
 	SORT: 'sort',
 	FILTER: 'filter',
+	SEARCH: 'search',
 };
