@@ -234,6 +234,11 @@ export default {
 			title: 'Tags',
 			desc: `Tag là một từ khóa hoặc nhãn phân loại khảo sát của bạn với các khảo sát tương tự khác. Sử dụng các thẻ phù hợp giúp người khác dễ dàng tìm và trả lời câu hỏi của bạn hơn.`,
 		},
+		newVote: {
+			pathname: '/new-poll',
+			title: 'Tạo khảo sát',
+			desc: `Chỉ với vài bước đơn giản, bạn đã có thể tạo ngay một bài khảo sát trên ${APP_NAME}. Có rất nhiều tuỳ chỉnh cho bài khảo sát, hãy trải nghiệm ngay nhé`,
+		},
 	},
 	others: {
 		loginOAuthBreak: 'Hoặc tiếp tục với',

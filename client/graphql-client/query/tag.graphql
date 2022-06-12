@@ -33,3 +33,12 @@ query EnTags($page: Int, $pageSize: Int, $sort: String, $search: String) {
 		}
 	}
 }
+
+query OnlyTagName($page: Int, $pageSize: Int, $sort: String, $search: String) {
+	tags(page: $page, pageSize: $pageSize, sort: $sort, search: $search) {
+		code
+		docs {
+			name
+		}
+	}
+}

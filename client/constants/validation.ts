@@ -2,6 +2,11 @@ export const MAX = {
 	EMAIL_LEN: 150,
 	USERNAME_LEN: 50,
 	PASSWORD_LEN: 50,
+
+	VOTE_TITLE: 150,
+	VOTE_DESC: 250,
+	VOTE_TAG: 5,
+	MAX_ANSWER_OPTIONS: 10,
 };
 
 export const MIN = {

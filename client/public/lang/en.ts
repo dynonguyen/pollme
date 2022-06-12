@@ -17,8 +17,8 @@ export default {
 			label: 'Tags',
 		},
 		{
-			link: '/new-vote',
-			label: 'New vote',
+			link: '/new-poll',
+			label: 'New poll',
 		},
 		{
 			link: '/about-me',
@@ -239,6 +239,11 @@ export default {
 			pathname: '/tags',
 			title: 'Tags',
 			desc: `A tag is a keyword or label that categorizes your question with other, similar questions. Using the right tags makes it easier for others to find and answer your question.`,
+		},
+		newVote: {
+			pathname: '/new-poll',
+			title: 'Tạo khảo sát',
+			desc: `With just a few simple steps, you can immediately create a survey on ${APP_NAME}. There's a lot of customization for the survey, let's experience it now.`,
 		},
 	},
 	others: {

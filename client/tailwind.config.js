@@ -39,7 +39,7 @@ module.exports = {
 				d_primary: '#50b8d5',
 				d_secondary: '#aed7eb',
 				d_accent: '#ee9f46',
-				d_text_title: '#e9e9e9',
+				d_text_title: '#d9d9d9',
 				d_text_primary: '#c1c1c1',
 			},
 

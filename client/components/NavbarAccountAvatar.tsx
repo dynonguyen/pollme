@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import React from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { DEFAULT } from '../constants/default';
 import {
@@ -23,7 +22,7 @@ export default function NavbarAccountAvatar(): JSX.Element {
 		const response = await logoutMutation();
 		if (response.data) {
 			toast.show({ message: lang.messages.logoutSuccess, type: 'success' });
-			setUserInfoAtom(userAtomDefault);
+			setUserInfoAtom({ ...userAtomDefault, loading: false });
 		}
 	};
 

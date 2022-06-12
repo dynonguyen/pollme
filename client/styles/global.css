@@ -129,6 +129,14 @@
 	.pagination__active {
 		@apply !bg-accent/25 dark:!bg-d_accent/25 !text-accent dark:!text-d_accent font-semibold disabled;
 	}
+
+	.transform-center {
+		@apply absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2;
+	}
+
+	.new-poll-label {
+		@apply text-gray-600 dark:text-gray-400 text-base;
+	}
 }
 
 @layer utilities {

@@ -112,6 +112,7 @@ export type RegisterInput = {
 export type Tag = {
   __typename?: 'Tag';
   _id: Scalars['ID'];
+  createdAt: Scalars['DateTime'];
   enDesc: Scalars['String'];
   name: Scalars['String'];
   slug: Scalars['String'];
@@ -149,6 +150,13 @@ export type User = {
   votes: Array<Scalars['String']>;
 };
 
+export type UserInfoInVote = {
+  __typename?: 'UserInfoInVote';
+  ip?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  userId?: Maybe<Scalars['String']>;
+};
+
 export type UserMutationResponse = MutationResponse & {
   __typename?: 'UserMutationResponse';
   code: Scalars['Int'];
@@ -161,14 +169,12 @@ export type Vote = {
   __typename?: 'Vote';
   _id: Scalars['ID'];
   allowAddItem: Scalars['Boolean'];
-  allowChooseMultiple: Scalars['Boolean'];
-  allowMark: Scalars['Boolean'];
+  answers: Array<VoteAnswer>;
   createdAt: Scalars['DateTime'];
   desc: Scalars['String'];
   endDate?: Maybe<Scalars['DateTime']>;
   isLoginRequired: Scalars['Boolean'];
   isPrivate: Scalars['Boolean'];
-  items: Array<VoteItem>;
   maxScore?: Maybe<Scalars['Int']>;
   maxVote: Scalars['Int'];
   owner?: Maybe<User>;
@@ -183,8 +189,8 @@ export type Vote = {
   updatedAt: Scalars['DateTime'];
 };
 
-export type VoteItem = {
-  __typename?: 'VoteItem';
+export type VoteAnswer = {
+  __typename?: 'VoteAnswer';
   desc: Scalars['String'];
   id: Scalars['Int'];
   label: Scalars['String'];
@@ -193,8 +199,9 @@ export type VoteItem = {
 
 export type VoteOfUser = {
   __typename?: 'VoteOfUser';
-  score: Scalars['Int'];
-  userId: Scalars['String'];
+  rank?: Maybe<Scalars['Int']>;
+  score?: Maybe<Scalars['Int']>;
+  userInfo: UserInfoInVote;
 };
 
 export type VotePaginatedResponse = QueryResponse & {
@@ -271,6 +278,16 @@ export type EnTagsQueryVariables = Exact<{
 
 
 export type EnTagsQuery = { __typename?: 'Query', tags: { __typename?: 'TagPaginatedResponse', page: number, pageSize: number, total: number, sort?: string | null, search?: string | null, code: number, message?: string | null, docs: Array<{ __typename?: 'Tag', _id: string, name: string, slug: string, totalVote: number, enDesc: string }> } };
+
+export type OnlyTagNameQueryVariables = Exact<{
+  page?: InputMaybe<Scalars['Int']>;
+  pageSize?: InputMaybe<Scalars['Int']>;
+  sort?: InputMaybe<Scalars['String']>;
+  search?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type OnlyTagNameQuery = { __typename?: 'Query', tags: { __typename?: 'TagPaginatedResponse', code: number, docs: Array<{ __typename?: 'Tag', name: string }> } };
 
 export type GetCoreUserInfoQueryVariables = Exact<{
   userId: Scalars['String'];
@@ -594,6 +611,47 @@ export function useEnTagsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<EnT
 export type EnTagsQueryHookResult = ReturnType<typeof useEnTagsQuery>;
 export type EnTagsLazyQueryHookResult = ReturnType<typeof useEnTagsLazyQuery>;
 export type EnTagsQueryResult = Apollo.QueryResult<EnTagsQuery, EnTagsQueryVariables>;
+export const OnlyTagNameDocument = gql`
+    query OnlyTagName($page: Int, $pageSize: Int, $sort: String, $search: String) {
+  tags(page: $page, pageSize: $pageSize, sort: $sort, search: $search) {
+    code
+    docs {
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useOnlyTagNameQuery__
+ *
+ * To run a query within a React component, call `useOnlyTagNameQuery` and pass it any options that fit your needs.
+ * When your component renders, `useOnlyTagNameQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOnlyTagNameQuery({
+ *   variables: {
+ *      page: // value for 'page'
+ *      pageSize: // value for 'pageSize'
+ *      sort: // value for 'sort'
+ *      search: // value for 'search'
+ *   },
+ * });
+ */
+export function useOnlyTagNameQuery(baseOptions?: Apollo.QueryHookOptions<OnlyTagNameQuery, OnlyTagNameQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<OnlyTagNameQuery, OnlyTagNameQueryVariables>(OnlyTagNameDocument, options);
+      }
+export function useOnlyTagNameLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<OnlyTagNameQuery, OnlyTagNameQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<OnlyTagNameQuery, OnlyTagNameQueryVariables>(OnlyTagNameDocument, options);
+        }
+export type OnlyTagNameQueryHookResult = ReturnType<typeof useOnlyTagNameQuery>;
+export type OnlyTagNameLazyQueryHookResult = ReturnType<typeof useOnlyTagNameLazyQuery>;
+export type OnlyTagNameQueryResult = Apollo.QueryResult<OnlyTagNameQuery, OnlyTagNameQueryVariables>;
 export const GetCoreUserInfoDocument = gql`
     query GetCoreUserInfo($userId: String!) {
   user(userId: $userId) {

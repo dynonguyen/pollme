@@ -1,15 +1,20 @@
 import { atom } from 'recoil';
 import { UserInfoFragment } from './../../graphql-client/generated/graphql';
 
-export const userAtomDefault: UserInfoFragment = {
+interface UserAtom extends UserInfoFragment {
+	loading?: boolean;
+}
+
+export const userAtomDefault: UserAtom = {
 	_id: '',
 	name: '',
 	email: '',
 	avt: '',
+	loading: true,
 };
 
-const userAtom = atom<UserInfoFragment>({
-	key: 'userState',
+const userAtom = atom<UserAtom>({
+	key: 'user-state',
 	default: userAtomDefault,
 });
 
