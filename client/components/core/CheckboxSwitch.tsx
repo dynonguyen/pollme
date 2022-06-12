@@ -3,15 +3,24 @@ import { useState } from 'react';
 interface CheckboxSwitchProps {
 	rootClassName?: string;
 	label?: string | React.ReactNode;
+	labelClassName?: string;
 	inputProps?: React.HTMLProps<HTMLInputElement>;
 	size?: 'small' | 'medium';
+	defaultChecked?: boolean;
 }
 
 export default function CheckboxSwitch(
 	props: CheckboxSwitchProps,
 ): JSX.Element {
-	const { inputProps = {}, label, rootClassName = '', size = 'small' } = props;
-	const [checked, setChecked] = useState(false);
+	const {
+		inputProps = {},
+		label,
+		rootClassName = '',
+		size = 'small',
+		defaultChecked = false,
+		labelClassName,
+	} = props;
+	const [checked, setChecked] = useState(defaultChecked);
 
 	const onChecked = () => {
 		setChecked(!checked);
@@ -28,10 +37,15 @@ export default function CheckboxSwitch(
 		<div
 			className={`flex flex-wrap gap-2 items-center justify-between ${rootClassName}`}
 		>
-			{label && <label onClick={onChecked}>{label}</label>}
+			{label && (
+				<label className={labelClassName} onClick={onChecked}>
+					{label}
+				</label>
+			)}
 			<input
 				type='checkbox'
 				className='hidden'
+				onChange={() => {}}
 				checked={checked}
 				{...inputProps}
 			/>
