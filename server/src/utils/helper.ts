@@ -53,6 +53,17 @@ export const stringToSlug = (str: string): string => {
 	return str;
 };
 
+export const randomString = (len: number = 30, charSet?: string): string => {
+	charSet =
+		charSet || 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	let randomString = '';
+	for (let i = 0; i < len; i++) {
+		let randomPoz = Math.floor(Math.random() * charSet.length);
+		randomString += charSet.substring(randomPoz, randomPoz + 1);
+	}
+	return randomString;
+};
+
 export const increaseTagOrCreate = async (tag: string) => {
 	const existingTag = await TagModel.findOneAndUpdate(
 		{ name: tag },

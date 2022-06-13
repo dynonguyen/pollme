@@ -74,3 +74,14 @@ export const resizeImage = (
 		};
 	});
 };
+
+export const createShareUrl = (
+	isPrivate: boolean = true,
+	privateSlug: string = '',
+	publicSlug: string = '',
+): string => {
+	const { origin } = location;
+	if (isPrivate) return `${origin}/poll/p/${privateSlug}`;
+
+	return `${origin}/poll/${publicSlug}`;
+};

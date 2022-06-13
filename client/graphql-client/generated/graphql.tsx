@@ -18,8 +18,9 @@ export type Scalars = {
 };
 
 export type AnswerItem = {
-  id: Scalars['Int'];
+  id: Scalars['ID'];
   label: Scalars['String'];
+  photo?: InputMaybe<Scalars['String']>;
 };
 
 export type CountingAggregation = QueryResponse & {
@@ -214,6 +215,7 @@ export type Vote = {
   maxVote: Scalars['Int'];
   owner?: Maybe<User>;
   ownerId: Scalars['String'];
+  privateLink?: Maybe<Scalars['String']>;
   shortDesc?: Maybe<Scalars['String']>;
   slug: Scalars['String'];
   tags: Array<TagInVote>;
@@ -228,6 +230,7 @@ export type VoteAnswer = {
   __typename?: 'VoteAnswer';
   id: Scalars['Int'];
   label: Scalars['String'];
+  photo?: Maybe<Scalars['String']>;
   voteList: Array<VoteOfUser>;
 };
 
@@ -305,7 +308,7 @@ export type CreateVoteMutationVariables = Exact<{
 }>;
 
 
-export type CreateVoteMutation = { __typename?: 'Mutation', createVote: { __typename?: 'VoteMutationResponse', code: number, message?: string | null, vote?: { __typename?: 'Vote', _id: string } | null } };
+export type CreateVoteMutation = { __typename?: 'Mutation', createVote: { __typename?: 'VoteMutationResponse', code: number, message?: string | null, vote?: { __typename?: 'Vote', _id: string, slug: string, isPrivate: boolean, privateLink?: string | null } | null } };
 
 export type HomeAnalysisQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -533,6 +536,9 @@ export const CreateVoteDocument = gql`
     message
     vote {
       _id
+      slug
+      isPrivate
+      privateLink
     }
   }
 }

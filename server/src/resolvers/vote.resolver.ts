@@ -26,6 +26,7 @@ import { ERROR_CODE, SUCCESS_CODE } from './../constants/status';
 import { VoteMutationResponse } from './../types/response/VoteResponse';
 import {
 	increaseTagOrCreate,
+	randomString,
 	stringToSlug,
 	voteFilterToQuery,
 } from './../utils/helper';
@@ -95,7 +96,7 @@ export class VoteResolver {
 		@Arg('newVoteInput') voteInput: NewVoteInput,
 		@Ctx() { res }: ExpressContext,
 	): Promise<VoteMutationResponse> {
-		const { tags, answers, title, ...restInput } = voteInput;
+		const { tags, answers, title, isPrivate, ...restInput } = voteInput;
 
 		try {
 			const ownerId = res.locals.user._id;
@@ -111,6 +112,8 @@ export class VoteResolver {
 				})),
 				tags: tags.map(tag => ({ name: tag, slug: stringToSlug(tag) })),
 				createdAt: new Date(),
+				isPrivate,
+				privateLink: isPrivate ? randomString() : null,
 				...restInput,
 			});
 

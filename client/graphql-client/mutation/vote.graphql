@@ -4,6 +4,9 @@ mutation CreateVote($newVoteInput: NewVoteInput!) {
 		message
 		vote {
 			_id
+			slug
+			isPrivate
+			privateLink
 		}
 	}
 }

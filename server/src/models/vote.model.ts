@@ -100,6 +100,10 @@ const schema: Schema = new Schema({
 		required: true,
 		default: 0,
 	},
+	privateLink: {
+		type: String,
+		required: false,
+	},
 	endDate: Date,
 	createdAt: {
 		type: Date,

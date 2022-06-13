@@ -16,7 +16,7 @@ import useCheckUserLogin from '../hooks/useCheckUserLogin';
 import useLanguage from '../hooks/useLanguage';
 import useToast from '../hooks/useToast';
 import userAtom from '../recoil/atoms/user.atom';
-import { resizeImage } from '../utils/helper';
+import { createShareUrl, resizeImage } from '../utils/helper';
 import { uploadOptionPhoto } from '../utils/private-api-caller';
 import { newPollValidate } from '../utils/validation';
 const VOTE_DEFAULT = DEFAULT.VOTE;
@@ -305,7 +305,7 @@ const NewVote: NextPage = () => {
 	const lang = useLanguage();
 	const newPollLang = lang.pages.newPoll;
 	const [isCollectData, setIsCollectData] = useState(false);
-	const [isCreateSuccess, setIsCreateSuccess] = useState(true);
+	const [createdPollLink, setCreatedPollLink] = useState('');
 	const fields = useRef<NewPollFields>({
 		...defaultBasicSettings,
 		...defaultAdvanceSettings,
@@ -320,7 +320,7 @@ const NewVote: NextPage = () => {
 				variables: {
 					newVoteInput: {
 						answers: answers.map(answer => ({
-							id: answer.id,
+							id: answer.id.toString(),
 							label: answer.label,
 							photo: `${answer.id}.jpeg`,
 						})),
@@ -329,7 +329,9 @@ const NewVote: NextPage = () => {
 				},
 			});
 			if (response.data?.createVote.code === SUCCESS_CODE.CREATED) {
-				const pollId = response.data.createVote.vote?._id;
+				const newVote = response.data.createVote.vote;
+				const pollId = newVote?._id;
+
 				// Upload image to public folder
 				answers.forEach(answer => {
 					if (answer.photo) {
@@ -347,6 +349,13 @@ const NewVote: NextPage = () => {
 						});
 					}
 				});
+
+				const newPollUrl = createShareUrl(
+					newVote?.isPrivate,
+					newVote?.privateLink as string,
+					`${pollId}/${newVote?.slug}`,
+				);
+				setCreatedPollLink(newPollUrl);
 			} else {
 				toast.show({ message: lang.messages.createVoteFailed, type: 'error' });
 				setIsCollectData(false);
@@ -370,14 +379,10 @@ const NewVote: NextPage = () => {
 		}
 	}, [isCollectData]);
 
-	const handleCreatePoll = () => {
-		setIsCollectData(true);
-	};
-
 	return (
 		<>
-			{isCreateSuccess ? (
-				<CreatePollSuccess />
+			{createdPollLink ? (
+				<CreatePollSuccess url={createdPollLink} />
 			) : (
 				<div className='container mb-5'>
 					<div className='py-5 md:py-0 lg:bg-[url("/images/create-poll-bg.svg")] lg:dark:bg-[url("/images/create-poll-bg-dark.svg")] bg-no-repeat bg-right-top lg:h-32'>
@@ -409,8 +414,10 @@ const NewVote: NextPage = () => {
 							/>
 							<div className='text-right mt-3'>
 								<button
-									className='btn-primary btn-lg w-full'
-									onClick={handleCreatePoll}
+									className={`${
+										isCollectData ? 'disabled' : ''
+									} btn-primary btn-lg w-full`}
+									onClick={() => setIsCollectData(true)}
 								>
 									{newPollLang.submitBtn}
 								</button>

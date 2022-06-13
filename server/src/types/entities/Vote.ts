@@ -121,6 +121,9 @@ class Vote {
 	@Field(_type => Date)
 	updatedAt?: Date;
 
+	@Field(_type => String, { nullable: true })
+	privateLink?: string;
+
 	// Mongoose fields for field resolver (can't access itself directly)
 	_doc?: Vote;
 
