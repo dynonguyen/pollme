@@ -133,7 +133,7 @@ export default function AnswerOptions({
 	const handleAddOption = () => {
 		if (answers.length < MAX.ANSWER_OPTIONS) {
 			const newOption = { id: Date.now(), label: '', photo: null };
-			answersRef.current = [...answers, newOption];
+			answersRef.current = [...answersRef.current, newOption];
 			setAnswers([...answers, newOption]);
 		}
 	};

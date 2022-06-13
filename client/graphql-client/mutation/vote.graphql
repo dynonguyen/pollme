@@ -1,0 +1,9 @@
+mutation CreateVote($newVoteInput: NewVoteInput!) {
+	createVote(newVoteInput: $newVoteInput) {
+		code
+		message
+		vote {
+			_id
+		}
+	}
+}

@@ -34,6 +34,9 @@ export class VoteAnswer {
 	@Field(_type => String)
 	label: string;
 
+	@Field(_type => String, { nullable: true })
+	photo: string;
+
 	@Field(_type => [VoteOfUser])
 	voteList: VoteOfUser[];
 }

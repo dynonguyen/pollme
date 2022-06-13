@@ -7,12 +7,16 @@ import CheckboxSwitch from '../components/core/CheckboxSwitch';
 import Select from '../components/core/Select';
 import TagInput from '../components/core/TagInput';
 import InfoTooltip from '../components/InfoTooltip';
-import { VOTE_TYPE } from '../constants';
+import { POLL_PHOTO_HEIGHT, POLL_PHOTO_WIDTH, VOTE_TYPE } from '../constants';
 import { DEFAULT } from '../constants/default';
+import { SUCCESS_CODE } from '../constants/status';
 import { MAX } from '../constants/validation';
+import { useCreateVoteMutation } from '../graphql-client/generated/graphql';
 import useLanguage from '../hooks/useLanguage';
 import useToast from '../hooks/useToast';
 import userAtom from '../recoil/atoms/user.atom';
+import { resizeImage } from '../utils/helper';
+import { uploadOptionPhoto } from '../utils/private-api-caller';
 import { newPollValidate } from '../utils/validation';
 const VOTE_DEFAULT = DEFAULT.VOTE;
 
@@ -305,8 +309,51 @@ const NewVote: NextPage = () => {
 		...defaultAdvanceSettings,
 	});
 	const toast = useToast();
+	const [createVoteMutation] = useCreateVoteMutation();
 
-	const createNewPoll = async () => {};
+	const createNewPoll = async () => {
+		const { answers, ...restInput } = fields.current;
+		try {
+			const response = await createVoteMutation({
+				variables: {
+					newVoteInput: {
+						answers: answers.map(answer => ({
+							id: answer.id,
+							label: answer.label,
+							photo: `${answer.id}.jpeg`,
+						})),
+						...restInput,
+					},
+				},
+			});
+			if (response.data?.createVote.code === SUCCESS_CODE.CREATED) {
+				const pollId = response.data.createVote.vote?._id;
+				// Upload image to public folder
+				answers.forEach(answer => {
+					if (answer.photo) {
+						resizeImage(
+							answer.photo as string,
+							POLL_PHOTO_WIDTH,
+							POLL_PHOTO_HEIGHT,
+						).then(resizedPhoto => {
+							uploadOptionPhoto(
+								resizedPhoto as string,
+								userInfo._id,
+								pollId!,
+								answer.id.toString(),
+							);
+						});
+					}
+				});
+			} else {
+				toast.show({ message: lang.messages.createVoteFailed, type: 'error' });
+				setIsCollectData(false);
+			}
+		} catch (error) {
+			toast.show({ message: lang.messages.createVoteFailed, type: 'error' });
+			setIsCollectData(false);
+		}
+	};
 
 	useEffect(() => {
 		if (!userInfo.loading && !userInfo._id) {
@@ -322,7 +369,7 @@ const NewVote: NextPage = () => {
 				toast.show({ message: filedError[field], type: 'error' });
 				setIsCollectData(false);
 			} else {
-				console.log(fields.current);
+				createNewPoll();
 			}
 		}
 	}, [isCollectData]);

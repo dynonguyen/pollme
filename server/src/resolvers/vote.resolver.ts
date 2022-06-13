@@ -1,16 +1,34 @@
-import { Args, FieldResolver, Query, Resolver, Root } from 'type-graphql';
+import {
+	Arg,
+	Args,
+	Authorized,
+	Ctx,
+	FieldResolver,
+	Mutation,
+	Query,
+	Resolver,
+	Root,
+} from 'type-graphql';
 import { MAX } from '../constants/validation';
 import UserModel from '../models/user.model';
 import VoteModel from '../models/vote.model';
+import { ExpressContext } from '../types/core/ExpressContext';
+import { ROLES } from '../types/core/Role';
 import User from '../types/entities/User';
 import Vote from '../types/entities/Vote';
+import { NewVoteInput } from '../types/input/NewVoteInput';
 import { VotePaginationArg } from '../types/input/VoteArg';
 import { VotePaginatedResponse } from '../types/response/VoteResponse';
 import mongoosePaginate from '../utils/mongoose-paginate';
 import { DEFAULT } from './../constants/default';
 import { VoteFilterOptions } from './../constants/enum';
-import { SUCCESS_CODE } from './../constants/status';
-import { voteFilterToQuery } from './../utils/helper';
+import { ERROR_CODE, SUCCESS_CODE } from './../constants/status';
+import { VoteMutationResponse } from './../types/response/VoteResponse';
+import {
+	increaseTagOrCreate,
+	stringToSlug,
+	voteFilterToQuery,
+} from './../utils/helper';
 
 @Resolver(_of => Vote)
 export class VoteResolver {
@@ -67,6 +85,46 @@ export class VoteResolver {
 				filter,
 				pageSize,
 				total: 0,
+			};
+		}
+	}
+
+	@Authorized(ROLES.USER)
+	@Mutation(_return => VoteMutationResponse)
+	async createVote(
+		@Arg('newVoteInput') voteInput: NewVoteInput,
+		@Ctx() { res }: ExpressContext,
+	): Promise<VoteMutationResponse> {
+		const { tags, answers, title, ...restInput } = voteInput;
+
+		try {
+			const ownerId = res.locals.user._id;
+
+			tags.forEach(tag => increaseTagOrCreate(tag));
+			const newVote = await VoteModel.create({
+				ownerId,
+				title,
+				slug: stringToSlug(title),
+				answers: answers.map(answer => ({
+					...answer,
+					voteList: [],
+				})),
+				tags: tags.map(tag => ({ name: tag, slug: stringToSlug(tag) })),
+				createdAt: new Date(),
+				...restInput,
+			});
+
+			return {
+				code: SUCCESS_CODE.CREATED,
+				success: true,
+				vote: newVote,
+			};
+		} catch (error) {
+			console.error('CREATE VOTE MUTATION ERROR: ', error);
+			return {
+				code: ERROR_CODE.INTERNAL_ERROR,
+				success: false,
+				message: 'Failed',
 			};
 		}
 	}

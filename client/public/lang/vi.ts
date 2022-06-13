@@ -46,6 +46,8 @@ export default {
 	],
 	messages: {
 		logoutSuccess: 'Đăng xuất thành công',
+		createVoteFailed: 'Tạo bài khảo sát thất bại, vui lòng thử lại 😢',
+		createVoteSuccess: 'Tạo bài khảo sát thành công 😙',
 	},
 	pages: {
 		notfound: {
@@ -186,8 +188,8 @@ export default {
 				{ title: 'Lượt vote giảm dần', key: '-totalVote' },
 				{ title: 'Bình luận tăng dần', key: 'totalComment' },
 				{ title: 'Bình luận giảm dần', key: '-totalComment' },
-				{ title: 'Mới nhất', key: 'createdAt' },
-				{ title: 'Cũ nhất', key: '-createdAt' },
+				{ title: 'Mới nhất', key: '-createdAt' },
+				{ title: 'Cũ nhất', key: 'createdAt' },
 			],
 			filterOptions: [
 				{ title: 'Tất cả', key: VoteFilterOptions.ALL },
@@ -258,7 +260,7 @@ export default {
 				title: `Vui lòng nhập tiêu đề, tối đa ${MAX.VOTE_TITLE} ký tự !`,
 				desc: `Mô tả tối đa ${MAX.VOTE_DESC} ký tự !`,
 				tags: `Vui lòng nhập ít nhất 1 tag, tối đa ${MAX.VOTE_TAG} tag !`,
-				answers: `Ít nhất 2 lựa chọn và không được bỏ trống, nhiều nhất ${MAX.ANSWER_OPTIONS} lựa chọn ! Mỗi lựa chọn tối đa ${MAX.OPTION_LABEL} ký tự.`,
+				answers: `Ít nhất 2 lựa chọn (không trùng lặp và không bỏ trống), nhiều nhất ${MAX.ANSWER_OPTIONS} lựa chọn ! Mỗi lựa chọn tối đa ${MAX.OPTION_LABEL} ký tự.`,
 			},
 		},
 	},

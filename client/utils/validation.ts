@@ -17,9 +17,19 @@ export const newPollValidate = (
 	if (answers.length < 2 || answers.length > MAX.ANSWER_OPTIONS)
 		return { isError: true, field: 'answers' };
 
-	for (let answer of answers) {
-		if (!answer.label.trim() || answer.label.length > MAX.OPTION_LABEL)
+	const answerLen = answers.length;
+	for (let i = 0; i < answerLen; ++i) {
+		if (!answers[i].label.trim() || answers[i].label.length > MAX.OPTION_LABEL)
 			return { isError: true, field: 'answers' };
+
+		for (let j = 0; j < answerLen; ++j) {
+			if (
+				j !== i &&
+				answers[i].label.toLowerCase() === answers[j].label.toLowerCase()
+			) {
+				return { isError: true, field: 'answers' };
+			}
+		}
 	}
 
 	return { isError: false };

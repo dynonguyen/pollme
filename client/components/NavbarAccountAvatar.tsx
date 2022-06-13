@@ -32,6 +32,7 @@ export default function NavbarAccountAvatar(): JSX.Element {
 				src={userAvt}
 				className='w-10 h-10 cursor-pointer rounded-full'
 				alt='Username'
+				onError={e => (e.currentTarget.src = DEFAULT.USER_AVT)}
 			/>
 			<div className='menu w-56 left-0 md:right-0 md:left-auto'>
 				<ul>

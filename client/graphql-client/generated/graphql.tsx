@@ -17,6 +17,11 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type AnswerItem = {
+  id: Scalars['Int'];
+  label: Scalars['String'];
+};
+
 export type CountingAggregation = QueryResponse & {
   __typename?: 'CountingAggregation';
   code: Scalars['Int'];
@@ -34,10 +39,16 @@ export type LoginInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createVote: VoteMutationResponse;
   login: UserMutationResponse;
   loginWithOAuth: UserMutationResponse;
   logout: Scalars['Boolean'];
   register: UserMutationResponse;
+};
+
+
+export type MutationCreateVoteArgs = {
+  newVoteInput: NewVoteInput;
 };
 
 
@@ -59,6 +70,25 @@ export type MutationResponse = {
   code: Scalars['Int'];
   message?: Maybe<Scalars['String']>;
   success: Scalars['Boolean'];
+};
+
+export type NewVoteInput = {
+  allowAddOption: Scalars['Boolean'];
+  answers: Array<AnswerItem>;
+  desc: Scalars['String'];
+  endDate?: InputMaybe<Scalars['DateTime']>;
+  isIPDuplicationCheck: Scalars['Boolean'];
+  isLoginRequired: Scalars['Boolean'];
+  isPrivate: Scalars['Boolean'];
+  isReCaptcha: Scalars['Boolean'];
+  isShowResult: Scalars['Boolean'];
+  isShowResultBtn: Scalars['Boolean'];
+  maxChoice?: InputMaybe<Scalars['Int']>;
+  maxScore?: InputMaybe<Scalars['Int']>;
+  maxVote?: InputMaybe<Scalars['Int']>;
+  tags: Array<Scalars['String']>;
+  title: Scalars['String'];
+  type: Scalars['Int'];
 };
 
 export type OAuthLoginInput = {
@@ -168,13 +198,18 @@ export type UserMutationResponse = MutationResponse & {
 export type Vote = {
   __typename?: 'Vote';
   _id: Scalars['ID'];
-  allowAddItem: Scalars['Boolean'];
+  allowAddOption: Scalars['Boolean'];
   answers: Array<VoteAnswer>;
   createdAt: Scalars['DateTime'];
-  desc: Scalars['String'];
+  desc?: Maybe<Scalars['String']>;
   endDate?: Maybe<Scalars['DateTime']>;
+  isIPDuplicationCheck: Scalars['Boolean'];
   isLoginRequired: Scalars['Boolean'];
   isPrivate: Scalars['Boolean'];
+  isReCaptcha: Scalars['Boolean'];
+  isShowResult: Scalars['Boolean'];
+  isShowResultBtn: Scalars['Boolean'];
+  maxChoice?: Maybe<Scalars['Int']>;
   maxScore?: Maybe<Scalars['Int']>;
   maxVote: Scalars['Int'];
   owner?: Maybe<User>;
@@ -191,10 +226,17 @@ export type Vote = {
 
 export type VoteAnswer = {
   __typename?: 'VoteAnswer';
-  desc: Scalars['String'];
   id: Scalars['Int'];
   label: Scalars['String'];
   voteList: Array<VoteOfUser>;
+};
+
+export type VoteMutationResponse = MutationResponse & {
+  __typename?: 'VoteMutationResponse';
+  code: Scalars['Int'];
+  message?: Maybe<Scalars['String']>;
+  success: Scalars['Boolean'];
+  vote?: Maybe<Vote>;
 };
 
 export type VoteOfUser = {
@@ -216,7 +258,11 @@ export type VotePaginatedResponse = QueryResponse & {
   total: Scalars['Int'];
 };
 
-export type MutationStatusFragment = { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null };
+type MutationStatus_UserMutationResponse_Fragment = { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null };
+
+type MutationStatus_VoteMutationResponse_Fragment = { __typename?: 'VoteMutationResponse', code: number, success: boolean, message?: string | null };
+
+export type MutationStatusFragment = MutationStatus_UserMutationResponse_Fragment | MutationStatus_VoteMutationResponse_Fragment;
 
 type QueryStatus_CountingAggregation_Fragment = { __typename?: 'CountingAggregation', code: number, message?: string | null };
 
@@ -253,6 +299,13 @@ export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
 
 export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
+
+export type CreateVoteMutationVariables = Exact<{
+  newVoteInput: NewVoteInput;
+}>;
+
+
+export type CreateVoteMutation = { __typename?: 'Mutation', createVote: { __typename?: 'VoteMutationResponse', code: number, message?: string | null, vote?: { __typename?: 'Vote', _id: string } | null } };
 
 export type HomeAnalysisQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -473,6 +526,43 @@ export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<Logou
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
+export const CreateVoteDocument = gql`
+    mutation CreateVote($newVoteInput: NewVoteInput!) {
+  createVote(newVoteInput: $newVoteInput) {
+    code
+    message
+    vote {
+      _id
+    }
+  }
+}
+    `;
+export type CreateVoteMutationFn = Apollo.MutationFunction<CreateVoteMutation, CreateVoteMutationVariables>;
+
+/**
+ * __useCreateVoteMutation__
+ *
+ * To run a mutation, you first call `useCreateVoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateVoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createVoteMutation, { data, loading, error }] = useCreateVoteMutation({
+ *   variables: {
+ *      newVoteInput: // value for 'newVoteInput'
+ *   },
+ * });
+ */
+export function useCreateVoteMutation(baseOptions?: Apollo.MutationHookOptions<CreateVoteMutation, CreateVoteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateVoteMutation, CreateVoteMutationVariables>(CreateVoteDocument, options);
+      }
+export type CreateVoteMutationHookResult = ReturnType<typeof useCreateVoteMutation>;
+export type CreateVoteMutationResult = Apollo.MutationResult<CreateVoteMutation>;
+export type CreateVoteMutationOptions = Apollo.BaseMutationOptions<CreateVoteMutation, CreateVoteMutationVariables>;
 export const HomeAnalysisDocument = gql`
     query HomeAnalysis {
   count {

@@ -34,6 +34,7 @@ const schema: Schema = new Schema({
 		{
 			id: Number,
 			label: String,
+			photo: String,
 			voteList: [
 				{
 					userInfo: {

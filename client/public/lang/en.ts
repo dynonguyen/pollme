@@ -50,6 +50,8 @@ export default {
 	],
 	messages: {
 		logoutSuccess: 'Logout Successful',
+		createVoteFailed: 'Create a failed poll, please try again 😢',
+		createVoteSuccess: 'Create successfully 😙',
 	},
 	pages: {
 		notfound: {
@@ -192,8 +194,8 @@ export default {
 				{ title: 'Vote Descending', key: '-totalVote' },
 				{ title: 'Comment Ascending', key: 'totalComment' },
 				{ title: 'Comment Descending', key: '-totalComment' },
-				{ title: 'Newest', key: 'createdAt' },
-				{ title: 'Oldest', key: '-createdAt' },
+				{ title: 'Newest', key: '-createdAt' },
+				{ title: 'Oldest', key: 'createdAt' },
 			],
 			filterOptions: [
 				{ title: 'All', key: VoteFilterOptions.ALL },
@@ -263,7 +265,7 @@ export default {
 				title: `Please enter the title, max length is ${MAX.VOTE_TITLE} characters!`,
 				desc: `Max length of description is ${MAX.VOTE_DESC} characters!`,
 				tags: `Please enter at least 1 tag, max ${MAX.VOTE_TAG} tag!`,
-				answers: `At least 2 options and fill in enough information, the most ${MAX.ANSWER_OPTIONS} option! Each option is max ${MAX.OPTION_LABEL} characters.`,
+				answers: `At least 2 options (no duplication and no vacancy), the most ${MAX.ANSWER_OPTIONS} option! Each option is max ${MAX.OPTION_LABEL} characters.`,
 			},
 		},
 	},
