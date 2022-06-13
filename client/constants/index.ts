@@ -5,3 +5,11 @@ export const STATIC_PROPS_REVALIDATE = {
 	HOME_PAGE: 60,
 };
 export const TOAST_LIMIT = 3;
+export const VOTE_TYPE = {
+	SINGLE_CHOICE: 0,
+	MULTIPLE_CHOICE: 1,
+	RANKED_CHOICE: 2,
+	SCORE: 3,
+};
+export const POLL_PHOTO_WIDTH = 300;
+export const POLL_PHOTO_HEIGHT = 300;

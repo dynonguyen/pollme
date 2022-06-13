@@ -6,7 +6,9 @@ export const MAX = {
 	VOTE_TITLE: 150,
 	VOTE_DESC: 250,
 	VOTE_TAG: 5,
-	MAX_ANSWER_OPTIONS: 10,
+	ANSWER_OPTIONS: 10,
+	OPTION_PHOTO_SIZE: 1, // 1MB
+	OPTION_LABEL: 100,
 };
 
 export const MIN = {

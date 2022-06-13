@@ -1,6 +1,6 @@
 import { Model, model, Schema } from 'mongoose';
+import { DEFAULT } from '../constants/default';
 import Vote from '../types/entities/Vote';
-import { DEFAULT } from './../constants/default';
 import { VOTE_TYPE } from './../constants/index';
 import { MAX } from './../constants/validation';
 
@@ -19,19 +19,10 @@ const schema: Schema = new Schema({
 		type: String,
 		required: true,
 	},
-	type: {
-		type: Number,
-		required: true,
-		default: VOTE_TYPE.DEFAULT,
-	},
 	desc: {
 		type: String,
 		maxlength: MAX.VOTE_DESC,
-	},
-	isPrivate: {
-		type: Boolean,
-		required: true,
-		default: DEFAULT.VOTE_IS_PRIVATE,
+		required: false,
 	},
 	tags: [
 		{
@@ -39,48 +30,64 @@ const schema: Schema = new Schema({
 			slug: String,
 		},
 	],
-	items: [
+	answers: [
 		{
 			id: Number,
 			label: String,
-			desc: String,
 			voteList: [
 				{
-					userId: String,
+					userInfo: {
+						userId: String,
+						name: String,
+						ip: String,
+					},
 					score: Number,
+					rank: Number,
 				},
 			],
 		},
 	],
-	createdAt: {
-		type: Date,
-		default: new Date(),
+	type: {
+		type: Number,
+		required: true,
+		default: VOTE_TYPE.SINGLE_CHOICE,
 	},
-	updatedAt: Date,
-	endDate: Date,
+	isPrivate: {
+		type: Boolean,
+		default: DEFAULT.VOTE.IS_PRIVATE,
+	},
+	isReCaptcha: {
+		type: Boolean,
+		default: DEFAULT.VOTE.IS_RECAPTCHA,
+	},
+	isIPDuplicationCheck: {
+		type: Boolean,
+		default: DEFAULT.VOTE.IS_IP_DUPLICATION_CHECK,
+	},
 	isLoginRequired: {
 		type: Boolean,
-		default: DEFAULT.VOTE_IS_LOGIN_REQUIRED,
+		default: DEFAULT.VOTE.IS_LOGIN_REQUIRED,
 	},
-	allowAddItem: {
+	isShowResult: {
 		type: Boolean,
-		default: DEFAULT.VOTE_ALLOW_ADD_ITEM,
+		default: DEFAULT.VOTE.SHOW_RESULT,
 	},
-	allowChooseMultiple: {
+	isShowResultBtn: {
 		type: Boolean,
-		default: DEFAULT.VOTE_ALLOW_CHOOSE_MULTIPLE,
+		default: DEFAULT.VOTE.SHOW_RESULT_BTN,
 	},
-	allowMark: {
+	allowAddOption: {
 		type: Boolean,
-		default: DEFAULT.VOTE_ALLOW_MARK,
+		default: DEFAULT.VOTE.ALLOW_ADD_OPTION,
 	},
-	maxVote: {
-		type: Number,
-		default: DEFAULT.VOTE_MAX_VOTE,
-	},
+	maxVote: Number,
 	maxScore: {
 		type: Number,
-		default: DEFAULT.VOTE_MAX_SCORE,
+		default: DEFAULT.VOTE.MAX_SCORE,
+	},
+	maxChoice: {
+		type: Number,
+		default: 2,
 	},
 	totalVote: {
 		type: Number,
@@ -92,6 +99,12 @@ const schema: Schema = new Schema({
 		required: true,
 		default: 0,
 	},
+	endDate: Date,
+	createdAt: {
+		type: Date,
+		default: new Date(),
+	},
+	updatedAt: Date,
 });
 
 const VoteModel: Model<Vote> = model('Vote', schema, 'votes');

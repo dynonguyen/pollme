@@ -1,6 +1,5 @@
 import { ApolloProvider } from '@apollo/client';
 import type { AppProps } from 'next/app';
-import React from 'react';
 import { RecoilRoot } from 'recoil';
 import InitialWrapper from '../components/InitialWrapper';
 import Layout from '../components/Layout';

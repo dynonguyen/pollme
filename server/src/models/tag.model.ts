@@ -27,6 +27,11 @@ const schema: Schema = new Schema({
 		required: true,
 		default: 0,
 	},
+	createdAt: {
+		type: Date,
+		required: true,
+		default: new Date(),
+	},
 });
 
 const TagModel: Model<Tag> = model('Tag', schema, 'tags');

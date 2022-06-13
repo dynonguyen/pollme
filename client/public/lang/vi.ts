@@ -207,6 +207,60 @@ export default {
 			],
 			pollNotfound: 'Không tìm thấy tag nào phù hợp',
 		},
+		newPoll: {
+			title: 'Tạo một khảo sát mới',
+			addOptionBtn: 'Thêm lựa chọn',
+			submitBtn: 'Tạo khảo sát',
+			basic: 'Thông tin cơ bản',
+			advance: 'Cài đặt nâng cao',
+			fieldLabels: {
+				title: 'Tiêu đề',
+				desc: 'Mô tả khảo sát',
+				tags: `Gắn thẻ (Tối đa ${MAX.VOTE_TAG} tags)`,
+				answers: `Tuỳ chọn câu trả lời (tối đa ${MAX.ANSWER_OPTIONS} tuỳ chọn)`,
+				type: 'Loại khảo sát',
+				isPrivate: 'Riêng tư (chỉ truy cập qua link)',
+				reCaptcha: 'reCAPTCHA',
+				ipCheck: 'Kiểm tra bỏ phiếu trùng lặp',
+				loginRequired: 'Yêu cầu đăng nhập',
+				showResult: 'Hiển thị kết quả',
+				showResultBtn: 'Hiển thị nút xem kết quả',
+				allowAddOption: 'Cho phép thêm lựa chọn',
+				maxVote: 'Lượng bỏ phiếu tối đa',
+				endDate: 'Ngày kết thúc khảo sát',
+				maxChoice: 'Tối đa vote/người',
+				maxScore: 'Điểm tối đa',
+			},
+			labelHelp: {
+				isPrivate:
+					'Chỉ có bạn và những người bạn chia sẻ liên kết mới có thể xem và bỏ phiếu',
+				reCaptcha: 'Chỉ cho phép con người bỏ phiếu. ngăn chặn Bots !',
+				ipCheck:
+					'Chỉ cho phép một bỏ phiếu cho mỗi địa chỉ IP. Rất an toàn, nhưng có thể hạn chế lượt bỏ phiếu trên cùng một mạng.',
+				showResult:
+					'Hiển thị kết quả bỏ phiếu ngay trên các câu trả lời của bạn khi người khác truy cập',
+				showResultBtn:
+					'Hiển thị nút xem kết quả, nếu tuỳ chọn "Hiển thị kết quả" không được chọn. Người xem chỉ thấy kết quả khi họ nhấn vào nút xem kết quả',
+				allowAddOption:
+					'Cho phép người xem thêm tuỳ chọn của họ vào các tuỳ chọn của bạn',
+				maxVote:
+					'Số lượng phiếu bầu tối đa, sau khi đạt được con số này thì bài khảo sát sẽ được đóng lại. Mặc định không giới hạn',
+				endDate:
+					'Ngày kết thúc của cuộc khảo sát. Nếu không chọn, mặc định sẽ không giới hạn.',
+			},
+			placeholder: {
+				title: 'Nhập tiêu đề khảo sát tại đây',
+				desc: 'Mô tả để người khác hiểu cuộc khảo sát của bạn',
+				tags: 'Nhập tag và nhấn Enter',
+				answerOption: 'Tuỳ chọn',
+			},
+			fieldError: {
+				title: `Vui lòng nhập tiêu đề, tối đa ${MAX.VOTE_TITLE} ký tự !`,
+				desc: `Mô tả tối đa ${MAX.VOTE_DESC} ký tự !`,
+				tags: `Vui lòng nhập ít nhất 1 tag, tối đa ${MAX.VOTE_TAG} tag !`,
+				answers: `Ít nhất 2 lựa chọn và không được bỏ trống, nhiều nhất ${MAX.ANSWER_OPTIONS} lựa chọn ! Mỗi lựa chọn tối đa ${MAX.OPTION_LABEL} ký tự.`,
+			},
+		},
 	},
 	pageSEO: {
 		home: {
@@ -234,7 +288,7 @@ export default {
 			title: 'Tags',
 			desc: `Tag là một từ khóa hoặc nhãn phân loại khảo sát của bạn với các khảo sát tương tự khác. Sử dụng các thẻ phù hợp giúp người khác dễ dàng tìm và trả lời câu hỏi của bạn hơn.`,
 		},
-		newVote: {
+		newPoll: {
 			pathname: '/new-poll',
 			title: 'Tạo khảo sát',
 			desc: `Chỉ với vài bước đơn giản, bạn đã có thể tạo ngay một bài khảo sát trên ${APP_NAME}. Có rất nhiều tuỳ chỉnh cho bài khảo sát, hãy trải nghiệm ngay nhé`,
@@ -244,5 +298,13 @@ export default {
 		loginOAuthBreak: 'Hoặc tiếp tục với',
 		poll: 'Khảo sát',
 		closed: 'Đã đóng',
+	},
+	components: {
+		TagInput: {
+			inputPlaceholder: 'Nhập tag & nhấn Enter',
+		},
+		AnswerOptions: {
+			photoSize: `Kích thước tối đa của ảnh là ${MAX.OPTION_PHOTO_SIZE}MB, kích thước thích hợp là 300px x 300px`,
+		},
 	},
 };

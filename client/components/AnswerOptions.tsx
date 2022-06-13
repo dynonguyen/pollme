@@ -2,8 +2,9 @@ import { PhotographIcon, PlusIcon, XIcon } from '@heroicons/react/outline';
 import { XCircleIcon } from '@heroicons/react/solid';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { MAX } from '../constants/validation';
-
-type PhotoType = string | ArrayBuffer | null;
+import useLanguage from '../hooks/useLanguage';
+import useToast from '../hooks/useToast';
+import { PhotoType } from '../types/common';
 
 interface Answer {
 	id: number;
@@ -40,10 +41,19 @@ function AnswerOptionItem({
 	const inputRef = useRef<HTMLInputElement>(null);
 	const photoRef = useRef<HTMLInputElement>(null);
 	const [photoReview, setPhotoReview] = useState<PhotoType>(null);
+	const toast = useToast();
+	const lang = useLanguage();
 
 	const handlePhotoChange = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files?.length) {
 			const photo = e.target.files[0];
+			const photoSize = photo.size / (1024 * 1024);
+			if (photoSize > MAX.OPTION_PHOTO_SIZE) {
+				return toast.show({
+					message: lang.components.AnswerOptions.photoSize,
+					type: 'error',
+				});
+			}
 			const reader = new FileReader();
 			reader.readAsDataURL(photo);
 			reader.onload = function () {
@@ -52,17 +62,19 @@ function AnswerOptionItem({
 				setPhotoReview(dataUrl);
 			};
 		} else {
+			if (photoRef.current) photoRef.current.value = '';
 			setPhotoReview(null);
 		}
 	};
 
 	const handleDeletePhoto = () => {
 		onPhotoChange(id, null);
+		if (photoRef.current) photoRef.current.value = '';
 		setPhotoReview(null);
 	};
 
 	return (
-		<div className='flex justify-between gap-1'>
+		<div className='flex justify-between items-center gap-1'>
 			<input
 				ref={inputRef}
 				type='text'
@@ -111,13 +123,15 @@ export default function AnswerOptions({
 }): JSX.Element {
 	const [answers, setAnswers] = useState<Answer[]>(initAnswers);
 	const answersRef = useRef<Answer[]>(initAnswers);
+	const lang = useLanguage();
+	const newPollLang = lang.pages.newPoll;
 
 	useEffect(() => {
 		onCollectData && onCollectData(answersRef.current);
 	}, [onCollectData]);
 
 	const handleAddOption = () => {
-		if (answers.length < MAX.MAX_ANSWER_OPTIONS) {
+		if (answers.length < MAX.ANSWER_OPTIONS) {
 			const newOption = { id: Date.now(), label: '', photo: null };
 			answersRef.current = [...answers, newOption];
 			setAnswers([...answers, newOption]);
@@ -143,25 +157,26 @@ export default function AnswerOptions({
 	};
 
 	return (
-		<div className='grid gap-2'>
+		<div className='grid gap-3'>
 			{answers.map((answer, index) => (
 				<AnswerOptionItem
 					key={answer.id}
-					allowDelete={answers.length > 1}
-					placeholder={`Option ${index + 1}`}
+					allowDelete={answers.length > 2}
+					placeholder={`${newPollLang.placeholder.answerOption} ${index + 1}`}
 					id={answer.id}
 					onDelete={handleDeleteOption}
 					onInputChange={handleItemInputChange}
 					onPhotoChange={handleItemPhotoChange}
 				/>
 			))}
-			{answers.length < MAX.MAX_ANSWER_OPTIONS && (
+			{answers.length < MAX.ANSWER_OPTIONS && (
 				<button
-					className='btn-outline mt-2 w-max flex items-center'
+					className='btn-outline mt-1 w-max flex items-center'
 					type='button'
 					onClick={handleAddOption}
 				>
-					<PlusIcon className='w-5 mr-2' /> Add Option
+					<PlusIcon className='w-5 mr-2' />
+					{newPollLang.addOptionBtn}
 				</button>
 			)}
 		</div>

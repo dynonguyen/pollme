@@ -213,6 +213,59 @@ export default {
 			],
 			pollNotfound: 'Not tags found',
 		},
+		newPoll: {
+			title: 'Create a new poll',
+			addOptionBtn: 'Add Option',
+			submitBtn: 'Create Poll',
+			basic: 'Basic',
+			advance: 'Advance',
+			fieldLabels: {
+				title: 'Title',
+				desc: 'Description',
+				tags: `Max ${MAX.VOTE_TAG} tags`,
+				answers: `Answer Options (max ${MAX.ANSWER_OPTIONS} options)`,
+				type: 'Poll Type',
+				isPrivate: 'Private (only via direct link)',
+				reCaptcha: 'reCAPTCHA',
+				ipCheck: 'IP Duplication Check',
+				loginRequired: 'Login Required',
+				showResult: 'Show result',
+				allowAddOption: 'Allow add option',
+				showResultBtn: 'Show result button',
+				maxVote: 'Max Vote',
+				endDate: 'End date',
+				maxChoice: 'Max Choice',
+				maxScore: 'Max Score',
+			},
+			labelHelp: {
+				isPrivate:
+					'Only you and the people you share the link with can see and vote.',
+				reCaptcha: 'Allows only humans to vote. No Bots !',
+				ipCheck:
+					'Allows only one vote per IP address. Very secure, but might limit voters on the same network.',
+				showResult:
+					'Show the results of the vote right on your answers as others visit',
+				showResultBtn:
+					'Displays the results view button, if the "Show results" option is not selected. Viewers only see results when they press the results view button',
+				allowAddOption: 'Allow others to add their options to your options',
+				maxVote:
+					'The maximum number of votes, after reaching this number, the poll will be closed..',
+				endDate:
+					"The end date of the poll. If you don't choose, the poll won't close by default.",
+			},
+			placeholder: {
+				title: 'Enter the poll title here',
+				desc: 'Description for others to understand your poll',
+				tags: 'Enter the tag & press Enter',
+				answerOption: 'Option',
+			},
+			fieldError: {
+				title: `Please enter the title, max length is ${MAX.VOTE_TITLE} characters!`,
+				desc: `Max length of description is ${MAX.VOTE_DESC} characters!`,
+				tags: `Please enter at least 1 tag, max ${MAX.VOTE_TAG} tag!`,
+				answers: `At least 2 options and fill in enough information, the most ${MAX.ANSWER_OPTIONS} option! Each option is max ${MAX.OPTION_LABEL} characters.`,
+			},
+		},
 	},
 	pageSEO: {
 		home: {
@@ -240,7 +293,7 @@ export default {
 			title: 'Tags',
 			desc: `A tag is a keyword or label that categorizes your question with other, similar questions. Using the right tags makes it easier for others to find and answer your question.`,
 		},
-		newVote: {
+		newPoll: {
 			pathname: '/new-poll',
 			title: 'Tạo khảo sát',
 			desc: `With just a few simple steps, you can immediately create a survey on ${APP_NAME}. There's a lot of customization for the survey, let's experience it now.`,
@@ -250,5 +303,13 @@ export default {
 		loginOAuthBreak: 'Or continue with',
 		poll: 'Polls',
 		closed: 'Closed',
+	},
+	components: {
+		TagInput: {
+			inputPlaceholder: 'Enter tag & press Enter',
+		},
+		AnswerOptions: {
+			photoSize: `The maximum size of the photo is ${MAX.OPTION_PHOTO_SIZE}MB, the appropriate size is 300px x 300px`,
+		},
 	},
 };

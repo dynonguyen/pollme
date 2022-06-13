@@ -20,6 +20,9 @@ class Tag {
 
 	@Field(_type => Number)
 	totalVote: number;
+
+	@Field(_type => Date)
+	createdAt: Date;
 }
 
 export default Tag;

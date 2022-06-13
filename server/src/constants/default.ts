@@ -1,12 +1,19 @@
+import { VOTE_TYPE } from './index';
+
 export const DEFAULT = {
-	VOTE_IS_PRIVATE: false,
-	VOTE_IS_LOGIN_REQUIRED: false,
-	VOTE_ALLOW_ADD_ITEM: false,
-	VOTE_ALLOW_CHOOSE_MULTIPLE: false,
-	VOTE_ALLOW_MARK: false,
-	VOTE_MAX_VOTE: 0,
 	VOTE_MAX_SCORE: 10,
 	PAGE_SIZE: 10,
 	VOTE_SORT_FIELD: 'title',
 	TAG_SORT_FIELD: 'name',
+	VOTE: {
+		TYPE: VOTE_TYPE.SINGLE_CHOICE,
+		IS_PRIVATE: false,
+		IS_RECAPTCHA: false,
+		IS_IP_DUPLICATION_CHECK: true,
+		IS_LOGIN_REQUIRED: false,
+		SHOW_RESULT: true,
+		SHOW_RESULT_BTN: true,
+		ALLOW_ADD_OPTION: false,
+		MAX_SCORE: 10,
+	},
 };

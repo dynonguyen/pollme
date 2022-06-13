@@ -1,5 +1,6 @@
 import { ChangeEvent, KeyboardEvent, useRef, useState } from 'react';
 import { useOnlyTagNameLazyQuery } from '../../graphql-client/generated/graphql';
+import useLanguage from '../../hooks/useLanguage';
 import { debounce } from '../../utils/helper';
 
 interface TagItemProps {
@@ -38,6 +39,7 @@ export default function TagInput({
 	const [tagNameQuery] = useOnlyTagNameLazyQuery();
 	const inputRef = useRef<HTMLInputElement>(null);
 	const timer = useRef(0);
+	const lang = useLanguage();
 
 	const addTag = (tag: string) => {
 		if (tag) {
@@ -102,7 +104,7 @@ export default function TagInput({
 					type='text'
 					ref={inputRef}
 					className='flex-1 px-1 outline-none bg-transparent'
-					placeholder='Enter new tag'
+					placeholder={lang.components.TagInput.inputPlaceholder}
 					onFocus={() => setInputFocus(true)}
 					onBlur={() => setInputFocus(false)}
 					onKeyDown={handlePressEnter}

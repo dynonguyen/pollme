@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import InfoTooltip from '../InfoTooltip';
 
 interface CheckboxSwitchProps {
 	rootClassName?: string;
@@ -7,6 +8,8 @@ interface CheckboxSwitchProps {
 	inputProps?: React.HTMLProps<HTMLInputElement>;
 	size?: 'small' | 'medium';
 	defaultChecked?: boolean;
+	helper?: string;
+	onChecked?: (checked: boolean) => void;
 }
 
 export default function CheckboxSwitch(
@@ -19,10 +22,13 @@ export default function CheckboxSwitch(
 		size = 'small',
 		defaultChecked = false,
 		labelClassName,
+		helper,
+		onChecked,
 	} = props;
 	const [checked, setChecked] = useState(defaultChecked);
 
-	const onChecked = () => {
+	const handleChecked = () => {
+		onChecked && onChecked(!checked);
 		setChecked(!checked);
 	};
 
@@ -38,9 +44,12 @@ export default function CheckboxSwitch(
 			className={`flex flex-wrap gap-2 items-center justify-between ${rootClassName}`}
 		>
 			{label && (
-				<label className={labelClassName} onClick={onChecked}>
-					{label}
-				</label>
+				<div className={helper ? 'flex items-center gap-1' : ''}>
+					<label className={labelClassName} onClick={handleChecked}>
+						{label}
+					</label>
+					{helper && <InfoTooltip title={helper} />}
+				</div>
 			)}
 			<input
 				type='checkbox'
@@ -52,7 +61,7 @@ export default function CheckboxSwitch(
 			<div className={`${switchSize} ${switchBg} rounded-full relative`}>
 				<div
 					className={`absolute bg-white top-[2px] rounded-full cursor-pointer ${switchBtnSize} ${switchPosition}`}
-					onClick={onChecked}
+					onClick={handleChecked}
 				></div>
 			</div>
 		</div>

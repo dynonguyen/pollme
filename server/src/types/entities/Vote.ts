@@ -3,24 +3,36 @@ import { MongoID } from '../commons';
 import User from './User';
 
 @ObjectType()
-class VoteOfUser {
-	@Field(_type => String)
-	userId: string;
+class UserInfoInVote {
+	@Field(_type => String, { nullable: true })
+	userId?: string;
 
-	@Field(_type => Int)
-	score?: number;
+	@Field(_type => String, { nullable: true })
+	ip?: string;
+
+	@Field(_type => String, { nullable: true })
+	name?: string;
 }
 
 @ObjectType()
-export class VoteItem {
+class VoteOfUser {
+	@Field(_type => UserInfoInVote)
+	userInfo: UserInfoInVote;
+
+	@Field(_type => Int, { nullable: true })
+	score?: number;
+
+	@Field(_type => Int, { nullable: true })
+	rank?: number;
+}
+
+@ObjectType()
+export class VoteAnswer {
 	@Field(_type => Int)
 	id: number;
 
 	@Field(_type => String)
 	label: string;
-
-	@Field(_type => String)
-	desc: string;
 
 	@Field(_type => [VoteOfUser])
 	voteList: VoteOfUser[];
@@ -49,41 +61,38 @@ class Vote {
 	@Field(_type => String)
 	slug: string;
 
-	@Field(_type => Int)
-	type: number;
-
-	@Field(_type => String)
+	@Field(_type => String, { nullable: true })
 	desc?: string;
-
-	@Field(_type => Boolean)
-	isPrivate: boolean;
 
 	@Field(_type => [TagInVote])
 	tags: TagInVote[];
 
-	@Field(_type => [VoteItem])
-	items: VoteItem[];
+	@Field(_type => [VoteAnswer])
+	answers: VoteAnswer[];
 
-	@Field(_type => Date)
-	createdAt: Date;
+	@Field(_type => Int)
+	type: number;
 
-	@Field(_type => Date)
-	updatedAt?: Date;
+	@Field(_type => Boolean)
+	isPrivate: boolean;
 
-	@Field({ nullable: true })
-	endDate?: Date;
+	@Field(_type => Boolean)
+	isReCaptcha: boolean;
+
+	@Field(_type => Boolean)
+	isIPDuplicationCheck: boolean;
 
 	@Field(_type => Boolean)
 	isLoginRequired: boolean;
 
 	@Field(_type => Boolean)
-	allowAddItem: boolean;
+	isShowResult: boolean;
 
 	@Field(_type => Boolean)
-	allowChooseMultiple: boolean;
+	isShowResultBtn: boolean;
 
 	@Field(_type => Boolean)
-	allowMark: boolean;
+	allowAddOption: boolean;
 
 	@Field(_type => Int)
 	maxVote: number;
@@ -91,11 +100,23 @@ class Vote {
 	@Field(_type => Int, { nullable: true })
 	maxScore?: boolean;
 
+	@Field(_type => Int, { nullable: true })
+	maxChoice?: boolean;
+
 	@Field(_type => Int)
 	totalVote: number;
 
 	@Field(_type => Int)
 	totalComment: number;
+
+	@Field(_type => Date, { nullable: true })
+	endDate?: Date;
+
+	@Field(_type => Date)
+	createdAt: Date;
+
+	@Field(_type => Date)
+	updatedAt?: Date;
 
 	// Mongoose fields for field resolver (can't access itself directly)
 	_doc?: Vote;
