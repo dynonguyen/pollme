@@ -1,5 +1,4 @@
 import { NextPage } from 'next';
-import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import AnswerOptions from '../components/AnswerOptions';
@@ -12,6 +11,7 @@ import { DEFAULT } from '../constants/default';
 import { SUCCESS_CODE } from '../constants/status';
 import { MAX } from '../constants/validation';
 import { useCreateVoteMutation } from '../graphql-client/generated/graphql';
+import useCheckUserLogin from '../hooks/useCheckUserLogin';
 import useLanguage from '../hooks/useLanguage';
 import useToast from '../hooks/useToast';
 import userAtom from '../recoil/atoms/user.atom';
@@ -299,8 +299,8 @@ function AdvanceSettings({
 }
 
 const NewVote: NextPage = () => {
+	useCheckUserLogin({ isLoginPage: false });
 	const userInfo = useRecoilValue(userAtom);
-	const router = useRouter();
 	const lang = useLanguage();
 	const newPollLang = lang.pages.newPoll;
 	const [isCollectData, setIsCollectData] = useState(false);
@@ -354,12 +354,6 @@ const NewVote: NextPage = () => {
 			setIsCollectData(false);
 		}
 	};
-
-	useEffect(() => {
-		if (!userInfo.loading && !userInfo._id) {
-			router.push(lang.pages.login.link);
-		}
-	}, [userInfo]);
 
 	useEffect(() => {
 		if (isCollectData) {

@@ -1,16 +1,18 @@
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import RegisterForm from '../components/RegisterForm';
 import { SUCCESS_CODE } from '../constants/status';
 import {
 	RegisterInput,
 	useRegisterMutation,
 } from '../graphql-client/generated/graphql';
+import useCheckUserLogin from '../hooks/useCheckUserLogin';
 import useLanguage from '../hooks/useLanguage';
 import useToast from '../hooks/useToast';
 
 const Register: NextPage = () => {
+	useCheckUserLogin({ isLoginPage: true });
 	const lang = useLanguage();
 	const toast = useToast();
 	const [registerMutation] = useRegisterMutation();

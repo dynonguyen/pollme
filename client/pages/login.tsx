@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import LoginForm from '../components/LoginForm';
 import { SUCCESS_CODE } from '../constants/status';
@@ -9,11 +9,13 @@ import {
 	useLoginMutation,
 	UserInfoFragment,
 } from '../graphql-client/generated/graphql';
+import useCheckUserLogin from '../hooks/useCheckUserLogin';
 import useLanguage from '../hooks/useLanguage';
 import useToast from '../hooks/useToast';
 import userAtom from '../recoil/atoms/user.atom';
 
 const Login: NextPage = () => {
+	useCheckUserLogin({ isLoginPage: true });
 	const lang = useLanguage();
 	const toast = useToast();
 	const loginLang = lang.pages.login;
