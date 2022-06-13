@@ -5,6 +5,7 @@ import AnswerOptions from '../components/AnswerOptions';
 import CheckboxSwitch from '../components/core/CheckboxSwitch';
 import Select from '../components/core/Select';
 import TagInput from '../components/core/TagInput';
+import CreatePollSuccess from '../components/CreatePollSuccess';
 import InfoTooltip from '../components/InfoTooltip';
 import { POLL_PHOTO_HEIGHT, POLL_PHOTO_WIDTH, VOTE_TYPE } from '../constants';
 import { DEFAULT } from '../constants/default';
@@ -304,6 +305,7 @@ const NewVote: NextPage = () => {
 	const lang = useLanguage();
 	const newPollLang = lang.pages.newPoll;
 	const [isCollectData, setIsCollectData] = useState(false);
+	const [isCreateSuccess, setIsCreateSuccess] = useState(true);
 	const fields = useRef<NewPollFields>({
 		...defaultBasicSettings,
 		...defaultAdvanceSettings,
@@ -373,45 +375,51 @@ const NewVote: NextPage = () => {
 	};
 
 	return (
-		<div className='container mb-5'>
-			<div className='py-5 md:py-0 lg:bg-[url("/images/create-poll-bg.svg")] lg:dark:bg-[url("/images/create-poll-bg-dark.svg")] bg-no-repeat bg-right-top lg:h-32'>
-				<h1 className='font-normal lg:leading-[128px] capitalize'>
-					{newPollLang.title}
-				</h1>
-			</div>
+		<>
+			{isCreateSuccess ? (
+				<CreatePollSuccess />
+			) : (
+				<div className='container mb-5'>
+					<div className='py-5 md:py-0 lg:bg-[url("/images/create-poll-bg.svg")] lg:dark:bg-[url("/images/create-poll-bg-dark.svg")] bg-no-repeat bg-right-top lg:h-32'>
+						<h1 className='font-normal lg:leading-[128px] capitalize'>
+							{newPollLang.title}
+						</h1>
+					</div>
 
-			<div className='grid grid-cols-1 lg:grid-cols-7 gap-5'>
-				<div className={`lg:col-span-4 ${classes.box}`}>
-					<h2 className={classes.h2}>{newPollLang.basic}</h2>
-					{isCollectData ? (
-						<BasicSettings
-							onCollectData={data =>
-								(fields.current = { ...fields.current, ...data })
-							}
-						/>
-					) : (
-						<BasicSettings />
-					)}
-				</div>
+					<div className='grid grid-cols-1 lg:grid-cols-7 gap-5'>
+						<div className={`lg:col-span-4 ${classes.box}`}>
+							<h2 className={classes.h2}>{newPollLang.basic}</h2>
+							{isCollectData ? (
+								<BasicSettings
+									onCollectData={data =>
+										(fields.current = { ...fields.current, ...data })
+									}
+								/>
+							) : (
+								<BasicSettings />
+							)}
+						</div>
 
-				<div className={`lg:col-span-3 ${classes.box}`}>
-					<h2 className={classes.h2}>{newPollLang.advance}</h2>
-					<AdvanceSettings
-						onCollectData={data =>
-							(fields.current = { ...fields.current, ...data })
-						}
-					/>
-					<div className='text-right mt-3'>
-						<button
-							className='btn-primary btn-lg w-full'
-							onClick={handleCreatePoll}
-						>
-							{newPollLang.submitBtn}
-						</button>
+						<div className={`lg:col-span-3 ${classes.box}`}>
+							<h2 className={classes.h2}>{newPollLang.advance}</h2>
+							<AdvanceSettings
+								onCollectData={data =>
+									(fields.current = { ...fields.current, ...data })
+								}
+							/>
+							<div className='text-right mt-3'>
+								<button
+									className='btn-primary btn-lg w-full'
+									onClick={handleCreatePoll}
+								>
+									{newPollLang.submitBtn}
+								</button>
+							</div>
+						</div>
 					</div>
 				</div>
-			</div>
-		</div>
+			)}
+		</>
 	);
 };
 
