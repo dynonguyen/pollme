@@ -1,8 +1,10 @@
 import { MenuIcon, SearchIcon, XIcon } from '@heroicons/react/outline';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React, { useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { APP_NAME } from '../constants';
+import { QUERY_KEY } from '../constants/key';
 import { UserInfoFragment } from '../graphql-client/generated/graphql';
 import useLanguage from '../hooks/useLanguage';
 import userAtom from '../recoil/atoms/user.atom';
@@ -85,11 +87,15 @@ function MenuSlider(): JSX.Element {
 function SearchBar(): JSX.Element {
 	const searchInput = useRef<string>('');
 	const lang = useLanguage();
+	const router = useRouter();
 
 	const handlePressEnter = (e: React.KeyboardEvent) => {
 		if (e.key === 'Enter' && searchInput.current.trim()) {
-			// TODO: handle search
-			console.log(searchInput.current);
+			router.push(
+				`${lang.pages.discover.link}?${
+					QUERY_KEY.SEARCH
+				}=${searchInput.current.trim()}`,
+			);
 		}
 	};
 
@@ -150,7 +156,7 @@ export default function Header(): JSX.Element {
 				</nav>
 
 				<div className='hidden lg:flex md:gap-2 md:items-center'>
-					<div className='hidden xl:block w-44 lg:w-56 relative'>
+					<div className='hidden xl:block w-44 lg:w-64 relative'>
 						<SearchBar />
 					</div>
 					<NavbarAction />

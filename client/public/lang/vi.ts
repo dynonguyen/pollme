@@ -17,10 +17,6 @@ export default {
 			label: 'Tạo khảo sát',
 		},
 		{
-			link: '/lien-he',
-			label: 'Liên hệ',
-		},
-		{
 			link: '/faq',
 			label: 'FAQ',
 		},
@@ -32,7 +28,7 @@ export default {
 	},
 	placeholder: {
 		defaultSelect: 'Chọn một lựa chọn',
-		search: 'Tìm kiếm',
+		search: 'Nhập từ khoá hoặc #tag',
 	},
 	accountMenu: [
 		{

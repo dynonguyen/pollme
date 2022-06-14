@@ -217,6 +217,7 @@ export const getServerSideProps: GetServerSideProps<{
 	const page = getPageQuery(query, QUERY_KEY.PAGE, 1);
 	const pageSize = getPageQuery(query, QUERY_KEY.PAGE_SIZE, 10);
 	const sort = (query[QUERY_KEY.SORT] as string) || '';
+	const search = (query[QUERY_KEY.SEARCH] as string) || '';
 	const filter = (query[QUERY_KEY.FILTER] as string) || VoteFilterOptions.ALL;
 
 	const apolloClient = initializeApollo();
@@ -231,6 +232,7 @@ export const getServerSideProps: GetServerSideProps<{
 			pageSize,
 			sort,
 			filter,
+			search,
 		},
 	});
 	const votes: DiscoverQuery = response.data;

@@ -8,3 +8,4 @@ server/.env
 dist/
 yarn-error.log
 upload/
+.eslintrc.json

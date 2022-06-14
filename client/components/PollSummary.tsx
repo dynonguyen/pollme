@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { DEFAULT } from '../constants/default';
+import { QUERY_KEY } from '../constants/key';
 import useLanguage from '../hooks/useLanguage';
 import { dateFormat } from '../utils/format';
 import { isPollClosed } from '../utils/helper';
@@ -37,6 +38,7 @@ export default function PollSummary(props: PollSummaryProps): JSX.Element {
 	const userAvt = user.avt || DEFAULT.USER_AVT;
 	const isClosed = isPollClosed(endDate);
 	const lang = useLanguage();
+	const linkOfTag = `/${lang.pages.discover.link}?${QUERY_KEY.SEARCH}=#`;
 
 	return (
 		<div className='poll-summary__bg flex flex-col gap-2'>
@@ -62,7 +64,7 @@ export default function PollSummary(props: PollSummaryProps): JSX.Element {
 				<ul className='flex gap-2 flex-wrap xl:justify-start mb-3'>
 					{tags.map((tag, index) => (
 						<li className='tag-link' key={index}>
-							<Link href={`/tags/${tag.slug}`}>{`#${tag.name}`}</Link>
+							<Link href={`${linkOfTag}${tag.name}`}>{`#${tag.name}`}</Link>
 						</li>
 					))}
 				</ul>

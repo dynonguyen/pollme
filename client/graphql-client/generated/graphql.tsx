@@ -113,6 +113,7 @@ export type QueryPublicVotesArgs = {
   filter?: InputMaybe<Scalars['String']>;
   page?: InputMaybe<Scalars['Int']>;
   pageSize?: InputMaybe<Scalars['Int']>;
+  search?: InputMaybe<Scalars['String']>;
   sort?: InputMaybe<Scalars['String']>;
 };
 
@@ -362,6 +363,7 @@ export type DiscoverQueryVariables = Exact<{
   pageSize?: InputMaybe<Scalars['Int']>;
   sort?: InputMaybe<Scalars['String']>;
   filter?: InputMaybe<Scalars['String']>;
+  search?: InputMaybe<Scalars['String']>;
 }>;
 
 
@@ -818,8 +820,14 @@ export type GetMeQueryHookResult = ReturnType<typeof useGetMeQuery>;
 export type GetMeLazyQueryHookResult = ReturnType<typeof useGetMeLazyQuery>;
 export type GetMeQueryResult = Apollo.QueryResult<GetMeQuery, GetMeQueryVariables>;
 export const DiscoverDocument = gql`
-    query Discover($page: Int, $pageSize: Int, $sort: String, $filter: String) {
-  publicVotes(page: $page, pageSize: $pageSize, sort: $sort, filter: $filter) {
+    query Discover($page: Int, $pageSize: Int, $sort: String, $filter: String, $search: String) {
+  publicVotes(
+    page: $page
+    pageSize: $pageSize
+    sort: $sort
+    filter: $filter
+    search: $search
+  ) {
     ...queryStatus
     page
     pageSize
@@ -865,6 +873,7 @@ export const DiscoverDocument = gql`
  *      pageSize: // value for 'pageSize'
  *      sort: // value for 'sort'
  *      filter: // value for 'filter'
+ *      search: // value for 'search'
  *   },
  * });
  */

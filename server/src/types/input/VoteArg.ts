@@ -12,4 +12,7 @@ export class VotePaginationArg extends PaginationArgs {
 
 	@Field(_type => String, { nullable: true })
 	filter?: string;
+
+	@Field(_type => String, { nullable: true })
+	search?: string;
 }

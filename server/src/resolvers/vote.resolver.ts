@@ -20,6 +20,10 @@ import { NewVoteInput } from '../types/input/NewVoteInput';
 import { VotePaginationArg } from '../types/input/VoteArg';
 import { VotePaginatedResponse } from '../types/response/VoteResponse';
 import mongoosePaginate from '../utils/mongoose-paginate';
+import {
+	voteFilterToQuery,
+	voteKeywordSearchToQuery,
+} from '../utils/query-convert';
 import { DEFAULT } from './../constants/default';
 import { VoteFilterOptions } from './../constants/enum';
 import { ERROR_CODE, SUCCESS_CODE } from './../constants/status';
@@ -28,7 +32,6 @@ import {
 	increaseTagOrCreate,
 	randomString,
 	stringToSlug,
-	voteFilterToQuery,
 } from './../utils/helper';
 
 @Resolver(_of => Vote)
@@ -56,16 +59,19 @@ export class VoteResolver {
 			pageSize = DEFAULT.PAGE_SIZE,
 			sort,
 			filter = VoteFilterOptions.ALL,
+			search = '',
 		}: VotePaginationArg,
 	): Promise<VotePaginatedResponse> {
 		try {
 			if (page < 1) page = 1;
 			if (pageSize < 1) pageSize = DEFAULT.PAGE_SIZE;
+
 			const filterQuery = voteFilterToQuery(filter);
+			const searchQuery = voteKeywordSearchToQuery(search);
 
 			const votes = await mongoosePaginate(
 				VoteModel,
-				{ isPrivate: false, ...filterQuery },
+				{ isPrivate: false, ...filterQuery, ...searchQuery },
 				{ page, pageSize },
 				{ sort },
 			);

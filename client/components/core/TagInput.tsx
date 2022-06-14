@@ -1,4 +1,4 @@
-import { ChangeEvent, KeyboardEvent, useRef, useState } from 'react';
+import { KeyboardEvent, useRef, useState } from 'react';
 import { useOnlyTagNameLazyQuery } from '../../graphql-client/generated/graphql';
 import useLanguage from '../../hooks/useLanguage';
 import { debounce } from '../../utils/helper';
@@ -69,7 +69,7 @@ export default function TagInput({
 		setTags(newTags);
 	};
 
-	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+	const handleChange = () => {
 		timer.current = debounce(timer.current, 350, async () => {
 			const tag = inputRef.current?.value.trim().toLowerCase() || '';
 			if (!tag) {

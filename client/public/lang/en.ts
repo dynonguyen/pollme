@@ -21,10 +21,6 @@ export default {
 			label: 'New poll',
 		},
 		{
-			link: '/about-me',
-			label: 'About me',
-		},
-		{
 			link: '/faq',
 			label: 'FAQ',
 		},
@@ -36,7 +32,7 @@ export default {
 	},
 	placeholder: {
 		defaultSelect: 'Choose an option',
-		search: 'Search',
+		search: 'Enter keyword or #tag',
 	},
 	accountMenu: [
 		{

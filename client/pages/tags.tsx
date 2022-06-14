@@ -111,6 +111,7 @@ const Tags: NextPage<
 	const pageSize = tags?.pageSize || DEFAULT.TAG_PAGE_SIZE;
 	const total = tags?.total || 0;
 	const totalPage = Math.ceil(total / pageSize);
+	const linkOfTag = `/${lang.pages.discover.link}?${QUERY_KEY.SEARCH}=#`;
 
 	const handlePageChange = ({ selected }: { selected: number }) => {
 		const pageSelected = selected + 1;
@@ -140,7 +141,7 @@ const Tags: NextPage<
 							return (
 								<TagCard
 									key={tag._id}
-									link={`/tag/${tag.slug}`}
+									link={`${linkOfTag}${tag.name}`}
 									nPolls={tag.totalVote}
 									title={tag.name}
 									desc={locale === 'vi' ? descTag.viDesc : descTag.enDesc}
