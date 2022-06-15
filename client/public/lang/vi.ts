@@ -304,7 +304,7 @@ export default {
 		AnswerOptions: {
 			photoSize: `Kích thước tối đa của ảnh là ${MAX.OPTION_PHOTO_SIZE}MB, kích thước thích hợp là 300px x 300px`,
 		},
-		Sharing: {
+		LinkShare: {
 			title: 'Chia sẻ bài khảo sát đến bạn bè ngay nhé',
 			copy: 'Sao chép',
 			copied: 'Đã sao chép',

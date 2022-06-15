@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { MAX, MIN } from '../constants/validation';
@@ -68,7 +68,7 @@ export default function RegisterForm({ onSubmit }: RegisterProps): JSX.Element {
 
 	return (
 		<form
-			className='w-11/12 sm:w-[420px] px-6 py-5 rounded-lg shadow-md dark:shadow-none dark:border dark:border-gray-700'
+			className='w-11/12 sm:w-[420px] px-6 py-5 rounded-lg shadow-md dark:shadow-none dark:border dark:border-gray-600'
 			onSubmit={handleSubmit(handleFormSubmit)}
 		>
 			<InputFieldRegister

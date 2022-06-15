@@ -87,7 +87,7 @@ function SortButtonGroup(): JSX.Element {
 			{sortOptions.map((option, index) => (
 				<div
 					key={index}
-					className='filter-item border py-1 border-gray-300 dark:border-gray-600 flex'
+					className='filter-item border py-1 border-color flex'
 					onClick={() => handleSortOptionChange(option.key)}
 				>
 					{option.title}
@@ -111,7 +111,7 @@ const Tags: NextPage<
 	const pageSize = tags?.pageSize || DEFAULT.TAG_PAGE_SIZE;
 	const total = tags?.total || 0;
 	const totalPage = Math.ceil(total / pageSize);
-	const linkOfTag = `/${lang.pages.discover.link}?${QUERY_KEY.SEARCH}=#`;
+	const linkOfTag = `${lang.pages.discover.link}?${QUERY_KEY.SEARCH}=#`;
 
 	const handlePageChange = ({ selected }: { selected: number }) => {
 		const pageSelected = selected + 1;

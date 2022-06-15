@@ -156,7 +156,7 @@ const Discover: NextPage<
 	return (
 		<div className='container'>
 			{/* introduction */}
-			<div className='grid grid-cols-1 gap-3 md:grid-cols-4 flex-wrap mt-6 pb-3 border-b border-gray-300 dark:border-gray-600'>
+			<div className='grid grid-cols-1 gap-3 md:grid-cols-4 flex-wrap mt-6 pb-3 border-b border-color'>
 				<h1 className='font-normal md:col-span-4'>{discoverLang.title}</h1>
 				<div className='flex flex-grow gap-2 items-center md:col-span-3 md:col-start-2'>
 					<FilterButton />

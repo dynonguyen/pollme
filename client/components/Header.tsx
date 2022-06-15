@@ -137,7 +137,7 @@ function MobileSearch(): JSX.Element {
 
 export default function Header(): JSX.Element {
 	return (
-		<header className='border-b border-gray-200 dark:border-gray-600 sticky top-0 z-50 bg-white dark:bg-d_bg'>
+		<header className='border-b border-color sticky top-0 z-50 bg-white dark:bg-d_bg'>
 			<div className='px-3 md:px-5 py-4 flex items-center justify-between gap-2 xxl:container'>
 				<div className='flex items-center gap-3'>
 					<MenuSlider />

@@ -309,7 +309,7 @@ export default {
 		AnswerOptions: {
 			photoSize: `The maximum size of the photo is ${MAX.OPTION_PHOTO_SIZE}MB, the appropriate size is 300px x 300px`,
 		},
-		Sharing: {
+		LinkShare: {
 			title: 'Share the poll with your friends',
 			copy: 'Copy',
 			copied: 'Copied',

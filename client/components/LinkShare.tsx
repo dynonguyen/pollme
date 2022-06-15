@@ -47,7 +47,7 @@ function QRCode({
 					onClick={handleDownload}
 				>
 					<DownloadIcon className='w-5' />
-					<span>{lang.components.Sharing.downloadQRCode}</span>
+					<span>{lang.components.LinkShare.downloadQRCode}</span>
 				</div>
 			)}
 		</>
@@ -56,7 +56,7 @@ function QRCode({
 
 function CopyURL({ url }: { url: string }): JSX.Element {
 	const lang = useLanguage();
-	const shareLang = lang.components.Sharing;
+	const shareLang = lang.components.LinkShare;
 	const [isCopied, setIsCopied] = useState(false);
 	const copiedClass = `btn-primary flex items-center gap-1 py-1 md:py-2 px-2 md:px-3 rounded-md rounded-l-none w-max flex-shrink-0 ${
 		isCopied ? '!bg-green-700 dark:!bg-green-600' : ''
@@ -84,9 +84,9 @@ function CopyURL({ url }: { url: string }): JSX.Element {
 	);
 }
 
-export default function Sharing({ url }: { url: string }) {
+export default function LinkShare({ url }: { url: string }) {
 	const lang = useLanguage();
-	const shareLang = lang.components.Sharing;
+	const shareLang = lang.components.LinkShare;
 
 	return (
 		<div className='py-5 px-6 rounded-lg shadow-md dark:shadow-none dark:border dark:border-slate-600 max-w-xl mx-auto'>

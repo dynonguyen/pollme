@@ -13,3 +13,4 @@ export const VOTE_TYPE = {
 };
 export const POLL_PHOTO_WIDTH = 300;
 export const POLL_PHOTO_HEIGHT = 300;
+export const IP_ADDRESS_API_URI = 'https://jsonip.com';

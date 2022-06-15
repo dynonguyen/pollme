@@ -38,7 +38,7 @@ export default function PollSummary(props: PollSummaryProps): JSX.Element {
 	const userAvt = user.avt || DEFAULT.USER_AVT;
 	const isClosed = isPollClosed(endDate);
 	const lang = useLanguage();
-	const linkOfTag = `/${lang.pages.discover.link}?${QUERY_KEY.SEARCH}=#`;
+	const linkOfTag = `${lang.pages.discover.link}?${QUERY_KEY.SEARCH}=#`;
 
 	return (
 		<div className='poll-summary__bg flex flex-col gap-2'>

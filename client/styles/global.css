@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&display=swap');
 
 @layer base {
 	html,
@@ -41,9 +41,16 @@
 	.btn-primary {
 		@apply btn bg-primary text-white dark:bg-d_primary dark:text-gray-50;
 	}
+	.btn-accent {
+		@apply btn bg-accent text-white dark:bg-d_accent dark:text-gray-50;
+	}
+
+	.border-color {
+		@apply border-gray-200 dark:border-gray-600;
+	}
 
 	.field {
-		@apply border border-gray-200 dark:border-gray-600 outline-none py-2 px-4 w-full rounded-md text-gray-500 dark:bg-slate-800 dark:text-gray-200 dark:border-none;
+		@apply border border-color outline-none py-2 px-4 w-full rounded-md text-gray-500 dark:bg-slate-800 dark:text-gray-200 dark:border-none;
 	}
 	.field-error {
 		@apply border-red-600 dark:border-red-400;
@@ -115,7 +122,7 @@
 		@apply flex -space-x-px w-full justify-center;
 	}
 	.pagination__item {
-		@apply py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white;
+		@apply py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-200 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white;
 	}
 	.pagination__next {
 		@apply pagination__item rounded-r-lg;

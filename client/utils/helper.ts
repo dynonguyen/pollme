@@ -1,11 +1,5 @@
 import { QUERY_KEY } from './../constants/key';
 
-export const getTheme = (): 'dark' | 'light' => {
-	const classList = document.documentElement.classList;
-	if (classList.contains('dark')) return 'dark';
-	return 'light';
-};
-
 export const getPageQuery = (
 	query: any,
 	key: string = QUERY_KEY.PAGE,

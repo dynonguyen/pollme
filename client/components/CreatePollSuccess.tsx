@@ -1,6 +1,6 @@
 import { APP_NAME } from '../constants';
 import useLanguage from '../hooks/useLanguage';
-import Sharing from './Sharing';
+import LinkShare from './LinkShare';
 
 export default function CreatePollSuccess({
 	url = APP_NAME,
@@ -25,7 +25,7 @@ export default function CreatePollSuccess({
 				/>
 			</div>
 
-			<Sharing url={url} />
+			<LinkShare url={url} />
 		</div>
 	);
 }

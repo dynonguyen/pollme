@@ -1,11 +1,11 @@
 import { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import { useEffect, useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import AnswerOptions from '../components/AnswerOptions';
 import CheckboxSwitch from '../components/core/CheckboxSwitch';
 import Select from '../components/core/Select';
 import TagInput from '../components/core/TagInput';
-import CreatePollSuccess from '../components/CreatePollSuccess';
 import InfoTooltip from '../components/InfoTooltip';
 import { POLL_PHOTO_HEIGHT, POLL_PHOTO_WIDTH, VOTE_TYPE } from '../constants';
 import { DEFAULT } from '../constants/default';
@@ -20,6 +20,10 @@ import { createShareUrl, resizeImage } from '../utils/helper';
 import { uploadOptionPhoto } from '../utils/private-api-caller';
 import { newPollValidate } from '../utils/validation';
 const VOTE_DEFAULT = DEFAULT.VOTE;
+const CreatePollSuccess = dynamic(
+	() => import('../components/CreatePollSuccess'),
+	{ ssr: false },
+);
 
 interface BasicSettings {
 	title: string;
