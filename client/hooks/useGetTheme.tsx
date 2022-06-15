@@ -8,9 +8,13 @@ export default function useGetTheme() {
 
 	useEffect(() => {
 		const mode = localStorage.getItem(LS_KEY.THEME);
+		const htmlClassList = document.documentElement.classList;
+
 		if (mode && mode === 'dark') {
+			htmlClassList.add('dark');
 			setTheme({ isDark: true });
 		} else {
+			htmlClassList.remove('dark');
 			setTheme({ isDark: false });
 		}
 	}, []);
