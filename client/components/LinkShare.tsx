@@ -4,6 +4,7 @@ import qrcode from 'qrcode';
 import { useEffect, useState } from 'react';
 import { APP_NAME } from '../constants';
 import useLanguage from '../hooks/useLanguage';
+import SocialShare from './SocialShare';
 
 interface QRCodeProps {
 	data: string;
@@ -104,6 +105,7 @@ export default function LinkShare({ url }: { url: string }) {
 				</div>
 			</div>
 			<QRCode className='w-40 h-40 max-w-full mx-auto' data={url} />
+			<SocialShare shareLink={url} className='justify-center mt-5 gap-4' />
 		</div>
 	);
 }

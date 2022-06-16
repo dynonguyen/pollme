@@ -27,6 +27,9 @@ class Comment {
 	@Field(_type => [CommentReply])
 	replies: CommentReply[];
 
+	@Field(_type => [String])
+	favorites: string[];
+
 	// Mongoose fields for field resolver (can't access itself directly)
 	_doc?: Comment;
 }

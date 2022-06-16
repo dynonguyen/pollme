@@ -3,6 +3,8 @@ export const LS_KEY = {
 };
 
 export const GOOGLE_API_ID = process.env.NEXT_PUBLIC_GOOGLE_API_ID || '';
+export const GOOGLE_RECAPTCHA_SITE_KEY =
+	process.env.NEXT_PUBLIC_CAPTCHA_SITE_KEY || '';
 
 export const QUERY_KEY = {
 	PAGE: 'page',

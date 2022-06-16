@@ -264,6 +264,16 @@ export default {
 				answers: `At least 2 options (no duplication and no vacancy), the most ${MAX.ANSWER_OPTIONS} option! Each option is max ${MAX.OPTION_LABEL} characters.`,
 			},
 		},
+		poll: {
+			addOption: 'Add option',
+			showResultBtn: 'Show Result',
+			submit: 'Submit Vote',
+			comment: 'Comments',
+			addComment: 'Add Your Comment',
+			addCommentPlaceholder: 'Enter your comment here',
+			charLeft: 'Characters left',
+			submitCommentBtn: 'Submit Comment',
+		},
 	},
 	pageSEO: {
 		home: {
@@ -320,5 +330,13 @@ export default {
 			title: 'Congratulations !',
 			subTitle: 'The poll has been created',
 		},
+	},
+	helper: {
+		pollTypes: [
+			'Choose a single option.',
+			'Allows multiple options to be selected.',
+			'Sort the options according to the level you want.',
+			'Allow grading on your choice.',
+		],
 	},
 };

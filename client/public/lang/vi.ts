@@ -259,6 +259,16 @@ export default {
 				answers: `Ít nhất 2 lựa chọn (không trùng lặp và không bỏ trống), nhiều nhất ${MAX.ANSWER_OPTIONS} lựa chọn ! Mỗi lựa chọn tối đa ${MAX.OPTION_LABEL} ký tự.`,
 			},
 		},
+		poll: {
+			addOption: 'Thêm tuỳ chọn',
+			showResultBtn: 'Hiển thị kết quả',
+			submit: 'Tiến hành vote',
+			comment: 'Bình luận',
+			addComment: 'Thêm bình luận của bạn',
+			addCommentPlaceholder: 'Nhập bình luận của bạn tại đây',
+			charLeft: 'Ký tự còn lại',
+			submitCommentBtn: 'Bình luận',
+		},
 	},
 	pageSEO: {
 		home: {
@@ -315,5 +325,13 @@ export default {
 			title: 'Chúc mừng !',
 			subTitle: 'Cuộc khảo sát đã được tạo thành công',
 		},
+	},
+	helper: {
+		pollTypes: [
+			'Chọn một tuỳ chọn duy nhất.',
+			'Cho phép chọn nhiều tuỳ chọn.',
+			'Sắp xếp các tuỳ chọn theo cấp độ mà bạn muốn.',
+			'Cho phép chấm điểm trên lựa chọn của bạn.',
+		],
 	},
 };

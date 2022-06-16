@@ -1,7 +1,7 @@
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import LoginForm from '../components/LoginForm';
 import { SUCCESS_CODE } from '../constants/status';
 import {
@@ -22,7 +22,7 @@ const Login: NextPage = () => {
 	const router = useRouter();
 	const [loginMutation] = useLoginMutation();
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	const setUserInfoAtom = useSetRecoilState(userAtom);
+	const [userInfo, setUserInfoAtom] = useRecoilState(userAtom);
 
 	const handleFormSubmit = async (loginInput: LoginInput) => {
 		try {
@@ -30,7 +30,8 @@ const Login: NextPage = () => {
 			const response = await loginMutation({ variables: { loginInput } });
 			if (response.data?.login.code === SUCCESS_CODE.OK) {
 				const user = response.data.login.user as UserInfoFragment;
-				setUserInfoAtom({ ...user });
+				const { __typename, avt, ...rest } = user;
+				setUserInfoAtom({ ...userInfo, ...rest, avt: avt as string });
 				toast.show({
 					type: 'success',
 					message: loginLang.message.success(user.name),

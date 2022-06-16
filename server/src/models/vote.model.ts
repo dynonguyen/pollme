@@ -32,7 +32,7 @@ const schema: Schema = new Schema({
 	],
 	answers: [
 		{
-			id: Number,
+			id: String,
 			label: String,
 			photo: String,
 			voteList: [

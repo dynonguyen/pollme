@@ -14,6 +14,7 @@ interface PollSummaryProps {
 		avt?: string;
 		name: string;
 	};
+	maxVote?: number;
 	createdAt: string | Date;
 	endDate?: string | Date;
 	tags: { slug: string; name: string }[];
@@ -29,6 +30,7 @@ export default function PollSummary(props: PollSummaryProps): JSX.Element {
 		title,
 		tags,
 		totalComment,
+		maxVote,
 		totalVote,
 		createdAt,
 		endDate,
@@ -36,7 +38,7 @@ export default function PollSummary(props: PollSummaryProps): JSX.Element {
 	} = props;
 
 	const userAvt = user.avt || DEFAULT.USER_AVT;
-	const isClosed = isPollClosed(endDate);
+	const isClosed = isPollClosed(endDate, maxVote, totalVote);
 	const lang = useLanguage();
 	const linkOfTag = `${lang.pages.discover.link}?${QUERY_KEY.SEARCH}=#`;
 

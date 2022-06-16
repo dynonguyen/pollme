@@ -28,7 +28,7 @@ class VoteOfUser {
 
 @ObjectType()
 export class VoteAnswer {
-	@Field(_type => Int)
+	@Field(_type => ID)
 	id: number;
 
 	@Field(_type => String)
@@ -97,8 +97,8 @@ class Vote {
 	@Field(_type => Boolean)
 	allowAddOption: boolean;
 
-	@Field(_type => Int)
-	maxVote: number;
+	@Field(_type => Int, { nullable: true })
+	maxVote?: number;
 
 	@Field(_type => Int, { nullable: true })
 	maxScore?: boolean;
@@ -118,7 +118,7 @@ class Vote {
 	@Field(_type => Date)
 	createdAt: Date;
 
-	@Field(_type => Date)
+	@Field(_type => Date, { nullable: true })
 	updatedAt?: Date;
 
 	@Field(_type => String, { nullable: true })

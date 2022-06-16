@@ -1,10 +1,9 @@
 import { useRouter } from 'next/router';
-import React from 'react';
 import GoogleLoginButton, {
 	GoogleLoginResponse,
 	GoogleLoginResponseOffline,
 } from 'react-google-login';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { GOOGLE_API_ID } from '../constants/key';
 import { SUCCESS_CODE } from '../constants/status';
 import {
@@ -21,7 +20,7 @@ export default function GoogleLogin(): JSX.Element {
 	const loginLang = lang.pages.login;
 	const router = useRouter();
 	const [oauthLoginMutation] = useLoginOAuthMutation();
-	const setUserInfoAtom = useSetRecoilState(userAtom);
+	const [userInfo, setUserInfoAtom] = useRecoilState(userAtom);
 
 	const onLoginSuccess = async (
 		response: GoogleLoginResponse | GoogleLoginResponseOffline,
@@ -36,7 +35,8 @@ export default function GoogleLogin(): JSX.Element {
 			});
 			if (response.data?.loginWithOAuth.code === SUCCESS_CODE.OK) {
 				const user = response.data.loginWithOAuth.user as UserInfoFragment;
-				setUserInfoAtom({ ...user });
+				const { __typename, avt, ...rest } = user;
+				setUserInfoAtom({ ...userInfo, ...rest, avt: avt as string });
 				toast.show({
 					type: 'success',
 					message: loginLang.message.success(user.name),

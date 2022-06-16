@@ -27,7 +27,10 @@ import {
 import { DEFAULT } from './../constants/default';
 import { VoteFilterOptions } from './../constants/enum';
 import { ERROR_CODE, SUCCESS_CODE } from './../constants/status';
-import { VoteMutationResponse } from './../types/response/VoteResponse';
+import {
+	VoteMutationResponse,
+	VoteQueryResponse,
+} from './../types/response/VoteResponse';
 import {
 	increaseTagOrCreate,
 	randomString,
@@ -92,6 +95,31 @@ export class VoteResolver {
 				filter,
 				pageSize,
 				total: 0,
+			};
+		}
+	}
+
+	@Query(_return => VoteQueryResponse, { nullable: true })
+	async publicVote(@Arg('voteId') voteId: String): Promise<VoteQueryResponse> {
+		try {
+			if (!voteId) return { code: ERROR_CODE.BAD_REQUEST };
+
+			const vote = await VoteModel.findOne({ _id: voteId, isPrivate: false });
+			if (vote) {
+				return {
+					code: SUCCESS_CODE.OK,
+					vote,
+				};
+			}
+
+			return {
+				code: ERROR_CODE.NOT_FOUND,
+				message: 'Vote not found',
+			};
+		} catch (error) {
+			console.error('Public vote query error: ', error);
+			return {
+				code: ERROR_CODE.INTERNAL_ERROR,
 			};
 		}
 	}

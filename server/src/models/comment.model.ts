@@ -28,6 +28,7 @@ const schema: Schema = new Schema({
 			},
 		},
 	],
+	favorites: [String],
 });
 
 const CommentModel: Model<Comment> = model('Comment', schema, 'comments');

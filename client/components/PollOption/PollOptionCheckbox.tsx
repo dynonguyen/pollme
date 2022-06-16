@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import themeAtom from '../recoil/atoms/theme.atom';
+import themeAtom from '../../recoil/atoms/theme.atom';
+import ImagePreview from '../core/ImagePreview';
 
 const rankingColors = [
 	'#219ebc',
@@ -35,6 +36,9 @@ interface PollOptionCheckboxProps {
 	percent?: number;
 	rank?: number;
 	onCheck?: (checked: boolean) => void;
+	checked?: boolean;
+	photoUrl?: string;
+	photoThumbnail?: string;
 }
 
 export default function PollOptionCheckbox(
@@ -47,18 +51,25 @@ export default function PollOptionCheckbox(
 		defaultChecked = false,
 		percent = 0,
 		rank = 0,
+		checked = defaultChecked,
+		photoUrl = '',
+		photoThumbnail = '',
 		onCheck,
 	} = props;
 
-	const [checked, setChecked] = useState(defaultChecked);
+	const [isChecked, setIsChecked] = useState(defaultChecked);
 	const { isDark } = useRecoilValue(themeAtom);
 
 	const handleChecked = () => {
-		onCheck && onCheck(!checked);
-		setChecked(!checked);
+		onCheck && onCheck(!isChecked);
+		setIsChecked(!isChecked);
 	};
 
-	const checkedClass = checked ? 'bg-primary' : 'border border-color';
+	useEffect(() => {
+		if (checked !== isChecked) setIsChecked(checked);
+	}, [checked]);
+
+	const checkedClass = isChecked ? 'bg-primary' : 'border border-color';
 	const checkboxType = rounded ? 'rounded-full' : 'rounded-sm';
 	const percentBarColor = rank
 		? isDark
@@ -84,7 +95,9 @@ export default function PollOptionCheckbox(
 				<strong className='text-base md:text-xl text-slate-500 dark:text-slate-300 font-normal'>
 					{title}
 				</strong>
+				{photoUrl && <ImagePreview src={photoUrl} thumbnail={photoThumbnail} />}
 			</div>
+
 			{showResult && (
 				<div className='flex gap-2 items-center'>
 					<div className='w-full h-2 md:h-3 bg-slate-300 dark:bg-slate-600 rounded-full overflow-hidden relative'>

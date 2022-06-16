@@ -30,9 +30,60 @@ query Discover(
 				slug
 			}
 			totalComment
+			maxVote
 			totalVote
 			owner {
 				_id
+				avt
+				name
+			}
+		}
+	}
+}
+
+query GetPublicVoteById($voteId: String!) {
+	publicVote(voteId: $voteId) {
+		code
+		message
+		vote {
+			_id
+			ownerId
+			title
+			desc
+			type
+			createdAt
+			updatedAt
+			endDate
+			allowAddOption
+			isIPDuplicationCheck
+			isLoginRequired
+			isReCaptcha
+			isShowResult
+			isShowResultBtn
+			maxChoice
+			maxScore
+			maxVote
+			totalComment
+			totalVote
+			tags {
+				name
+				slug
+			}
+			answers {
+				id
+				label
+				photo
+				voteList {
+					rank
+					score
+					userInfo {
+						ip
+						name
+						userId
+					}
+				}
+			}
+			owner {
 				avt
 				name
 			}

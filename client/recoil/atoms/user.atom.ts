@@ -6,6 +6,7 @@ export interface UserAtom {
 	name: string;
 	ip: string;
 	avt?: string;
+	loading?: boolean;
 }
 
 export const userAtomDefault: UserAtom = {
@@ -14,6 +15,7 @@ export const userAtomDefault: UserAtom = {
 	email: '',
 	avt: '',
 	ip: '',
+	loading: true,
 };
 
 const userAtom = atom<UserAtom>({

@@ -188,6 +188,7 @@ const Discover: NextPage<
 								pollSlug={vote.slug}
 								totalVote={vote.totalVote}
 								totalComment={vote.totalComment}
+								maxVote={vote.maxVote as number}
 								user={{
 									name: vote.owner?.name || '',
 									avt: vote.owner?.avt || '',

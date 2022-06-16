@@ -103,9 +103,15 @@ export type Query = {
   __typename?: 'Query';
   count: CountingAggregation;
   me?: Maybe<User>;
+  publicVote?: Maybe<VoteQueryResponse>;
   publicVotes?: Maybe<VotePaginatedResponse>;
   tags: TagPaginatedResponse;
   user?: Maybe<User>;
+};
+
+
+export type QueryPublicVoteArgs = {
+  voteId: Scalars['String'];
 };
 
 
@@ -213,7 +219,7 @@ export type Vote = {
   isShowResultBtn: Scalars['Boolean'];
   maxChoice?: Maybe<Scalars['Int']>;
   maxScore?: Maybe<Scalars['Int']>;
-  maxVote: Scalars['Int'];
+  maxVote?: Maybe<Scalars['Int']>;
   owner?: Maybe<User>;
   ownerId: Scalars['String'];
   privateLink?: Maybe<Scalars['String']>;
@@ -224,12 +230,12 @@ export type Vote = {
   totalComment: Scalars['Int'];
   totalVote: Scalars['Int'];
   type: Scalars['Int'];
-  updatedAt: Scalars['DateTime'];
+  updatedAt?: Maybe<Scalars['DateTime']>;
 };
 
 export type VoteAnswer = {
   __typename?: 'VoteAnswer';
-  id: Scalars['Int'];
+  id: Scalars['ID'];
   label: Scalars['String'];
   photo?: Maybe<Scalars['String']>;
   voteList: Array<VoteOfUser>;
@@ -262,6 +268,13 @@ export type VotePaginatedResponse = QueryResponse & {
   total: Scalars['Int'];
 };
 
+export type VoteQueryResponse = QueryResponse & {
+  __typename?: 'VoteQueryResponse';
+  code: Scalars['Int'];
+  message?: Maybe<Scalars['String']>;
+  vote?: Maybe<Vote>;
+};
+
 type MutationStatus_UserMutationResponse_Fragment = { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null };
 
 type MutationStatus_VoteMutationResponse_Fragment = { __typename?: 'VoteMutationResponse', code: number, success: boolean, message?: string | null };
@@ -274,7 +287,9 @@ type QueryStatus_TagPaginatedResponse_Fragment = { __typename?: 'TagPaginatedRes
 
 type QueryStatus_VotePaginatedResponse_Fragment = { __typename?: 'VotePaginatedResponse', code: number, message?: string | null };
 
-export type QueryStatusFragment = QueryStatus_CountingAggregation_Fragment | QueryStatus_TagPaginatedResponse_Fragment | QueryStatus_VotePaginatedResponse_Fragment;
+type QueryStatus_VoteQueryResponse_Fragment = { __typename?: 'VoteQueryResponse', code: number, message?: string | null };
+
+export type QueryStatusFragment = QueryStatus_CountingAggregation_Fragment | QueryStatus_TagPaginatedResponse_Fragment | QueryStatus_VotePaginatedResponse_Fragment | QueryStatus_VoteQueryResponse_Fragment;
 
 export type UserInfoFragment = { __typename?: 'User', _id: string, email: string, name: string, avt?: string | null };
 
@@ -367,7 +382,14 @@ export type DiscoverQueryVariables = Exact<{
 }>;
 
 
-export type DiscoverQuery = { __typename?: 'Query', publicVotes?: { __typename?: 'VotePaginatedResponse', page: number, pageSize: number, total: number, sort?: string | null, filter?: string | null, code: number, message?: string | null, docs: Array<{ __typename?: 'Vote', _id: string, title: string, shortDesc?: string | null, createdAt: any, endDate?: any | null, slug: string, totalComment: number, totalVote: number, tags: Array<{ __typename?: 'TagInVote', name: string, slug: string }>, owner?: { __typename?: 'User', _id: string, avt?: string | null, name: string } | null }> } | null };
+export type DiscoverQuery = { __typename?: 'Query', publicVotes?: { __typename?: 'VotePaginatedResponse', page: number, pageSize: number, total: number, sort?: string | null, filter?: string | null, code: number, message?: string | null, docs: Array<{ __typename?: 'Vote', _id: string, title: string, shortDesc?: string | null, createdAt: any, endDate?: any | null, slug: string, totalComment: number, maxVote?: number | null, totalVote: number, tags: Array<{ __typename?: 'TagInVote', name: string, slug: string }>, owner?: { __typename?: 'User', _id: string, avt?: string | null, name: string } | null }> } | null };
+
+export type GetPublicVoteByIdQueryVariables = Exact<{
+  voteId: Scalars['String'];
+}>;
+
+
+export type GetPublicVoteByIdQuery = { __typename?: 'Query', publicVote?: { __typename?: 'VoteQueryResponse', code: number, message?: string | null, vote?: { __typename?: 'Vote', _id: string, ownerId: string, title: string, desc?: string | null, type: number, createdAt: any, updatedAt?: any | null, endDate?: any | null, allowAddOption: boolean, isIPDuplicationCheck: boolean, isLoginRequired: boolean, isReCaptcha: boolean, isShowResult: boolean, isShowResultBtn: boolean, maxChoice?: number | null, maxScore?: number | null, maxVote?: number | null, totalComment: number, totalVote: number, tags: Array<{ __typename?: 'TagInVote', name: string, slug: string }>, answers: Array<{ __typename?: 'VoteAnswer', id: string, label: string, photo?: string | null, voteList: Array<{ __typename?: 'VoteOfUser', rank?: number | null, score?: number | null, userInfo: { __typename?: 'UserInfoInVote', ip?: string | null, name?: string | null, userId?: string | null } }> }>, owner?: { __typename?: 'User', avt?: string | null, name: string } | null } | null } | null };
 
 export const MutationStatusFragmentDoc = gql`
     fragment mutationStatus on MutationResponse {
@@ -846,6 +868,7 @@ export const DiscoverDocument = gql`
         slug
       }
       totalComment
+      maxVote
       totalVote
       owner {
         _id
@@ -888,3 +911,82 @@ export function useDiscoverLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<D
 export type DiscoverQueryHookResult = ReturnType<typeof useDiscoverQuery>;
 export type DiscoverLazyQueryHookResult = ReturnType<typeof useDiscoverLazyQuery>;
 export type DiscoverQueryResult = Apollo.QueryResult<DiscoverQuery, DiscoverQueryVariables>;
+export const GetPublicVoteByIdDocument = gql`
+    query GetPublicVoteById($voteId: String!) {
+  publicVote(voteId: $voteId) {
+    code
+    message
+    vote {
+      _id
+      ownerId
+      title
+      desc
+      type
+      createdAt
+      updatedAt
+      endDate
+      allowAddOption
+      isIPDuplicationCheck
+      isLoginRequired
+      isReCaptcha
+      isShowResult
+      isShowResultBtn
+      maxChoice
+      maxScore
+      maxVote
+      totalComment
+      totalVote
+      tags {
+        name
+        slug
+      }
+      answers {
+        id
+        label
+        photo
+        voteList {
+          rank
+          score
+          userInfo {
+            ip
+            name
+            userId
+          }
+        }
+      }
+      owner {
+        avt
+        name
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetPublicVoteByIdQuery__
+ *
+ * To run a query within a React component, call `useGetPublicVoteByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPublicVoteByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPublicVoteByIdQuery({
+ *   variables: {
+ *      voteId: // value for 'voteId'
+ *   },
+ * });
+ */
+export function useGetPublicVoteByIdQuery(baseOptions: Apollo.QueryHookOptions<GetPublicVoteByIdQuery, GetPublicVoteByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPublicVoteByIdQuery, GetPublicVoteByIdQueryVariables>(GetPublicVoteByIdDocument, options);
+      }
+export function useGetPublicVoteByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPublicVoteByIdQuery, GetPublicVoteByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPublicVoteByIdQuery, GetPublicVoteByIdQueryVariables>(GetPublicVoteByIdDocument, options);
+        }
+export type GetPublicVoteByIdQueryHookResult = ReturnType<typeof useGetPublicVoteByIdQuery>;
+export type GetPublicVoteByIdLazyQueryHookResult = ReturnType<typeof useGetPublicVoteByIdLazyQuery>;
+export type GetPublicVoteByIdQueryResult = Apollo.QueryResult<GetPublicVoteByIdQuery, GetPublicVoteByIdQueryVariables>;

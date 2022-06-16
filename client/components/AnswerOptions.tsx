@@ -7,18 +7,18 @@ import useToast from '../hooks/useToast';
 import { PhotoType } from '../types/common';
 
 interface Answer {
-	id: number;
+	id: string;
 	label: string;
 	photo?: PhotoType;
 }
 
 interface AnswerOptionItemProps {
-	onInputChange: (id: number, value: string) => void;
-	onPhotoChange: (id: number, photo: PhotoType) => void;
-	onDelete?: (id: number) => void;
+	onInputChange: (id: string, value: string) => void;
+	onPhotoChange: (id: string, photo: PhotoType) => void;
+	onDelete?: (id: string) => void;
 	placeholder?: string;
 	allowDelete: boolean;
-	id: number;
+	id: string;
 }
 
 const classes = {
@@ -26,8 +26,8 @@ const classes = {
 };
 
 const initAnswers = [
-	{ id: Date.now(), label: '', photo: null },
-	{ id: Date.now() + 1, label: '', photo: null },
+	{ id: Date.now().toString(), label: '', photo: null },
+	{ id: (Date.now() + 1).toString(), label: '', photo: null },
 ];
 
 function AnswerOptionItem({
@@ -86,7 +86,7 @@ function AnswerOptionItem({
 				ref={photoRef}
 				type='file'
 				className='hidden'
-				accept='image/png, image/jpeg'
+				accept='image/png, image/jpeg, image/webp'
 				onChange={handlePhotoChange}
 			/>
 			{photoReview ? (
@@ -132,25 +132,25 @@ export default function AnswerOptions({
 
 	const handleAddOption = () => {
 		if (answers.length < MAX.ANSWER_OPTIONS) {
-			const newOption = { id: Date.now(), label: '', photo: null };
+			const newOption = { id: Date.now().toString(), label: '', photo: null };
 			answersRef.current = [...answersRef.current, newOption];
 			setAnswers([...answers, newOption]);
 		}
 	};
 
-	const handleDeleteOption = (id: number) => {
+	const handleDeleteOption = (id: string) => {
 		const newAnswers = answers.filter(answer => answer.id !== id);
 		answersRef.current = [...newAnswers];
 		setAnswers([...newAnswers]);
 	};
 
-	const handleItemInputChange = (id: number, value: string) => {
+	const handleItemInputChange = (id: string, value: string) => {
 		answersRef.current = answersRef.current.map(answer =>
 			answer.id === id ? { ...answer, label: value } : answer,
 		);
 	};
 
-	const handleItemPhotoChange = (id: number, photo: PhotoType) => {
+	const handleItemPhotoChange = (id: string, photo: PhotoType) => {
 		answersRef.current = answersRef.current.map(answer =>
 			answer.id === id ? { ...answer, photo } : answer,
 		);

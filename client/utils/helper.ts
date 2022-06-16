@@ -1,4 +1,6 @@
+import { VOTE_TYPE } from '../constants';
 import { QUERY_KEY } from './../constants/key';
+import { AnswerOption } from './../types/common';
 
 export const getPageQuery = (
 	query: any,
@@ -12,7 +14,12 @@ export const getPageQuery = (
 	return pageOrPageSize;
 };
 
-export const isPollClosed = (endDate?: string | Date) => {
+export const isPollClosed = (
+	endDate?: string | Date,
+	maxVote?: number,
+	totalVote?: number,
+) => {
+	if (maxVote && totalVote && totalVote >= maxVote) return true;
 	if (!endDate) return false;
 	const date = new Date(endDate);
 	if (isNaN(date.getTime())) return false;
@@ -78,4 +85,65 @@ export const createShareUrl = (
 	if (isPrivate) return `${origin}/poll/p/${privateSlug}`;
 
 	return `${origin}/poll/${publicSlug}`;
+};
+
+export const pollTypeToString = (
+	type: number = VOTE_TYPE.SINGLE_CHOICE,
+): string => {
+	type T = keyof typeof VOTE_TYPE;
+
+	for (let key in VOTE_TYPE) {
+		if (VOTE_TYPE[key as T] === type) {
+			return key.replaceAll('_', ' ').toLowerCase();
+		}
+	}
+
+	return '';
+};
+
+export const pollRanking = (
+	options: AnswerOption[] = [],
+	isScore: boolean = false,
+) => {
+	let result: Array<{
+		id: string;
+		score: number;
+		rank: number;
+		percent: number;
+	}> = [];
+
+	options.forEach(option => {
+		const { id, voteList = [] } = option;
+		if (isScore) {
+			result.push({
+				id,
+				score: voteList.reduce((sum, vote) => sum + (vote?.score || 0), 0),
+				rank: 0,
+				percent: 0,
+			});
+		} else {
+			result.push({ id, score: voteList.length, rank: 0, percent: 0 });
+		}
+	});
+
+	const totalScore = result.reduce((sum, r) => sum + r.score, 0);
+	result = result
+		.sort((a, b) => b.score - a.score)
+		.map((r, index) => ({
+			...r,
+			percent: totalScore ? Math.round((r.score * 100) / totalScore) : 0,
+			rank: index + 1,
+		}));
+
+	return result;
+};
+
+export const toThumbnailSrc = (photoSrc: string): string => {
+	if (photoSrc) {
+		const dotIndex = photoSrc.lastIndexOf('.');
+		if (dotIndex !== -1) {
+			return photoSrc.slice(0, dotIndex) + '_thumb' + photoSrc.slice(dotIndex);
+		}
+	}
+	return photoSrc;
 };

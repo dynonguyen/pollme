@@ -34,7 +34,7 @@ export default function useGetMe(): void {
 			);
 			await Promise.all(promises);
 
-			setUserInfoState({ ...user });
+			setUserInfoState({ ...user, loading: false });
 		})();
 	}, []);
 }

@@ -7,7 +7,7 @@ import CheckboxSwitch from '../components/core/CheckboxSwitch';
 import Select from '../components/core/Select';
 import TagInput from '../components/core/TagInput';
 import InfoTooltip from '../components/InfoTooltip';
-import { POLL_PHOTO_HEIGHT, POLL_PHOTO_WIDTH, VOTE_TYPE } from '../constants';
+import { VOTE_TYPE } from '../constants';
 import { DEFAULT } from '../constants/default';
 import { SUCCESS_CODE } from '../constants/status';
 import { MAX } from '../constants/validation';
@@ -16,7 +16,7 @@ import useCheckUserLogin from '../hooks/useCheckUserLogin';
 import useLanguage from '../hooks/useLanguage';
 import useToast from '../hooks/useToast';
 import userAtom from '../recoil/atoms/user.atom';
-import { createShareUrl, resizeImage } from '../utils/helper';
+import { createShareUrl } from '../utils/helper';
 import { uploadOptionPhoto } from '../utils/private-api-caller';
 import { newPollValidate } from '../utils/validation';
 const VOTE_DEFAULT = DEFAULT.VOTE;
@@ -30,7 +30,7 @@ interface BasicSettings {
 	desc: string;
 	tags: string[];
 	answers: Array<{
-		id: number;
+		id: string;
 		label: string;
 		photo?: string | ArrayBuffer | null;
 	}>;
@@ -120,7 +120,7 @@ function BasicSettings({
 				<textarea
 					id='desc'
 					rows={3}
-					maxLength={MAX.VOTE_TITLE}
+					maxLength={MAX.VOTE_DESC}
 					className='field mt-1'
 					placeholder={newPollLang.placeholder.desc}
 					onChange={e => (fields.current.desc = e.target.value.trim())}
@@ -319,6 +319,7 @@ const NewVote: NextPage = () => {
 
 	const createNewPoll = async () => {
 		const { answers, ...restInput } = fields.current;
+
 		try {
 			const response = await createVoteMutation({
 				variables: {
@@ -326,7 +327,7 @@ const NewVote: NextPage = () => {
 						answers: answers.map(answer => ({
 							id: answer.id.toString(),
 							label: answer.label,
-							photo: `${answer.id}.jpeg`,
+							photo: answer.photo ? `${answer.id}.jpeg` : null,
 						})),
 						...restInput,
 					},
@@ -339,18 +340,12 @@ const NewVote: NextPage = () => {
 				// Upload image to public folder
 				answers.forEach(answer => {
 					if (answer.photo) {
-						resizeImage(
+						uploadOptionPhoto(
 							answer.photo as string,
-							POLL_PHOTO_WIDTH,
-							POLL_PHOTO_HEIGHT,
-						).then(resizedPhoto => {
-							uploadOptionPhoto(
-								resizedPhoto as string,
-								userInfo._id,
-								pollId!,
-								answer.id.toString(),
-							);
-						});
+							userInfo._id,
+							pollId!,
+							answer.id.toString(),
+						);
 					}
 				});
 
