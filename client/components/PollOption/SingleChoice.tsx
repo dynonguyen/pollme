@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import userAtom, { UserAtom } from '../../recoil/atoms/user.atom';
 import { AnswerOption } from '../../types/common';
 import { pollRanking, toThumbnailSrc } from '../../utils/helper';
 import PollOptionCheckbox from './PollOptionCheckbox';
@@ -8,8 +10,26 @@ interface SingleChoiceProps {
 	ownerId: string;
 	pollId: string;
 	showResult?: boolean;
-	onChecked?: (id: string) => void;
-	onUnChecked?: () => void;
+	isIPDuplicationCheck?: boolean;
+	onChecked: (optionId: string) => void;
+	onUncheck: (optionId: string) => void;
+}
+
+function findUserChecked(
+	userInfo: UserAtom,
+	options: AnswerOption[],
+): string | null {
+	const { _id, ip } = userInfo;
+	for (let option of options) {
+		const { voteList } = option;
+		for (let vote of voteList) {
+			if (vote.userInfo.ip === ip || vote.userInfo.userId === _id) {
+				return option.id;
+			}
+		}
+	}
+
+	return null;
 }
 
 export default function SingleChoice(props: SingleChoiceProps): JSX.Element {
@@ -18,18 +38,24 @@ export default function SingleChoice(props: SingleChoiceProps): JSX.Element {
 		showResult = true,
 		ownerId,
 		pollId,
+		isIPDuplicationCheck,
 		onChecked,
-		onUnChecked,
+		onUncheck,
 	} = props;
+	const userInfo = useRecoilValue(userAtom);
+	const [defaultChecked] = useState(() => findUserChecked(userInfo, options));
 	const pollRanks = pollRanking(options, false);
 	const [checkList, setCheckList] = useState(
-		options.map(o => ({ id: o.id, checked: false })),
+		options.map(o => ({
+			id: o.id,
+			checked: isIPDuplicationCheck ? o.id === defaultChecked : false,
+		})),
 	);
 
 	const handleCheck = (id: string, checked: boolean) => {
 		if (!checked) {
 			setCheckList(options.map(o => ({ id: o.id, checked: false })));
-			onUnChecked && onUnChecked();
+			onUncheck(id);
 		} else {
 			setCheckList(
 				options.map(o =>
@@ -38,7 +64,7 @@ export default function SingleChoice(props: SingleChoiceProps): JSX.Element {
 						: { id: o.id, checked: false },
 				),
 			);
-			onChecked && onChecked(id);
+			onChecked(id);
 		}
 	};
 

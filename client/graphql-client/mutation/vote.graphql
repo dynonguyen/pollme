@@ -10,3 +10,11 @@ mutation CreateVote($newVoteInput: NewVoteInput!) {
 		}
 	}
 }
+
+mutation VotingMutation($votingInput: VotingInput!) {
+	voting(votingInput: $votingInput) {
+		code
+		message
+		success
+	}
+}

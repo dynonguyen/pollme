@@ -8,13 +8,13 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useRef, useState } from 'react';
-
+import { useRecoilValue } from 'recoil';
 import Pagination from '../../components/core/Pagination';
 import InfoTooltip from '../../components/InfoTooltip';
 import SingleChoice from '../../components/PollOption/SingleChoice';
 import ReCAPTCHA from '../../components/ReCAPTCHA';
 import SocialShare from '../../components/SocialShare';
-import { APP_NAME, HOST_URI } from '../../constants';
+import { APP_NAME, HOST_URI, VOTE_TYPE } from '../../constants';
 import { DEFAULT } from '../../constants/default';
 import { QUERY_KEY } from '../../constants/key';
 import { SUCCESS_CODE } from '../../constants/status';
@@ -22,9 +22,11 @@ import {
 	GetPublicVoteByIdDocument,
 	GetPublicVoteByIdQuery,
 	GetPublicVoteByIdQueryVariables,
+	VotingInput,
 } from '../../graphql-client/generated/graphql';
 import useLanguage from '../../hooks/useLanguage';
 import { addApolloState, initializeApollo } from '../../lib/apolloClient';
+import userAtom from '../../recoil/atoms/user.atom';
 import { dateFormat } from '../../utils/format';
 import { isPollClosed, pollTypeToString } from '../../utils/helper';
 
@@ -39,9 +41,19 @@ const Poll: NextPage<
 	const lang = useLanguage();
 	const pollLang = lang.pages.poll;
 	const router = useRouter();
+	const userInfo = useRecoilValue(userAtom);
 	const linkOfTag = `${lang.pages.discover.link}?${QUERY_KEY.SEARCH}=#`;
 	const [reCaptchaToken, setReCaptchaToken] = useState<string | null>(null);
-	const choices = useRef();
+	const choices = useRef<VotingInput>({
+		pollId: vote?._id!,
+		userInfo: {
+			userId: userInfo._id,
+			userIp: userInfo.ip,
+			username: userInfo.name,
+		},
+		unVoteIds: [],
+		votes: [],
+	});
 
 	const isClosed = isPollClosed(
 		vote?.endDate,
@@ -49,7 +61,11 @@ const Poll: NextPage<
 		vote?.totalVote,
 	);
 
-	const handleVoteSubmit = () => {};
+	const handleVoteSubmit = () => {
+		if (!choices.current.votes?.length && !choices.current.unVoteIds?.length)
+			return;
+		console.log(choices.current);
+	};
 
 	return (
 		<>
@@ -116,11 +132,25 @@ const Poll: NextPage<
 
 				{/* poll options */}
 				<div className='my-5 grid grid-cols-1 gap-3 md:gap-6'>
-					<SingleChoice
-						options={vote?.answers || []}
-						ownerId={vote?.ownerId || ''}
-						pollId={vote?._id || ''}
-					/>
+					{vote?.type === VOTE_TYPE.SINGLE_CHOICE && (
+						<SingleChoice
+							showResult={vote.isShowResult}
+							options={vote?.answers || []}
+							ownerId={vote?.ownerId || ''}
+							pollId={vote?._id || ''}
+							isIPDuplicationCheck={vote.isIPDuplicationCheck}
+							onChecked={optionId => {
+								choices.current.unVoteIds = [];
+								choices.current.votes = [
+									{ id: optionId, rank: null, score: null },
+								];
+							}}
+							onUncheck={optionId => {
+								choices.current.votes = [];
+								choices.current.unVoteIds = [optionId];
+							}}
+						/>
+					)}
 				</div>
 
 				{/* ReCAPTCHA */}
@@ -137,14 +167,23 @@ const Poll: NextPage<
 							{pollLang.showResultBtn}
 						</button>
 					)}
-					<button
-						className={`btn-accent md:btn-lg rounded-full font-medium ${
-							vote?.isReCaptcha && !reCaptchaToken ? 'disabled' : ''
-						}`}
-						onClick={handleVoteSubmit}
-					>
-						{pollLang.submit}
-					</button>
+
+					{!userInfo._id && vote?.isLoginRequired ? (
+						<Link href={lang.pages.login.link}>
+							<button className='btn-accent md:btn-lg rounded-full font-medium'>
+								{pollLang.requiredLogin}
+							</button>
+						</Link>
+					) : (
+						<button
+							className={`btn-accent md:btn-lg rounded-full font-medium ${
+								vote?.isReCaptcha && !reCaptchaToken ? 'disabled' : ''
+							}`}
+							onClick={handleVoteSubmit}
+						>
+							{pollLang.submit}
+						</button>
+					)}
 				</div>
 
 				{/* Comment list */}

@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import themeAtom from '../../recoil/atoms/theme.atom';
 import ImagePreview from '../core/ImagePreview';
@@ -31,46 +30,28 @@ const darkRankingColors = [
 interface PollOptionCheckboxProps {
 	title: string;
 	showResult?: boolean;
-	rounded?: boolean;
-	defaultChecked?: boolean;
 	percent?: number;
 	rank?: number;
-	onCheck?: (checked: boolean) => void;
-	checked?: boolean;
 	photoUrl?: string;
 	photoThumbnail?: string;
+	onChange?: (score: number) => void;
 }
 
-export default function PollOptionCheckbox(
+export default function PollOptionScore(
 	props: PollOptionCheckboxProps,
 ): JSX.Element {
 	const {
 		title,
 		showResult = true,
-		rounded = false,
-		defaultChecked = false,
 		percent = 0,
 		rank = 0,
-		checked = defaultChecked,
 		photoUrl = '',
 		photoThumbnail = '',
-		onCheck,
+		onChange,
 	} = props;
 
-	const [isChecked, setIsChecked] = useState(defaultChecked);
 	const { isDark } = useRecoilValue(themeAtom);
 
-	const handleChecked = () => {
-		onCheck && onCheck(!isChecked);
-		setIsChecked(!isChecked);
-	};
-
-	useEffect(() => {
-		if (checked !== isChecked) setIsChecked(checked);
-	}, [checked]);
-
-	const checkedClass = isChecked ? 'bg-primary' : 'border border-color';
-	const checkboxType = rounded ? 'rounded-full' : 'rounded-sm';
 	const percentBarColor = rank
 		? isDark
 			? darkRankingColors[(rank % darkRankingColors.length) - 1]
@@ -81,17 +62,13 @@ export default function PollOptionCheckbox(
 
 	return (
 		<div>
-			<input
-				type='checkbox'
-				className='hidden'
-				checked={checked}
-				onChange={() => {}}
-			/>
 			<div className='flex items-center gap-2 mb-1'>
-				<div
-					className={`w-4 h-4 md:w-5 md:h-5 flex-shrink-0 cursor-pointer ${checkedClass} ${checkboxType}`}
-					onClick={handleChecked}
-				></div>
+				<input
+					className='field w-24 flex-shrink-0'
+					placeholder='Score'
+					type='number'
+					onChange={e => onChange && onChange(Number(e.target.value))}
+				/>
 				<strong className='text-base md:text-xl text-slate-500 dark:text-slate-300 font-normal'>
 					{title}
 				</strong>
@@ -106,7 +83,7 @@ export default function PollOptionCheckbox(
 							style={{ width: `${percent}%`, backgroundColor: percentBarColor }}
 						></div>
 					</div>
-					<span className='w-10 flex-shrink-0 text-slate-500 dark:text-slate-300 text-right'>
+					<span className='w-12 flex-shrink-0 text-slate-500 dark:text-slate-300'>
 						{percent}%
 					</span>
 				</div>

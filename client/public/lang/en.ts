@@ -273,6 +273,7 @@ export default {
 			addCommentPlaceholder: 'Enter your comment here',
 			charLeft: 'Characters left',
 			submitCommentBtn: 'Submit Comment',
+			requiredLogin: 'Log in to submit',
 		},
 	},
 	pageSEO: {

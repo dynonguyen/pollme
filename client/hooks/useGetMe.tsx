@@ -10,7 +10,7 @@ export default function useGetMe(): void {
 
 	useEffect(() => {
 		(async function () {
-			let user: UserAtom = userAtomDefault;
+			let user: UserAtom = { ...userAtomDefault };
 
 			const promises = [];
 			promises.push(

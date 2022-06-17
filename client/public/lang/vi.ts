@@ -268,6 +268,7 @@ export default {
 			addCommentPlaceholder: 'Nhập bình luận của bạn tại đây',
 			charLeft: 'Ký tự còn lại',
 			submitCommentBtn: 'Bình luận',
+			requiredLogin: 'Đăng nhập để submit',
 		},
 	},
 	pageSEO: {
