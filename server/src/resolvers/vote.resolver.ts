@@ -18,6 +18,7 @@ import User from '../types/entities/User';
 import Vote from '../types/entities/Vote';
 import { NewVoteInput } from '../types/input/NewVoteInput';
 import { VotePaginationArg } from '../types/input/VoteArg';
+import { VotingInput } from '../types/input/VoteInput';
 import { VotePaginatedResponse } from '../types/response/VoteResponse';
 import mongoosePaginate from '../utils/mongoose-paginate';
 import {
@@ -27,6 +28,7 @@ import {
 import { DEFAULT } from './../constants/default';
 import { VoteFilterOptions } from './../constants/enum';
 import { ERROR_CODE, SUCCESS_CODE } from './../constants/status';
+import { VoteAnswer } from './../types/entities/Vote';
 import {
 	VoteMutationResponse,
 	VoteQueryResponse,
@@ -162,6 +164,87 @@ export class VoteResolver {
 				code: ERROR_CODE.INTERNAL_ERROR,
 				success: false,
 				message: 'Failed',
+			};
+		}
+	}
+
+	@Mutation(_return => VoteMutationResponse)
+	async voting(
+		@Arg('votingInput') votingInput: VotingInput,
+	): Promise<VoteMutationResponse> {
+		const { pollId, votes = [], unVoteIds = [], userInfo } = votingInput;
+		const { userId, userIp, username } = userInfo;
+
+		try {
+			let vote = await VoteModel.findById(pollId);
+			if (!vote) {
+				return {
+					code: ERROR_CODE.BAD_REQUEST,
+					message: 'Vote does not exist',
+					success: false,
+				};
+			}
+
+			const { answers } = vote;
+			let newAnswers: VoteAnswer[] = [];
+			answers.forEach(answer => {
+				if (unVoteIds.includes(answer.id)) {
+					const voteIndex = answer.voteList.findIndex(
+						v => v.userInfo?.ip === userIp || v.userInfo?.userId === userId,
+					);
+					if (voteIndex !== -1) {
+						answer.voteList.splice(voteIndex, 1);
+					}
+				}
+
+				votes.forEach(v => {
+					if (v.id === answer.id) {
+						const voteIndex = answer.voteList.findIndex(
+							v2 =>
+								v2.userInfo?.ip === userIp || v2.userInfo?.userId === userId,
+						);
+						if (voteIndex !== -1 && !vote?.isIPDuplicationCheck) {
+							answer.voteList[voteIndex] = {
+								userInfo: {
+									userId,
+									ip: userIp,
+									name: username,
+								},
+								rank: v.rank,
+								score: v.score,
+							};
+						} else {
+							answer.voteList.push({
+								userInfo: {
+									userId,
+									ip: userIp,
+									name: username,
+								},
+								rank: v.rank,
+								score: v.score,
+							});
+						}
+					}
+				});
+
+				newAnswers.push(answer);
+			});
+
+			await VoteModel.updateOne(
+				{ _id: pollId },
+				{ $set: { answers: newAnswers } },
+			);
+
+			return {
+				code: SUCCESS_CODE.OK,
+				success: true,
+				vote: vote._doc ? { ...vote._doc, answers: newAnswers } : undefined,
+			};
+		} catch (error) {
+			console.error('VOTING MUTATION ERROR: ', error);
+			return {
+				code: ERROR_CODE.INTERNAL_ERROR,
+				success: false,
 			};
 		}
 	}

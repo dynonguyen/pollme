@@ -29,7 +29,7 @@ class VoteOfUser {
 @ObjectType()
 export class VoteAnswer {
 	@Field(_type => ID)
-	id: number;
+	id: string;
 
 	@Field(_type => String)
 	label: string;
