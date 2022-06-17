@@ -23,6 +23,27 @@ export type AnswerItem = {
   photo?: InputMaybe<Scalars['String']>;
 };
 
+export type Comment = {
+  __typename?: 'Comment';
+  _id: Scalars['ID'];
+  content: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  favorites: Array<Scalars['String']>;
+  owner?: Maybe<User>;
+  ownerId: Scalars['String'];
+  voteId: Scalars['String'];
+};
+
+export type CommentPaginatedResponse = QueryResponse & {
+  __typename?: 'CommentPaginatedResponse';
+  code: Scalars['Int'];
+  docs: Array<Comment>;
+  message?: Maybe<Scalars['String']>;
+  page: Scalars['Int'];
+  pageSize: Scalars['Int'];
+  total: Scalars['Int'];
+};
+
 export type CountingAggregation = QueryResponse & {
   __typename?: 'CountingAggregation';
   code: Scalars['Int'];
@@ -107,12 +128,20 @@ export type OAuthLoginInput = {
 
 export type Query = {
   __typename?: 'Query';
+  comments: CommentPaginatedResponse;
   count: CountingAggregation;
   me?: Maybe<User>;
   publicVote?: Maybe<VoteQueryResponse>;
   publicVotes?: Maybe<VotePaginatedResponse>;
   tags: TagPaginatedResponse;
   user?: Maybe<User>;
+};
+
+
+export type QueryCommentsArgs = {
+  page?: InputMaybe<Scalars['Int']>;
+  pageSize?: InputMaybe<Scalars['Int']>;
+  voteId: Scalars['String'];
 };
 
 
@@ -306,6 +335,8 @@ type MutationStatus_VoteMutationResponse_Fragment = { __typename?: 'VoteMutation
 
 export type MutationStatusFragment = MutationStatus_UserMutationResponse_Fragment | MutationStatus_VoteMutationResponse_Fragment;
 
+type QueryStatus_CommentPaginatedResponse_Fragment = { __typename?: 'CommentPaginatedResponse', code: number, message?: string | null };
+
 type QueryStatus_CountingAggregation_Fragment = { __typename?: 'CountingAggregation', code: number, message?: string | null };
 
 type QueryStatus_TagPaginatedResponse_Fragment = { __typename?: 'TagPaginatedResponse', code: number, message?: string | null };
@@ -314,7 +345,7 @@ type QueryStatus_VotePaginatedResponse_Fragment = { __typename?: 'VotePaginatedR
 
 type QueryStatus_VoteQueryResponse_Fragment = { __typename?: 'VoteQueryResponse', code: number, message?: string | null };
 
-export type QueryStatusFragment = QueryStatus_CountingAggregation_Fragment | QueryStatus_TagPaginatedResponse_Fragment | QueryStatus_VotePaginatedResponse_Fragment | QueryStatus_VoteQueryResponse_Fragment;
+export type QueryStatusFragment = QueryStatus_CommentPaginatedResponse_Fragment | QueryStatus_CountingAggregation_Fragment | QueryStatus_TagPaginatedResponse_Fragment | QueryStatus_VotePaginatedResponse_Fragment | QueryStatus_VoteQueryResponse_Fragment;
 
 export type UserInfoFragment = { __typename?: 'User', _id: string, email: string, name: string, avt?: string | null };
 
@@ -362,6 +393,15 @@ export type HomeAnalysisQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type HomeAnalysisQuery = { __typename?: 'Query', count: { __typename?: 'CountingAggregation', poll: number, user: number, tag: number, comment: number, code: number, message?: string | null } };
+
+export type CommentsQueryVariables = Exact<{
+  voteId: Scalars['String'];
+  page?: InputMaybe<Scalars['Int']>;
+  pageSize?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type CommentsQuery = { __typename?: 'Query', comments: { __typename?: 'CommentPaginatedResponse', page: number, pageSize: number, total: number, code: number, message?: string | null, docs: Array<{ __typename?: 'Comment', _id: string, content: string, createdAt: any, favorites: Array<string>, owner?: { __typename?: 'User', avt?: string | null, name: string } | null }> } };
 
 export type ViTagsQueryVariables = Exact<{
   page?: InputMaybe<Scalars['Int']>;
@@ -698,6 +738,56 @@ export function useHomeAnalysisLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type HomeAnalysisQueryHookResult = ReturnType<typeof useHomeAnalysisQuery>;
 export type HomeAnalysisLazyQueryHookResult = ReturnType<typeof useHomeAnalysisLazyQuery>;
 export type HomeAnalysisQueryResult = Apollo.QueryResult<HomeAnalysisQuery, HomeAnalysisQueryVariables>;
+export const CommentsDocument = gql`
+    query Comments($voteId: String!, $page: Int, $pageSize: Int) {
+  comments(voteId: $voteId, page: $page, pageSize: $pageSize) {
+    ...queryStatus
+    page
+    pageSize
+    total
+    docs {
+      _id
+      content
+      createdAt
+      favorites
+      owner {
+        avt
+        name
+      }
+    }
+  }
+}
+    ${QueryStatusFragmentDoc}`;
+
+/**
+ * __useCommentsQuery__
+ *
+ * To run a query within a React component, call `useCommentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCommentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCommentsQuery({
+ *   variables: {
+ *      voteId: // value for 'voteId'
+ *      page: // value for 'page'
+ *      pageSize: // value for 'pageSize'
+ *   },
+ * });
+ */
+export function useCommentsQuery(baseOptions: Apollo.QueryHookOptions<CommentsQuery, CommentsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CommentsQuery, CommentsQueryVariables>(CommentsDocument, options);
+      }
+export function useCommentsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CommentsQuery, CommentsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CommentsQuery, CommentsQueryVariables>(CommentsDocument, options);
+        }
+export type CommentsQueryHookResult = ReturnType<typeof useCommentsQuery>;
+export type CommentsLazyQueryHookResult = ReturnType<typeof useCommentsLazyQuery>;
+export type CommentsQueryResult = Apollo.QueryResult<CommentsQuery, CommentsQueryVariables>;
 export const ViTagsDocument = gql`
     query ViTags($page: Int, $pageSize: Int, $sort: String, $search: String) {
   tags(page: $page, pageSize: $pageSize, sort: $sort, search: $search) {

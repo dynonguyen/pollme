@@ -1,4 +1,3 @@
-import { HeartIcon } from '@heroicons/react/solid';
 import {
 	GetServerSideProps,
 	InferGetServerSidePropsType,
@@ -9,7 +8,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import Pagination from '../../components/core/Pagination';
+import CommentList from '../../components/CommentList';
 import InfoTooltip from '../../components/InfoTooltip';
 import SingleChoice from '../../components/PollOption/SingleChoice';
 import ReCAPTCHA from '../../components/ReCAPTCHA';
@@ -19,6 +18,10 @@ import { DEFAULT } from '../../constants/default';
 import { QUERY_KEY } from '../../constants/key';
 import { SUCCESS_CODE } from '../../constants/status';
 import {
+	CommentPaginatedResponse,
+	CommentsDocument,
+	CommentsQuery,
+	CommentsQueryVariables,
 	GetPublicVoteByIdDocument,
 	GetPublicVoteByIdQuery,
 	GetPublicVoteByIdQueryVariables,
@@ -36,8 +39,9 @@ const classes = {
 
 const Poll: NextPage<
 	InferGetServerSidePropsType<typeof getServerSideProps>
-> = ({ voteDoc }) => {
+> = ({ voteDoc, commentDoc }) => {
 	const vote = voteDoc.publicVote?.vote;
+
 	const lang = useLanguage();
 	const pollLang = lang.pages.poll;
 	const router = useRouter();
@@ -191,57 +195,9 @@ const Poll: NextPage<
 				<h2 className='text-xl md:text-2xl font-normal'>
 					{`${vote?.totalComment} ${pollLang.comment}`}
 				</h2>
-				<ul className='grid grid-cols-1 gap-5 md:gap-6 py-4'>
-					<li className='flex gap-3 shadow-md px-2 py-4 rounded-lg dark:shadow-none dark:bg-d_bg_hover'>
-						<img
-							className='w-10 h-10 flex-shrink-0'
-							src='/images/default-avt/0.png'
-							alt=''
-						/>
-						<div>
-							<div className='flex flex-wrap items-center gap-1 md:gap-3'>
-								<strong>Dyno Nguyễn</strong>
-								<span className='text-gray-400 dark:text-gray-600 text-sm'>
-									07:10 20-01-2020
-								</span>
-							</div>
-							<p className='text-gray-600 dark:text-d_text_primary py-2'>
-								Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-								Expedita eligendi optio dicta numquam. Neque at repellendus
-								incidunt explicabo est distinctio!
-							</p>
-							<div className='flex gap-2 items-center text-gray-400 dark:text-gray-600'>
-								<HeartIcon className='h-7 cursor-pointer hover:opacity-70 duration-300' />
-								<span>150</span>
-							</div>
-						</div>
-					</li>
-					<li className='flex gap-3 shadow-md px-2 py-4 rounded-lg dark:shadow-none dark:bg-d_bg_hover'>
-						<img
-							className='w-10 h-10 flex-shrink-0'
-							src='/images/default-avt/0.png'
-							alt=''
-						/>
-						<div>
-							<div className='flex flex-wrap items-center gap-1 md:gap-3'>
-								<strong>Dyno Nguyễn</strong>
-								<span className='text-gray-400 dark:text-gray-600 text-sm'>
-									07:10 20-01-2020
-								</span>
-							</div>
-							<p className='text-gray-600 dark:text-d_text_primary py-2'>
-								Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-								Expedita eligendi optio dicta numquam. Neque at repellendus
-								incidunt explicabo est distinctio!
-							</p>
-							<div className='flex gap-2 items-center text-gray-400 dark:text-gray-600'>
-								<HeartIcon className='h-7 cursor-pointer hover:opacity-70 duration-300' />
-								<span>150</span>
-							</div>
-						</div>
-					</li>
-				</ul>
-				<Pagination pageCount={2} className='w-full !my-5 !justify-end' />
+				<CommentList
+					commentDocs={commentDoc.comments as CommentPaginatedResponse}
+				/>
 
 				{/* Comment box */}
 				<div className='shadow-md dark:shadow-none dark:border dark:border-gray-600 py-3 md:py-4 px-4 md:px-6 rounded-lg mt-5'>
@@ -269,11 +225,12 @@ const Poll: NextPage<
 
 export const getServerSideProps: GetServerSideProps<{
 	voteDoc: GetPublicVoteByIdQuery;
+	commentDoc: CommentsQuery;
 }> = async ({ params }) => {
 	const apolloClient = initializeApollo();
 	const id = params?.id?.[0] || '';
 
-	const response = await apolloClient.query<
+	const voteRes = await apolloClient.query<
 		GetPublicVoteByIdQuery,
 		GetPublicVoteByIdQueryVariables
 	>({
@@ -282,8 +239,21 @@ export const getServerSideProps: GetServerSideProps<{
 			voteId: id,
 		},
 	});
+	const commentRes = await apolloClient.query<
+		CommentsQuery,
+		CommentsQueryVariables
+	>({
+		query: CommentsDocument,
+		variables: {
+			voteId: id,
+			page: 1,
+			pageSize: DEFAULT.PAGE_SIZE,
+		},
+	});
 
-	const voteDoc: GetPublicVoteByIdQuery = response.data;
+	const voteDoc: GetPublicVoteByIdQuery = voteRes.data;
+	const commentDoc: CommentsQuery = commentRes.data;
+
 	if (voteDoc.publicVote?.code !== SUCCESS_CODE.OK) {
 		return {
 			notFound: true,
@@ -294,6 +264,7 @@ export const getServerSideProps: GetServerSideProps<{
 	return {
 		props: {
 			voteDoc,
+			commentDoc,
 		},
 	};
 };

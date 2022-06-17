@@ -1,0 +1,18 @@
+query Comments($voteId: String!, $page: Int, $pageSize: Int) {
+	comments(voteId: $voteId, page: $page, pageSize: $pageSize) {
+		...queryStatus
+		page
+		pageSize
+		total
+		docs {
+			_id
+			content
+			createdAt
+			favorites
+			owner {
+				avt
+				name
+			}
+		}
+	}
+}
