@@ -3,6 +3,14 @@ import Comment from '../types/entities/Comment';
 import { MAX } from './../constants/validation';
 
 const schema: Schema = new Schema({
+	ownerId: {
+		type: Schema.Types.ObjectId,
+		ref: 'User',
+	},
+	voteId: {
+		type: Schema.Types.ObjectId,
+		ref: 'Vote',
+	},
 	content: {
 		type: String,
 		required: true,
@@ -13,21 +21,6 @@ const schema: Schema = new Schema({
 		required: true,
 		default: new Date(),
 	},
-	replies: [
-		{
-			username: String,
-			content: {
-				type: String,
-				required: true,
-				maxlength: MAX.COMMENT_LENGTH,
-			},
-			createdAt: {
-				type: Date,
-				required: true,
-				default: new Date(),
-			},
-		},
-	],
 	favorites: [String],
 });
 

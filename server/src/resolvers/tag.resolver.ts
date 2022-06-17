@@ -1,6 +1,7 @@
 import { Args, Query, Resolver } from 'type-graphql';
 import { DEFAULT } from '../constants/default';
 import TagModel from '../models/tag.model';
+import { paginatedResponseDefault } from '../types/core/QueryResponse';
 import { TagPaginationArg } from '../types/input/TagArg';
 import { TagPaginatedResponse } from '../types/response/TagResponse';
 import mongoosePaginate from '../utils/mongoose-paginate';
@@ -35,12 +36,9 @@ export class TagResolver {
 			console.error('VoteResolver - votes error: ', error);
 			return {
 				code: SUCCESS_CODE.OK,
-				docs: [],
 				sort,
-				page,
 				search,
-				pageSize,
-				total: 0,
+				...paginatedResponseDefault,
 			};
 		}
 	}

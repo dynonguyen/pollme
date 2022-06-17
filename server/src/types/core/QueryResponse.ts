@@ -1,4 +1,5 @@
 import { ClassType, Field, Int, InterfaceType, ObjectType } from 'type-graphql';
+import { DEFAULT } from '../../constants/default';
 
 @InterfaceType()
 export abstract class QueryResponse {
@@ -26,3 +27,10 @@ export function PaginatedResponse<T>(TClass: ClassType<T>) {
 	}
 	return PaginatedResponseClass;
 }
+
+export const paginatedResponseDefault = {
+	docs: [],
+	page: 1,
+	total: 0,
+	pageSize: DEFAULT.PAGE_SIZE,
+};

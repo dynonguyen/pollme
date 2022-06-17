@@ -13,6 +13,7 @@ import { MAX } from '../constants/validation';
 import UserModel from '../models/user.model';
 import VoteModel from '../models/vote.model';
 import { ExpressContext } from '../types/core/ExpressContext';
+import { paginatedResponseDefault } from '../types/core/QueryResponse';
 import { ROLES } from '../types/core/Role';
 import User from '../types/entities/User';
 import Vote from '../types/entities/Vote';
@@ -91,12 +92,9 @@ export class VoteResolver {
 			console.error('VoteResolver - votes error: ', error);
 			return {
 				code: SUCCESS_CODE.OK,
-				docs: [],
+				...paginatedResponseDefault,
 				sort,
-				page,
 				filter,
-				pageSize,
-				total: 0,
 			};
 		}
 	}
