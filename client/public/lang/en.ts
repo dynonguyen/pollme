@@ -273,6 +273,9 @@ export default {
 			votingSuccess: 'Vote successfully !',
 			votingFailed: 'Vote failed !',
 		},
+		faq: {
+			title: 'Frequently asked questions',
+		},
 	},
 	pageSEO: {
 		home: {
@@ -304,6 +307,11 @@ export default {
 			pathname: '/new-poll',
 			title: 'Tạo khảo sát',
 			desc: `With just a few simple steps, you can immediately create a survey on ${APP_NAME}. There's a lot of customization for the survey, let's experience it now.`,
+		},
+		faq: {
+			pathname: '/faq',
+			title: 'Frequently asked questions - FAQs',
+			desc: `FAQs Where to answer all people's frequently asked questions and questions about the ${APP_NAME} app.`,
 		},
 	},
 	others: {
@@ -349,4 +357,32 @@ export default {
 			'Allow grading on your choice.',
 		],
 	},
+	faqs: [
+		{
+			question: `What is ${APP_NAME}?`,
+			answer: `${APP_NAME} is a website that allows you to easily create a poll. Explore people's poll, directly vote favorite poll, comment, give comments on poll in real time, and it's completely free.`,
+		},
+		{
+			question: `Is ${APP_NAME} free of charge?`,
+			answer: `Yes, the entire ${APP_NAME} offer is available free of charge. We believe that essential features of the site should never be limited by the introduction of premium content. Although an option to disable advertising for participants by paying a fee may be available in the near future.`,
+		},
+		{
+			question: 'How many participants can vote in a poll?',
+			answer: `There is no limit to the number of people who can vote in a poll of ${APP_NAME}. However, you can easily setting the maximum number of participants. When this number is reached, the poll will close.`,
+		},
+		{
+			question: 'Can I share images and links from a poll?',
+			answer: `Yes, the polls on ${APP_NAME} are made to be shared. However, it is helpful to share not only a screenshot, but also the link to it so others can see the live result.`,
+		},
+		{
+			question: 'What happens to my data?',
+			answer:
+				'We do not evaluate the contents of polls or pass them on to third parties. We store the personal data securely in a data center near Ho Chi Minh city, VietNam.',
+		},
+		{
+			question: `What types of polls are available on ${APP_NAME}?`,
+			answer:
+				'We offer the ability to customize your survey very high with types of surveys such as single choice, multiple choice, ranked choice, etc.',
+		},
+	],
 };

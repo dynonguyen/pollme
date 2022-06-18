@@ -268,6 +268,9 @@ export default {
 			votingSuccess: 'Vote thành công !',
 			votingFailed: 'Vote thất bại !',
 		},
+		faq: {
+			title: 'Câu hỏi thường gặp',
+		},
 	},
 	pageSEO: {
 		home: {
@@ -299,6 +302,11 @@ export default {
 			pathname: '/new-poll',
 			title: 'Tạo khảo sát',
 			desc: `Chỉ với vài bước đơn giản, bạn đã có thể tạo ngay một bài khảo sát trên ${APP_NAME}. Có rất nhiều tuỳ chỉnh cho bài khảo sát, hãy trải nghiệm ngay nhé`,
+		},
+		faq: {
+			pathname: '/faq',
+			title: 'Câu hỏi thường gặp - FAQs',
+			desc: `FAQ nơi giải đáp tất cả các thắc mắc, câu hỏi thường gặp của mọi người về ứng dụng ${APP_NAME}.`,
 		},
 	},
 	others: {
@@ -344,4 +352,33 @@ export default {
 			'Cho phép chấm điểm trên lựa chọn của bạn.',
 		],
 	},
+	faqs: [
+		{
+			question: `${APP_NAME} là gì ?`,
+			answer: `${APP_NAME} là một ứng dụng cho phép bạn dễ dàng tạo một cuộc khảo sát. Khám phá các khảo sát của mọi người, trực tiếp bỏ phiếu khảo sát yêu thích, bình luận, cho ý kiến trên khảo sát theo thời gian thực và nó hoàn toàn miễn phí.`,
+		},
+		{
+			question: `${APP_NAME} có miễn phí không?`,
+			answer: `Có, toàn bộ ưu đãi ${APP_NAME} có sẵn miễn phí. Chúng tôi tin rằng các tính năng thiết yếu của trang web không bao giờ nên bị giới hạn bởi việc giới thiệu nội dung cao cấp. Mặc dù một tùy chọn để vô hiệu hóa quảng cáo cho người tham gia bằng cách trả một khoản phí có thể có sẵn trong tương lai gần.`,
+		},
+		{
+			question: `Có bao nhiêu người có thể tham gia bỏ phiếu`,
+			answer: `Không có giới hạn số người có thể bỏ phiếu trong một khảo sát của ${APP_NAME}. Tuy nhiên, bạn có thể dễ dàng cài đặt số lượng tối đa người tham dự. Khi đạt đến con số này, khảo sát sẽ tự đóng.`,
+		},
+		{
+			question:
+				'Tôi có thể chia sẻ hình ảnh và liên kết từ một cuộc thăm dò ý kiến không?',
+			answer: `Có, các cuộc thăm dò trên ${APP_NAME} được thực hiện để được chia sẻ. Nó rất hữu ích để chia sẻ không chỉ một ảnh chụp màn hình, mà còn liên kết đến nó để những người khác có thể xem kết quả trực tiếp.`,
+		},
+		{
+			question: 'Điều gì xảy ra với dữ liệu của tôi?',
+			answer:
+				'Chúng tôi không thu thập nội dung của các cuộc thăm dò hoặc chuyển chúng cho bên thứ ba. Chúng tôi lưu trữ dữ liệu cá nhân một cách an toàn trong một trung tâm dữ liệu gần thành phố Hồ Chí Minh, Việt Nam.',
+		},
+		{
+			question: `Các loại khảo sát có trên ${APP_NAME}?`,
+			answer:
+				'Chúng tôi cung cấp khả năng tuỳ chỉnh cuộc khảo sát của bạn rất cao với các loại khảo sát như lựa chọn đơn, lựa chọn nhiều, chấm điểm, xếp hạng, ...',
+		},
+	],
 };
