@@ -9,4 +9,5 @@ export const MAX = {
 	TAG_NAME: 30,
 	CATALOG_NAME: 50,
 	VOTE_SHORT_DESC: 100,
+	COMMENT_LEN: 500,
 };

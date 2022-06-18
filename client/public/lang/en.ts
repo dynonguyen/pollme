@@ -269,10 +269,6 @@ export default {
 			showResultBtn: 'Show Result',
 			submit: 'Submit Vote',
 			comment: 'Comments',
-			addComment: 'Add Your Comment',
-			addCommentPlaceholder: 'Enter your comment here',
-			charLeft: 'Characters left',
-			submitCommentBtn: 'Submit Comment',
 			requiredLogin: 'Log in to submit',
 		},
 	},
@@ -332,6 +328,15 @@ export default {
 		CreatePollSuccess: {
 			title: 'Congratulations !',
 			subTitle: 'The poll has been created',
+		},
+		CommentBox: {
+			addComment: 'Add Your Comment',
+			addCommentPlaceholder: 'Enter your comment here',
+			charLeft: 'Characters left',
+			submitCommentBtn: 'Submit Comment',
+			loginToComment: 'Login to comment',
+			commentSuccess: 'Comment successfully',
+			commentFailed: 'Comment failed',
 		},
 	},
 	helper: {

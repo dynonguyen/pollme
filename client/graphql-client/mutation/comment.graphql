@@ -1,6 +1,15 @@
 mutation FavoriteComment($favoriteCommentInput: FavoriteCommentInput!) {
 	favoriteComment(favoriteCommentInput: $favoriteCommentInput) {
-		code
-		success
+		...mutationStatus
+	}
+}
+
+mutation CreateComment($addCommentInput: AddCommentInput!) {
+	createComment(addCommentInput: $addCommentInput) {
+		...mutationStatus
+		comment {
+			_id
+			createdAt
+		}
 	}
 }

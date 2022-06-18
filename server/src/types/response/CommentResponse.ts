@@ -1,4 +1,4 @@
-import { ObjectType } from 'type-graphql';
+import { Field, ObjectType } from 'type-graphql';
 import MutationResponse from '../core/MutationResponse';
 import { PaginatedResponse } from '../core/QueryResponse';
 import { Comment } from '../entities/Comment';
@@ -9,4 +9,7 @@ export class CommentPaginatedResponse extends PaginatedResponse<Comment>(
 ) {}
 
 @ObjectType({ implements: MutationResponse })
-export class FavoriteCommentMutationResponse extends MutationResponse {}
+export class CreateCommentMutationResponse extends MutationResponse {
+	@Field(_type => Comment)
+	comment?: Comment;
+}

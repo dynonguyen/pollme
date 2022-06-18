@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import CommentList from '../../components/CommentList';
+import CommentArea from '../../components/Comment/CommentArea';
 import InfoTooltip from '../../components/InfoTooltip';
 import SingleChoice from '../../components/PollOption/SingleChoice';
 import ReCAPTCHA from '../../components/ReCAPTCHA';
@@ -195,30 +195,10 @@ const Poll: NextPage<
 				<h2 className='text-xl md:text-2xl font-normal'>
 					{`${vote?.totalComment} ${pollLang.comment}`}
 				</h2>
-				<CommentList
-					commentDocs={commentDoc.comments as CommentPaginatedResponse}
+				<CommentArea
+					initialComments={commentDoc.comments as CommentPaginatedResponse}
 					voteId={vote?._id!}
 				/>
-
-				{/* Comment box */}
-				<div className='shadow-md dark:shadow-none dark:border dark:border-gray-600 py-3 md:py-4 px-4 md:px-6 rounded-lg mt-5'>
-					<h3 className='text-xl mb-2 text-primary dark:text-d_primary'>
-						{pollLang.addComment}
-					</h3>
-					<textarea
-						className='field min-h-[60px]'
-						rows={4}
-						placeholder={pollLang.addCommentPlaceholder}
-					></textarea>
-					<p className='text-right text-sm text-gray-500'>
-						4 {pollLang.charLeft}
-					</p>
-					<div className='text-right mt-2'>
-						<button className='btn btn-primary md:btn-lg capitalize'>
-							Submit comment
-						</button>
-					</div>
-				</div>
 			</div>
 		</>
 	);

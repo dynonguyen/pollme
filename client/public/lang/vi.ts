@@ -264,10 +264,6 @@ export default {
 			showResultBtn: 'Hiển thị kết quả',
 			submit: 'Tiến hành vote',
 			comment: 'Bình luận',
-			addComment: 'Thêm bình luận của bạn',
-			addCommentPlaceholder: 'Nhập bình luận của bạn tại đây',
-			charLeft: 'Ký tự còn lại',
-			submitCommentBtn: 'Bình luận',
 			requiredLogin: 'Đăng nhập để submit',
 		},
 	},
@@ -327,6 +323,15 @@ export default {
 		CreatePollSuccess: {
 			title: 'Chúc mừng !',
 			subTitle: 'Cuộc khảo sát đã được tạo thành công',
+		},
+		CommentBox: {
+			charLeft: 'Ký tự còn lại',
+			submitCommentBtn: 'Bình luận',
+			addComment: 'Thêm bình luận của bạn',
+			addCommentPlaceholder: 'Nhập bình luận của bạn tại đây',
+			loginToComment: 'Đăng nhập để bình luận',
+			commentSuccess: 'Bình luận thành công.',
+			commentFailed: 'Bình luận thất bại.',
 		},
 	},
 	helper: {

@@ -1,4 +1,4 @@
-import { Field, Int, InterfaceType } from 'type-graphql';
+import { Field, Int, InterfaceType, ObjectType } from 'type-graphql';
 
 @InterfaceType()
 abstract class MutationResponse {
@@ -11,5 +11,8 @@ abstract class MutationResponse {
 	@Field(_type => String, { nullable: true })
 	message?: string;
 }
+
+@ObjectType({ implements: MutationResponse })
+export class MutationResponseImpl extends MutationResponse {}
 
 export default MutationResponse;

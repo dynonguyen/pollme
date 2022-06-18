@@ -9,6 +9,7 @@ export const MAX = {
 	ANSWER_OPTIONS: 10,
 	OPTION_PHOTO_SIZE: 1, // 1MB
 	OPTION_LABEL: 100,
+	COMMENT_LEN: 500,
 };
 
 export const MIN = {

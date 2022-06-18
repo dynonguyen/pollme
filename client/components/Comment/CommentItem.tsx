@@ -2,11 +2,11 @@ import { HeartIcon } from '@heroicons/react/solid';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import { DEFAULT } from '../constants/default';
-import { useFavoriteCommentMutation } from '../graphql-client/generated/graphql';
-import useLanguage from '../hooks/useLanguage';
-import userAtom from '../recoil/atoms/user.atom';
-import { dateFormat } from '../utils/format';
+import { DEFAULT } from '../../constants/default';
+import { useFavoriteCommentMutation } from '../../graphql-client/generated/graphql';
+import useLanguage from '../../hooks/useLanguage';
+import userAtom from '../../recoil/atoms/user.atom';
+import { dateFormat } from '../../utils/format';
 
 interface CommentItemProps {
 	commentId: string;

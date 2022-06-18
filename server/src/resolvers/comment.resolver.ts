@@ -1,6 +1,7 @@
 import {
 	Arg,
 	Args,
+	Authorized,
 	FieldResolver,
 	Mutation,
 	Query,
@@ -9,17 +10,23 @@ import {
 } from 'type-graphql';
 import { DEFAULT } from '../constants/default';
 import { ERROR_CODE, SUCCESS_CODE } from '../constants/status';
+import { MAX } from '../constants/validation';
 import CommentModel from '../models/comment.model';
 import UserModel from '../models/user.model';
 import { paginatedResponseDefault } from '../types/core/QueryResponse';
+import { ROLES } from '../types/core/Role';
 import Comment from '../types/entities/Comment';
 import User from '../types/entities/User';
 import mongoosePaginate from '../utils/mongoose-paginate';
+import { MutationResponseImpl } from './../types/core/MutationResponse';
 import { CommentPaginationArg } from './../types/input/CommentArg';
-import { FavoriteCommentInput } from './../types/input/CommentInput';
+import {
+	AddCommentInput,
+	FavoriteCommentInput,
+} from './../types/input/CommentInput';
 import {
 	CommentPaginatedResponse,
-	FavoriteCommentMutationResponse,
+	CreateCommentMutationResponse,
 } from './../types/response/CommentResponse';
 
 @Resolver(_of => Comment)
@@ -56,10 +63,10 @@ export class CommentResolver {
 		}
 	}
 
-	@Mutation(_return => FavoriteCommentMutationResponse)
+	@Mutation(_return => MutationResponseImpl)
 	async favoriteComment(
 		@Arg('favoriteCommentInput') { userId, commentId }: FavoriteCommentInput,
-	): Promise<FavoriteCommentMutationResponse> {
+	): Promise<MutationResponseImpl> {
 		const comment = await CommentModel.findById(commentId).select('favorites');
 		if (comment) {
 			const favorites = comment.favorites;
@@ -85,5 +92,36 @@ export class CommentResolver {
 			code: ERROR_CODE.CONFLICT,
 			success: false,
 		};
+	}
+
+	@Authorized(ROLES.USER)
+	@Mutation(_return => CreateCommentMutationResponse)
+	async createComment(
+		@Arg('addCommentInput') { voteId, content, ownerId }: AddCommentInput,
+	): Promise<CreateCommentMutationResponse> {
+		try {
+			if (content.length > MAX.COMMENT_LEN) {
+				content = content.slice(0, MAX.COMMENT_LEN);
+			}
+			const newComment = await CommentModel.create({
+				ownerId,
+				content,
+				voteId,
+				createdAt: new Date(),
+			});
+
+			if (newComment) {
+				return {
+					code: SUCCESS_CODE.CREATED,
+					success: true,
+					comment: newComment,
+				};
+			}
+
+			return { code: ERROR_CODE.NOT_ACCEPTABLE, success: false };
+		} catch (error) {
+			console.error('ADD COMMENT MUTATION ERROR: ', error);
+			return { code: ERROR_CODE.INTERNAL_ERROR, success: false };
+		}
 	}
 }

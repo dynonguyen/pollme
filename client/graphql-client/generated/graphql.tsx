@@ -17,6 +17,12 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type AddCommentInput = {
+  content: Scalars['String'];
+  ownerId: Scalars['String'];
+  voteId: Scalars['String'];
+};
+
 export type AnswerItem = {
   id: Scalars['ID'];
   label: Scalars['String'];
@@ -54,16 +60,17 @@ export type CountingAggregation = QueryResponse & {
   user: Scalars['Int'];
 };
 
+export type CreateCommentMutationResponse = MutationResponse & {
+  __typename?: 'CreateCommentMutationResponse';
+  code: Scalars['Int'];
+  comment: Comment;
+  message?: Maybe<Scalars['String']>;
+  success: Scalars['Boolean'];
+};
+
 export type FavoriteCommentInput = {
   commentId: Scalars['String'];
   userId: Scalars['String'];
-};
-
-export type FavoriteCommentMutationResponse = MutationResponse & {
-  __typename?: 'FavoriteCommentMutationResponse';
-  code: Scalars['Int'];
-  message?: Maybe<Scalars['String']>;
-  success: Scalars['Boolean'];
 };
 
 export type LoginInput = {
@@ -73,13 +80,19 @@ export type LoginInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createComment: CreateCommentMutationResponse;
   createVote: VoteMutationResponse;
-  favoriteComment: FavoriteCommentMutationResponse;
+  favoriteComment: MutationResponseImpl;
   login: UserMutationResponse;
   loginWithOAuth: UserMutationResponse;
   logout: Scalars['Boolean'];
   register: UserMutationResponse;
   voting: VoteMutationResponse;
+};
+
+
+export type MutationCreateCommentArgs = {
+  addCommentInput: AddCommentInput;
 };
 
 
@@ -113,6 +126,13 @@ export type MutationVotingArgs = {
 };
 
 export type MutationResponse = {
+  code: Scalars['Int'];
+  message?: Maybe<Scalars['String']>;
+  success: Scalars['Boolean'];
+};
+
+export type MutationResponseImpl = MutationResponse & {
+  __typename?: 'MutationResponseImpl';
   code: Scalars['Int'];
   message?: Maybe<Scalars['String']>;
   success: Scalars['Boolean'];
@@ -347,13 +367,15 @@ export type VotingInput = {
   votes?: InputMaybe<Array<VoteInput>>;
 };
 
-type MutationStatus_FavoriteCommentMutationResponse_Fragment = { __typename?: 'FavoriteCommentMutationResponse', code: number, success: boolean, message?: string | null };
+type MutationStatus_CreateCommentMutationResponse_Fragment = { __typename?: 'CreateCommentMutationResponse', code: number, success: boolean, message?: string | null };
+
+type MutationStatus_MutationResponseImpl_Fragment = { __typename?: 'MutationResponseImpl', code: number, success: boolean, message?: string | null };
 
 type MutationStatus_UserMutationResponse_Fragment = { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null };
 
 type MutationStatus_VoteMutationResponse_Fragment = { __typename?: 'VoteMutationResponse', code: number, success: boolean, message?: string | null };
 
-export type MutationStatusFragment = MutationStatus_FavoriteCommentMutationResponse_Fragment | MutationStatus_UserMutationResponse_Fragment | MutationStatus_VoteMutationResponse_Fragment;
+export type MutationStatusFragment = MutationStatus_CreateCommentMutationResponse_Fragment | MutationStatus_MutationResponseImpl_Fragment | MutationStatus_UserMutationResponse_Fragment | MutationStatus_VoteMutationResponse_Fragment;
 
 type QueryStatus_CommentPaginatedResponse_Fragment = { __typename?: 'CommentPaginatedResponse', code: number, message?: string | null };
 
@@ -374,7 +396,14 @@ export type FavoriteCommentMutationVariables = Exact<{
 }>;
 
 
-export type FavoriteCommentMutation = { __typename?: 'Mutation', favoriteComment: { __typename?: 'FavoriteCommentMutationResponse', code: number, success: boolean } };
+export type FavoriteCommentMutation = { __typename?: 'Mutation', favoriteComment: { __typename?: 'MutationResponseImpl', code: number, success: boolean, message?: string | null } };
+
+export type CreateCommentMutationVariables = Exact<{
+  addCommentInput: AddCommentInput;
+}>;
+
+
+export type CreateCommentMutation = { __typename?: 'Mutation', createComment: { __typename?: 'CreateCommentMutationResponse', code: number, success: boolean, message?: string | null, comment: { __typename?: 'Comment', _id: string, createdAt: any } } };
 
 export type RegisterMutationVariables = Exact<{
   registerInput: RegisterInput;
@@ -514,11 +543,10 @@ export const UserInfoFragmentDoc = gql`
 export const FavoriteCommentDocument = gql`
     mutation FavoriteComment($favoriteCommentInput: FavoriteCommentInput!) {
   favoriteComment(favoriteCommentInput: $favoriteCommentInput) {
-    code
-    success
+    ...mutationStatus
   }
 }
-    `;
+    ${MutationStatusFragmentDoc}`;
 export type FavoriteCommentMutationFn = Apollo.MutationFunction<FavoriteCommentMutation, FavoriteCommentMutationVariables>;
 
 /**
@@ -545,6 +573,43 @@ export function useFavoriteCommentMutation(baseOptions?: Apollo.MutationHookOpti
 export type FavoriteCommentMutationHookResult = ReturnType<typeof useFavoriteCommentMutation>;
 export type FavoriteCommentMutationResult = Apollo.MutationResult<FavoriteCommentMutation>;
 export type FavoriteCommentMutationOptions = Apollo.BaseMutationOptions<FavoriteCommentMutation, FavoriteCommentMutationVariables>;
+export const CreateCommentDocument = gql`
+    mutation CreateComment($addCommentInput: AddCommentInput!) {
+  createComment(addCommentInput: $addCommentInput) {
+    ...mutationStatus
+    comment {
+      _id
+      createdAt
+    }
+  }
+}
+    ${MutationStatusFragmentDoc}`;
+export type CreateCommentMutationFn = Apollo.MutationFunction<CreateCommentMutation, CreateCommentMutationVariables>;
+
+/**
+ * __useCreateCommentMutation__
+ *
+ * To run a mutation, you first call `useCreateCommentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCommentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCommentMutation, { data, loading, error }] = useCreateCommentMutation({
+ *   variables: {
+ *      addCommentInput: // value for 'addCommentInput'
+ *   },
+ * });
+ */
+export function useCreateCommentMutation(baseOptions?: Apollo.MutationHookOptions<CreateCommentMutation, CreateCommentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateCommentMutation, CreateCommentMutationVariables>(CreateCommentDocument, options);
+      }
+export type CreateCommentMutationHookResult = ReturnType<typeof useCreateCommentMutation>;
+export type CreateCommentMutationResult = Apollo.MutationResult<CreateCommentMutation>;
+export type CreateCommentMutationOptions = Apollo.BaseMutationOptions<CreateCommentMutation, CreateCommentMutationVariables>;
 export const RegisterDocument = gql`
     mutation Register($registerInput: RegisterInput!) {
   register(registerInput: $registerInput) {

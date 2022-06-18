@@ -1,18 +1,19 @@
 import { ChevronDownIcon } from '@heroicons/react/outline';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
 	Comment,
 	CommentPaginatedResponse,
 	useCommentsLazyQuery,
-} from '../graphql-client/generated/graphql';
-import useLanguage from '../hooks/useLanguage';
+} from '../../graphql-client/generated/graphql';
+import useLanguage from '../../hooks/useLanguage';
 import CommentItem from './CommentItem';
 
 export default function CommentList(props: {
 	commentDocs: CommentPaginatedResponse;
 	voteId: string;
+	newComment?: Comment;
 }): JSX.Element {
-	const { voteId } = props;
+	const { voteId, newComment } = props;
 	const { docs, page, pageSize, total } = props.commentDocs;
 	const totalPage = Math.ceil(total / pageSize);
 	const [comments, setComments] = useState<Comment[]>(docs);
@@ -40,6 +41,12 @@ export default function CommentList(props: {
 		}
 	};
 
+	useEffect(() => {
+		if (newComment) {
+			setComments([newComment, ...comments]);
+		}
+	}, [newComment]);
+
 	return (
 		<>
 			{comments && comments.length > 0 && (
@@ -51,8 +58,8 @@ export default function CommentList(props: {
 								<li key={index}>
 									<CommentItem
 										commentId={_id}
-										username={owner?.name as string}
-										avt={owner?.avt as string}
+										username={owner?.name!}
+										avt={owner?.avt!}
 										content={content}
 										createdAt={createdAt}
 										favorites={favorites}
