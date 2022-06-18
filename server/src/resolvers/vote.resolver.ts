@@ -197,21 +197,7 @@ export class VoteResolver {
 
 				votes.forEach(v => {
 					if (v.id === answer.id) {
-						const voteIndex = answer.voteList.findIndex(
-							v2 =>
-								v2.userInfo?.ip === userIp || v2.userInfo?.userId === userId,
-						);
-						if (voteIndex !== -1 && !vote?.isIPDuplicationCheck) {
-							answer.voteList[voteIndex] = {
-								userInfo: {
-									userId,
-									ip: userIp,
-									name: username,
-								},
-								rank: v.rank,
-								score: v.score,
-							};
-						} else {
+						if (!vote?.isIPDuplicationCheck) {
 							answer.voteList.push({
 								userInfo: {
 									userId,
@@ -221,6 +207,32 @@ export class VoteResolver {
 								rank: v.rank,
 								score: v.score,
 							});
+						} else {
+							const voteIndex = answer.voteList.findIndex(
+								v2 =>
+									v2.userInfo?.ip === userIp || v2.userInfo?.userId === userId,
+							);
+							if (voteIndex !== -1) {
+								answer.voteList[voteIndex] = {
+									userInfo: {
+										userId,
+										ip: userIp,
+										name: username,
+									},
+									rank: v.rank,
+									score: v.score,
+								};
+							} else {
+								answer.voteList.push({
+									userInfo: {
+										userId,
+										ip: userIp,
+										name: username,
+									},
+									rank: v.rank,
+									score: v.score,
+								});
+							}
 						}
 					}
 				});

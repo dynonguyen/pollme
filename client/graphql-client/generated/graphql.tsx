@@ -391,6 +391,8 @@ export type QueryStatusFragment = QueryStatus_CommentPaginatedResponse_Fragment 
 
 export type UserInfoFragment = { __typename?: 'User', _id: string, email: string, name: string, avt?: string | null };
 
+export type VoteFullInfoFragment = { __typename?: 'Vote', _id: string, ownerId: string, title: string, desc?: string | null, type: number, createdAt: any, updatedAt?: any | null, endDate?: any | null, allowAddOption: boolean, isIPDuplicationCheck: boolean, isLoginRequired: boolean, isReCaptcha: boolean, isShowResult: boolean, isShowResultBtn: boolean, maxChoice?: number | null, maxScore?: number | null, maxVote?: number | null, totalComment: number, totalVote: number, tags: Array<{ __typename?: 'TagInVote', name: string, slug: string }>, answers: Array<{ __typename?: 'VoteAnswer', id: string, label: string, photo?: string | null, voteList: Array<{ __typename?: 'VoteOfUser', rank?: number | null, score?: number | null, userInfo: { __typename?: 'UserInfoInVote', ip?: string | null, name?: string | null, userId?: string | null } }> }>, owner?: { __typename?: 'User', avt?: string | null, name: string } | null };
+
 export type FavoriteCommentMutationVariables = Exact<{
   favoriteCommentInput: FavoriteCommentInput;
 }>;
@@ -436,14 +438,14 @@ export type CreateVoteMutationVariables = Exact<{
 }>;
 
 
-export type CreateVoteMutation = { __typename?: 'Mutation', createVote: { __typename?: 'VoteMutationResponse', code: number, message?: string | null, vote?: { __typename?: 'Vote', _id: string, slug: string, isPrivate: boolean, privateLink?: string | null } | null } };
+export type CreateVoteMutation = { __typename?: 'Mutation', createVote: { __typename?: 'VoteMutationResponse', code: number, success: boolean, message?: string | null, vote?: { __typename?: 'Vote', _id: string, slug: string, isPrivate: boolean, privateLink?: string | null } | null } };
 
-export type VotingMutationMutationVariables = Exact<{
+export type VotingMutationVariables = Exact<{
   votingInput: VotingInput;
 }>;
 
 
-export type VotingMutationMutation = { __typename?: 'Mutation', voting: { __typename?: 'VoteMutationResponse', code: number, message?: string | null, success: boolean } };
+export type VotingMutation = { __typename?: 'Mutation', voting: { __typename?: 'VoteMutationResponse', code: number, success: boolean, message?: string | null, vote?: { __typename?: 'Vote', _id: string, ownerId: string, title: string, desc?: string | null, type: number, createdAt: any, updatedAt?: any | null, endDate?: any | null, allowAddOption: boolean, isIPDuplicationCheck: boolean, isLoginRequired: boolean, isReCaptcha: boolean, isShowResult: boolean, isShowResultBtn: boolean, maxChoice?: number | null, maxScore?: number | null, maxVote?: number | null, totalComment: number, totalVote: number, tags: Array<{ __typename?: 'TagInVote', name: string, slug: string }>, answers: Array<{ __typename?: 'VoteAnswer', id: string, label: string, photo?: string | null, voteList: Array<{ __typename?: 'VoteOfUser', rank?: number | null, score?: number | null, userInfo: { __typename?: 'UserInfoInVote', ip?: string | null, name?: string | null, userId?: string | null } }> }>, owner?: { __typename?: 'User', avt?: string | null, name: string } | null } | null } };
 
 export type HomeAnalysisQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -538,6 +540,51 @@ export const UserInfoFragmentDoc = gql`
   email
   name
   avt
+}
+    `;
+export const VoteFullInfoFragmentDoc = gql`
+    fragment voteFullInfo on Vote {
+  _id
+  ownerId
+  title
+  desc
+  type
+  createdAt
+  updatedAt
+  endDate
+  allowAddOption
+  isIPDuplicationCheck
+  isLoginRequired
+  isReCaptcha
+  isShowResult
+  isShowResultBtn
+  maxChoice
+  maxScore
+  maxVote
+  totalComment
+  totalVote
+  tags {
+    name
+    slug
+  }
+  answers {
+    id
+    label
+    photo
+    voteList {
+      rank
+      score
+      userInfo {
+        ip
+        name
+        userId
+      }
+    }
+  }
+  owner {
+    avt
+    name
+  }
 }
     `;
 export const FavoriteCommentDocument = gql`
@@ -754,8 +801,7 @@ export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, L
 export const CreateVoteDocument = gql`
     mutation CreateVote($newVoteInput: NewVoteInput!) {
   createVote(newVoteInput: $newVoteInput) {
-    code
-    message
+    ...mutationStatus
     vote {
       _id
       slug
@@ -764,7 +810,7 @@ export const CreateVoteDocument = gql`
     }
   }
 }
-    `;
+    ${MutationStatusFragmentDoc}`;
 export type CreateVoteMutationFn = Apollo.MutationFunction<CreateVoteMutation, CreateVoteMutationVariables>;
 
 /**
@@ -791,41 +837,43 @@ export function useCreateVoteMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreateVoteMutationHookResult = ReturnType<typeof useCreateVoteMutation>;
 export type CreateVoteMutationResult = Apollo.MutationResult<CreateVoteMutation>;
 export type CreateVoteMutationOptions = Apollo.BaseMutationOptions<CreateVoteMutation, CreateVoteMutationVariables>;
-export const VotingMutationDocument = gql`
-    mutation VotingMutation($votingInput: VotingInput!) {
+export const VotingDocument = gql`
+    mutation Voting($votingInput: VotingInput!) {
   voting(votingInput: $votingInput) {
-    code
-    message
-    success
+    ...mutationStatus
+    vote {
+      ...voteFullInfo
+    }
   }
 }
-    `;
-export type VotingMutationMutationFn = Apollo.MutationFunction<VotingMutationMutation, VotingMutationMutationVariables>;
+    ${MutationStatusFragmentDoc}
+${VoteFullInfoFragmentDoc}`;
+export type VotingMutationFn = Apollo.MutationFunction<VotingMutation, VotingMutationVariables>;
 
 /**
- * __useVotingMutationMutation__
+ * __useVotingMutation__
  *
- * To run a mutation, you first call `useVotingMutationMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useVotingMutationMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useVotingMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useVotingMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [votingMutationMutation, { data, loading, error }] = useVotingMutationMutation({
+ * const [votingMutation, { data, loading, error }] = useVotingMutation({
  *   variables: {
  *      votingInput: // value for 'votingInput'
  *   },
  * });
  */
-export function useVotingMutationMutation(baseOptions?: Apollo.MutationHookOptions<VotingMutationMutation, VotingMutationMutationVariables>) {
+export function useVotingMutation(baseOptions?: Apollo.MutationHookOptions<VotingMutation, VotingMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<VotingMutationMutation, VotingMutationMutationVariables>(VotingMutationDocument, options);
+        return Apollo.useMutation<VotingMutation, VotingMutationVariables>(VotingDocument, options);
       }
-export type VotingMutationMutationHookResult = ReturnType<typeof useVotingMutationMutation>;
-export type VotingMutationMutationResult = Apollo.MutationResult<VotingMutationMutation>;
-export type VotingMutationMutationOptions = Apollo.BaseMutationOptions<VotingMutationMutation, VotingMutationMutationVariables>;
+export type VotingMutationHookResult = ReturnType<typeof useVotingMutation>;
+export type VotingMutationResult = Apollo.MutationResult<VotingMutation>;
+export type VotingMutationOptions = Apollo.BaseMutationOptions<VotingMutation, VotingMutationVariables>;
 export const HomeAnalysisDocument = gql`
     query HomeAnalysis {
   count {
@@ -1200,51 +1248,11 @@ export const GetPublicVoteByIdDocument = gql`
     code
     message
     vote {
-      _id
-      ownerId
-      title
-      desc
-      type
-      createdAt
-      updatedAt
-      endDate
-      allowAddOption
-      isIPDuplicationCheck
-      isLoginRequired
-      isReCaptcha
-      isShowResult
-      isShowResultBtn
-      maxChoice
-      maxScore
-      maxVote
-      totalComment
-      totalVote
-      tags {
-        name
-        slug
-      }
-      answers {
-        id
-        label
-        photo
-        voteList {
-          rank
-          score
-          userInfo {
-            ip
-            name
-            userId
-          }
-        }
-      }
-      owner {
-        avt
-        name
-      }
+      ...voteFullInfo
     }
   }
 }
-    `;
+    ${VoteFullInfoFragmentDoc}`;
 
 /**
  * __useGetPublicVoteByIdQuery__

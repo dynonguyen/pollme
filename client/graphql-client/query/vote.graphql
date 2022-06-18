@@ -46,47 +46,7 @@ query GetPublicVoteById($voteId: String!) {
 		code
 		message
 		vote {
-			_id
-			ownerId
-			title
-			desc
-			type
-			createdAt
-			updatedAt
-			endDate
-			allowAddOption
-			isIPDuplicationCheck
-			isLoginRequired
-			isReCaptcha
-			isShowResult
-			isShowResultBtn
-			maxChoice
-			maxScore
-			maxVote
-			totalComment
-			totalVote
-			tags {
-				name
-				slug
-			}
-			answers {
-				id
-				label
-				photo
-				voteList {
-					rank
-					score
-					userInfo {
-						ip
-						name
-						userId
-					}
-				}
-			}
-			owner {
-				avt
-				name
-			}
+			...voteFullInfo
 		}
 	}
 }

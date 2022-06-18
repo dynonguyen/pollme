@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import userAtom, { UserAtom } from '../../recoil/atoms/user.atom';
 import { AnswerOption } from '../../types/common';
@@ -43,14 +43,22 @@ export default function SingleChoice(props: SingleChoiceProps): JSX.Element {
 		onUncheck,
 	} = props;
 	const userInfo = useRecoilValue(userAtom);
-	const [defaultChecked] = useState(() => findUserChecked(userInfo, options));
+	const [defaultChecked, setDefaultChecked] = useState<string | null>();
 	const pollRanks = pollRanking(options, false);
-	const [checkList, setCheckList] = useState(
-		options.map(o => ({
-			id: o.id,
-			checked: isIPDuplicationCheck ? o.id === defaultChecked : false,
-		})),
-	);
+	const [checkList, setCheckList] = useState<
+		{ id: string; checked: boolean }[]
+	>([]);
+
+	useEffect(() => {
+		const newDefaultChecked = findUserChecked(userInfo, options);
+		setDefaultChecked(newDefaultChecked);
+		setCheckList(
+			options.map(o => ({
+				id: o.id,
+				checked: isIPDuplicationCheck ? o.id === newDefaultChecked : false,
+			})),
+		);
+	}, [userInfo, options]);
 
 	const handleCheck = (id: string, checked: boolean) => {
 		if (!checked) {
@@ -65,6 +73,7 @@ export default function SingleChoice(props: SingleChoiceProps): JSX.Element {
 				),
 			);
 			onChecked(id);
+			defaultChecked && onUncheck(defaultChecked);
 		}
 	};
 

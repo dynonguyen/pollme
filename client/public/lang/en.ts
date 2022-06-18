@@ -270,6 +270,8 @@ export default {
 			submit: 'Submit Vote',
 			comment: 'Comments',
 			requiredLogin: 'Log in to submit',
+			votingSuccess: 'Vote successfully !',
+			votingFailed: 'Vote failed !',
 		},
 	},
 	pageSEO: {

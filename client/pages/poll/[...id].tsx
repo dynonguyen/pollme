@@ -25,9 +25,11 @@ import {
 	GetPublicVoteByIdDocument,
 	GetPublicVoteByIdQuery,
 	GetPublicVoteByIdQueryVariables,
+	useVotingMutation,
 	VotingInput,
 } from '../../graphql-client/generated/graphql';
 import useLanguage from '../../hooks/useLanguage';
+import useToast from '../../hooks/useToast';
 import { addApolloState, initializeApollo } from '../../lib/apolloClient';
 import userAtom from '../../recoil/atoms/user.atom';
 import { dateFormat } from '../../utils/format';
@@ -40,7 +42,7 @@ const classes = {
 const Poll: NextPage<
 	InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ voteDoc, commentDoc }) => {
-	const vote = voteDoc.publicVote?.vote;
+	const [vote, setVote] = useState(voteDoc.publicVote?.vote);
 
 	const lang = useLanguage();
 	const pollLang = lang.pages.poll;
@@ -48,16 +50,9 @@ const Poll: NextPage<
 	const userInfo = useRecoilValue(userAtom);
 	const linkOfTag = `${lang.pages.discover.link}?${QUERY_KEY.SEARCH}=#`;
 	const [reCaptchaToken, setReCaptchaToken] = useState<string | null>(null);
-	const choices = useRef<VotingInput>({
-		pollId: vote?._id!,
-		userInfo: {
-			userId: userInfo._id,
-			userIp: userInfo.ip,
-			username: userInfo.name,
-		},
-		unVoteIds: [],
-		votes: [],
-	});
+	const choices = useRef<Partial<VotingInput>>({ unVoteIds: [], votes: [] });
+	const [votingMutation, { loading }] = useVotingMutation();
+	const toast = useToast();
 
 	const isClosed = isPollClosed(
 		vote?.endDate,
@@ -65,10 +60,32 @@ const Poll: NextPage<
 		vote?.totalVote,
 	);
 
-	const handleVoteSubmit = () => {
+	const handleVoteSubmit = async () => {
 		if (!choices.current.votes?.length && !choices.current.unVoteIds?.length)
 			return;
-		console.log(choices.current);
+
+		const votingRes = await votingMutation({
+			variables: {
+				votingInput: {
+					pollId: vote?._id!,
+					userInfo: {
+						userId: userInfo._id,
+						userIp: userInfo.ip,
+						username: userInfo.name,
+					},
+					unVoteIds: choices.current.unVoteIds,
+					votes: choices.current.votes,
+				},
+			},
+		});
+
+		if (votingRes.data?.voting.success) {
+			toast.show({ message: pollLang.votingSuccess, type: 'success' });
+			choices.current = { unVoteIds: [], votes: [] };
+			setVote(votingRes.data.voting.vote);
+		} else {
+			toast.show({ message: pollLang.votingFailed, type: 'error' });
+		}
 	};
 
 	return (
@@ -144,13 +161,11 @@ const Poll: NextPage<
 							pollId={vote?._id || ''}
 							isIPDuplicationCheck={vote.isIPDuplicationCheck}
 							onChecked={optionId => {
-								choices.current.unVoteIds = [];
 								choices.current.votes = [
 									{ id: optionId, rank: null, score: null },
 								];
 							}}
 							onUncheck={optionId => {
-								choices.current.votes = [];
 								choices.current.unVoteIds = [optionId];
 							}}
 						/>
@@ -181,7 +196,9 @@ const Poll: NextPage<
 					) : (
 						<button
 							className={`btn-accent md:btn-lg rounded-full font-medium ${
-								vote?.isReCaptcha && !reCaptchaToken ? 'disabled' : ''
+								(vote?.isReCaptcha && !reCaptchaToken) || loading
+									? 'disabled'
+									: ''
 							}`}
 							onClick={handleVoteSubmit}
 						>

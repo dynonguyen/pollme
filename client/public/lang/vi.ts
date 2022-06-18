@@ -265,6 +265,8 @@ export default {
 			submit: 'Tiến hành vote',
 			comment: 'Bình luận',
 			requiredLogin: 'Đăng nhập để submit',
+			votingSuccess: 'Vote thành công !',
+			votingFailed: 'Vote thất bại !',
 		},
 	},
 	pageSEO: {

@@ -12,29 +12,18 @@ export default function useGetMe(): void {
 		(async function () {
 			let user: UserAtom = { ...userAtomDefault };
 
-			const promises = [];
-			promises.push(
-				fetch(IP_ADDRESS_API_URI).then(response =>
-					promises.push(
-						response.json().then(ipApi => {
-							user.ip = ipApi.ip || '';
-						}),
-					),
-				),
-			);
-			promises.push(
-				getMeQuery().then(({ loading, data }) => {
-					if (!loading) {
-						if (data?.me) {
-							const { __typename, avt, ...me } = data.me;
-							user = { ...user, ...me, avt: avt as string };
-						}
-					}
-				}),
-			);
-			await Promise.all(promises);
+			const ipAPI = await fetch(IP_ADDRESS_API_URI);
+			const ip = (await ipAPI.json())?.ip || '';
+			const meRes = await getMeQuery();
+			if (meRes.data?.me) {
+				const me = meRes.data.me;
+				user._id = me._id;
+				user.avt = me.avt!;
+				user.email = me.email;
+				user.name = me.name;
+			}
 
-			setUserInfoState({ ...user, loading: false });
+			setUserInfoState({ ...user, ip, loading: false });
 		})();
 	}, []);
 }
