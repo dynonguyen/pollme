@@ -307,6 +307,8 @@ export default {
 		loginOAuthBreak: 'Hoặc tiếp tục với',
 		poll: 'Khảo sát',
 		closed: 'Đã đóng',
+		loadMoreComment: 'Xem thêm bình luận',
+		loading: 'Đang tải dữ liệu ...',
 	},
 	components: {
 		TagInput: {

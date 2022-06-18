@@ -197,6 +197,7 @@ const Poll: NextPage<
 				</h2>
 				<CommentList
 					commentDocs={commentDoc.comments as CommentPaginatedResponse}
+					voteId={vote?._id!}
 				/>
 
 				{/* Comment box */}

@@ -1,19 +1,51 @@
-import { CommentPaginatedResponse } from '../graphql-client/generated/graphql';
+import { ChevronDownIcon } from '@heroicons/react/outline';
+import { useRef, useState } from 'react';
+import {
+	Comment,
+	CommentPaginatedResponse,
+	useCommentsLazyQuery,
+} from '../graphql-client/generated/graphql';
+import useLanguage from '../hooks/useLanguage';
 import CommentItem from './CommentItem';
-import Pagination from './core/Pagination';
 
 export default function CommentList(props: {
 	commentDocs: CommentPaginatedResponse;
+	voteId: string;
 }): JSX.Element {
+	const { voteId } = props;
 	const { docs, page, pageSize, total } = props.commentDocs;
 	const totalPage = Math.ceil(total / pageSize);
+	const [comments, setComments] = useState<Comment[]>(docs);
+	const currentPage = useRef(page);
+	const [commentQuery] = useCommentsLazyQuery();
+	const [loadMore, setLoadMore] = useState(false);
+	const lang = useLanguage();
+
+	const handleLoadMore = async () => {
+		if (currentPage.current <= totalPage) {
+			currentPage.current++;
+			setLoadMore(true);
+			const commentRes = await commentQuery({
+				variables: {
+					voteId,
+					page: currentPage.current,
+					pageSize,
+				},
+			});
+			if (commentRes.data) {
+				const moreComments = commentRes.data.comments.docs as Comment[];
+				setComments([...comments, ...moreComments]);
+			}
+			setLoadMore(false);
+		}
+	};
 
 	return (
 		<>
-			{docs && docs.length > 0 && (
+			{comments && comments.length > 0 && (
 				<>
 					<ul className='grid grid-cols-1 gap-5 md:gap-6 py-4'>
-						{docs.map((comment, index) => {
+						{comments.map((comment, index) => {
 							const { content, createdAt, owner, favorites } = comment;
 							return (
 								<li key={index}>
@@ -28,10 +60,20 @@ export default function CommentList(props: {
 							);
 						})}
 					</ul>
-					<Pagination
-						pageCount={totalPage}
-						className='w-full !my-5 !md:justify-end'
-					/>
+
+					{currentPage.current < totalPage && (
+						<div
+							className={`flex gap-2 text-gray-500 dark:text-gray-300 duration-300 hover:opacity-75 justify-center my-4 cursor-pointer ${
+								loadMore ? 'disabled' : ''
+							}`}
+							onClick={handleLoadMore}
+						>
+							<p>
+								{loadMore ? lang.others.loading : lang.others.loadMoreComment}
+							</p>
+							<ChevronDownIcon className={`w-5 ${loadMore ? 'hidden' : ''}`} />
+						</div>
+					)}
 				</>
 			)}
 		</>

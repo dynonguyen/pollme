@@ -312,6 +312,8 @@ export default {
 		loginOAuthBreak: 'Or continue with',
 		poll: 'Polls',
 		closed: 'Closed',
+		loadMoreComment: 'Load more comments',
+		loading: 'Loading ...',
 	},
 	components: {
 		TagInput: {
