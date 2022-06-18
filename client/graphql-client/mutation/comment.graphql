@@ -1,0 +1,6 @@
+mutation FavoriteComment($favoriteCommentInput: FavoriteCommentInput!) {
+	favoriteComment(favoriteCommentInput: $favoriteCommentInput) {
+		code
+		success
+	}
+}

@@ -1,4 +1,12 @@
-import { Args, FieldResolver, Query, Resolver, Root } from 'type-graphql';
+import {
+	Arg,
+	Args,
+	FieldResolver,
+	Mutation,
+	Query,
+	Resolver,
+	Root,
+} from 'type-graphql';
 import { DEFAULT } from '../constants/default';
 import { ERROR_CODE, SUCCESS_CODE } from '../constants/status';
 import CommentModel from '../models/comment.model';
@@ -8,7 +16,11 @@ import Comment from '../types/entities/Comment';
 import User from '../types/entities/User';
 import mongoosePaginate from '../utils/mongoose-paginate';
 import { CommentPaginationArg } from './../types/input/CommentArg';
-import { CommentPaginatedResponse } from './../types/response/CommentResponse';
+import { FavoriteCommentInput } from './../types/input/CommentInput';
+import {
+	CommentPaginatedResponse,
+	FavoriteCommentMutationResponse,
+} from './../types/response/CommentResponse';
 
 @Resolver(_of => Comment)
 export class CommentResolver {
@@ -42,5 +54,36 @@ export class CommentResolver {
 				...paginatedResponseDefault,
 			};
 		}
+	}
+
+	@Mutation(_return => FavoriteCommentMutationResponse)
+	async favoriteComment(
+		@Arg('favoriteCommentInput') { userId, commentId }: FavoriteCommentInput,
+	): Promise<FavoriteCommentMutationResponse> {
+		const comment = await CommentModel.findById(commentId).select('favorites');
+		if (comment) {
+			const favorites = comment.favorites;
+			const favoriteIndex = favorites.findIndex(uId => uId === userId);
+			let newFavorites = [...favorites];
+			if (favoriteIndex === -1) {
+				newFavorites.push(userId);
+			} else {
+				newFavorites.splice(favoriteIndex, 1);
+			}
+
+			await CommentModel.updateOne(
+				{ _id: commentId },
+				{ $set: { favorites: newFavorites } },
+			);
+			return {
+				code: SUCCESS_CODE.OK,
+				success: true,
+			};
+		}
+
+		return {
+			code: ERROR_CODE.CONFLICT,
+			success: false,
+		};
 	}
 }

@@ -54,6 +54,18 @@ export type CountingAggregation = QueryResponse & {
   user: Scalars['Int'];
 };
 
+export type FavoriteCommentInput = {
+  commentId: Scalars['String'];
+  userId: Scalars['String'];
+};
+
+export type FavoriteCommentMutationResponse = MutationResponse & {
+  __typename?: 'FavoriteCommentMutationResponse';
+  code: Scalars['Int'];
+  message?: Maybe<Scalars['String']>;
+  success: Scalars['Boolean'];
+};
+
 export type LoginInput = {
   email: Scalars['String'];
   password: Scalars['String'];
@@ -62,6 +74,7 @@ export type LoginInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   createVote: VoteMutationResponse;
+  favoriteComment: FavoriteCommentMutationResponse;
   login: UserMutationResponse;
   loginWithOAuth: UserMutationResponse;
   logout: Scalars['Boolean'];
@@ -72,6 +85,11 @@ export type Mutation = {
 
 export type MutationCreateVoteArgs = {
   newVoteInput: NewVoteInput;
+};
+
+
+export type MutationFavoriteCommentArgs = {
+  favoriteCommentInput: FavoriteCommentInput;
 };
 
 
@@ -329,11 +347,13 @@ export type VotingInput = {
   votes?: InputMaybe<Array<VoteInput>>;
 };
 
+type MutationStatus_FavoriteCommentMutationResponse_Fragment = { __typename?: 'FavoriteCommentMutationResponse', code: number, success: boolean, message?: string | null };
+
 type MutationStatus_UserMutationResponse_Fragment = { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null };
 
 type MutationStatus_VoteMutationResponse_Fragment = { __typename?: 'VoteMutationResponse', code: number, success: boolean, message?: string | null };
 
-export type MutationStatusFragment = MutationStatus_UserMutationResponse_Fragment | MutationStatus_VoteMutationResponse_Fragment;
+export type MutationStatusFragment = MutationStatus_FavoriteCommentMutationResponse_Fragment | MutationStatus_UserMutationResponse_Fragment | MutationStatus_VoteMutationResponse_Fragment;
 
 type QueryStatus_CommentPaginatedResponse_Fragment = { __typename?: 'CommentPaginatedResponse', code: number, message?: string | null };
 
@@ -348,6 +368,13 @@ type QueryStatus_VoteQueryResponse_Fragment = { __typename?: 'VoteQueryResponse'
 export type QueryStatusFragment = QueryStatus_CommentPaginatedResponse_Fragment | QueryStatus_CountingAggregation_Fragment | QueryStatus_TagPaginatedResponse_Fragment | QueryStatus_VotePaginatedResponse_Fragment | QueryStatus_VoteQueryResponse_Fragment;
 
 export type UserInfoFragment = { __typename?: 'User', _id: string, email: string, name: string, avt?: string | null };
+
+export type FavoriteCommentMutationVariables = Exact<{
+  favoriteCommentInput: FavoriteCommentInput;
+}>;
+
+
+export type FavoriteCommentMutation = { __typename?: 'Mutation', favoriteComment: { __typename?: 'FavoriteCommentMutationResponse', code: number, success: boolean } };
 
 export type RegisterMutationVariables = Exact<{
   registerInput: RegisterInput;
@@ -484,6 +511,40 @@ export const UserInfoFragmentDoc = gql`
   avt
 }
     `;
+export const FavoriteCommentDocument = gql`
+    mutation FavoriteComment($favoriteCommentInput: FavoriteCommentInput!) {
+  favoriteComment(favoriteCommentInput: $favoriteCommentInput) {
+    code
+    success
+  }
+}
+    `;
+export type FavoriteCommentMutationFn = Apollo.MutationFunction<FavoriteCommentMutation, FavoriteCommentMutationVariables>;
+
+/**
+ * __useFavoriteCommentMutation__
+ *
+ * To run a mutation, you first call `useFavoriteCommentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useFavoriteCommentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [favoriteCommentMutation, { data, loading, error }] = useFavoriteCommentMutation({
+ *   variables: {
+ *      favoriteCommentInput: // value for 'favoriteCommentInput'
+ *   },
+ * });
+ */
+export function useFavoriteCommentMutation(baseOptions?: Apollo.MutationHookOptions<FavoriteCommentMutation, FavoriteCommentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<FavoriteCommentMutation, FavoriteCommentMutationVariables>(FavoriteCommentDocument, options);
+      }
+export type FavoriteCommentMutationHookResult = ReturnType<typeof useFavoriteCommentMutation>;
+export type FavoriteCommentMutationResult = Apollo.MutationResult<FavoriteCommentMutation>;
+export type FavoriteCommentMutationOptions = Apollo.BaseMutationOptions<FavoriteCommentMutation, FavoriteCommentMutationVariables>;
 export const RegisterDocument = gql`
     mutation Register($registerInput: RegisterInput!) {
   register(registerInput: $registerInput) {
