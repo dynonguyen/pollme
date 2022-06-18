@@ -173,7 +173,7 @@ const Poll: NextPage<
 				</div>
 
 				{/* ReCAPTCHA */}
-				{vote?.isReCaptcha && (
+				{vote?.isReCaptcha && !isClosed && (
 					<div className='flex justify-end mb-5'>
 						<ReCAPTCHA onChange={token => setReCaptchaToken(token)} />
 					</div>
@@ -194,16 +194,18 @@ const Poll: NextPage<
 							</button>
 						</Link>
 					) : (
-						<button
-							className={`btn-accent md:btn-lg rounded-full font-medium ${
-								(vote?.isReCaptcha && !reCaptchaToken) || loading
-									? 'disabled'
-									: ''
-							}`}
-							onClick={handleVoteSubmit}
-						>
-							{pollLang.submit}
-						</button>
+						!isClosed && (
+							<button
+								className={`btn-accent md:btn-lg rounded-full font-medium ${
+									(vote?.isReCaptcha && !reCaptchaToken) || loading
+										? 'disabled'
+										: ''
+								}`}
+								onClick={handleVoteSubmit}
+							>
+								{pollLang.submit}
+							</button>
+						)
 					)}
 				</div>
 

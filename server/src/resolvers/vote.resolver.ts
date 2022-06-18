@@ -44,8 +44,9 @@ import {
 export class VoteResolver {
 	@FieldResolver(_return => User, { nullable: true })
 	async owner(@Root() vote: Vote): Promise<User | null> {
-		if (!vote._doc?.ownerId) return null;
-		return await UserModel.findById(vote._doc.ownerId);
+		if (!vote._doc?.ownerId && !vote.ownerId) return null;
+		const ownerId = vote._doc?.ownerId || vote.ownerId;
+		return await UserModel.findById(ownerId);
 	}
 
 	@FieldResolver(_return => String, { nullable: true })
@@ -172,6 +173,7 @@ export class VoteResolver {
 	): Promise<VoteMutationResponse> {
 		const { pollId, votes = [], unVoteIds = [], userInfo } = votingInput;
 		const { userId, userIp, username } = userInfo;
+		let numOfIncrease = 0;
 
 		try {
 			let vote = await VoteModel.findById(pollId);
@@ -186,12 +188,15 @@ export class VoteResolver {
 			const { answers } = vote;
 			let newAnswers: VoteAnswer[] = [];
 			answers.forEach(answer => {
-				if (unVoteIds.includes(answer.id)) {
-					const voteIndex = answer.voteList.findIndex(
-						v => v.userInfo?.ip === userIp || v.userInfo?.userId === userId,
-					);
-					if (voteIndex !== -1) {
-						answer.voteList.splice(voteIndex, 1);
+				if (vote?.isIPDuplicationCheck) {
+					if (unVoteIds.includes(answer.id)) {
+						const voteIndex = answer.voteList.findIndex(
+							v => v.userInfo?.ip === userIp || v.userInfo?.userId === userId,
+						);
+						if (voteIndex !== -1) {
+							answer.voteList.splice(voteIndex, 1);
+							numOfIncrease--;
+						}
 					}
 				}
 
@@ -207,6 +212,7 @@ export class VoteResolver {
 								rank: v.rank,
 								score: v.score,
 							});
+							numOfIncrease++;
 						} else {
 							const voteIndex = answer.voteList.findIndex(
 								v2 =>
@@ -232,6 +238,7 @@ export class VoteResolver {
 									rank: v.rank,
 									score: v.score,
 								});
+								numOfIncrease++;
 							}
 						}
 					}
@@ -242,13 +249,19 @@ export class VoteResolver {
 
 			await VoteModel.updateOne(
 				{ _id: pollId },
-				{ $set: { answers: newAnswers } },
+				{ $set: { answers: newAnswers }, $inc: { totalVote: numOfIncrease } },
 			);
 
 			return {
 				code: SUCCESS_CODE.OK,
 				success: true,
-				vote: vote._doc ? { ...vote._doc, answers: newAnswers } : undefined,
+				vote: vote._doc
+					? {
+							...vote._doc,
+							answers: newAnswers,
+							totalVote: vote._doc.totalVote + numOfIncrease,
+					  }
+					: undefined,
 			};
 		} catch (error) {
 			console.error('VOTING MUTATION ERROR: ', error);
