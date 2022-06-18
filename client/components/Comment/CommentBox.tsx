@@ -74,13 +74,13 @@ export default function CommentBox({
 	};
 
 	return (
-		<div className='shadow-md dark:shadow-none dark:border dark:border-gray-600 py-3 md:py-4 px-4 md:px-6 rounded-lg mt-5'>
+		<div className='my-5'>
 			<h3 className='text-xl mb-2 text-primary dark:text-d_primary'>
 				{commentLang.addComment}
 			</h3>
 			<textarea
 				className='field min-h-[60px]'
-				rows={4}
+				rows={6}
 				ref={inputRef}
 				maxLength={MAX.COMMENT_LEN}
 				placeholder={commentLang.addCommentPlaceholder}

@@ -16,10 +16,10 @@ const languageOptions: SelectOptions[] = [
 export default function LanguageSelect(): JSX.Element {
 	const router = useRouter();
 	const { locale } = useRouter();
-	const { pathname } = router;
+	const { pathname, asPath } = router;
 
 	const handleChangeLanguage = (lang: string | number) => {
-		router.push(pathname, pathname, {
+		router.push(pathname, asPath, {
 			locale: lang as string,
 		});
 	};

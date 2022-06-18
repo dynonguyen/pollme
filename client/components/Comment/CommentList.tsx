@@ -52,10 +52,10 @@ export default function CommentList(props: {
 			{comments && comments.length > 0 && (
 				<>
 					<ul className='grid grid-cols-1 gap-5 md:gap-6 py-4'>
-						{comments.map((comment, index) => {
+						{comments.map(comment => {
 							const { content, createdAt, owner, favorites, _id } = comment;
 							return (
-								<li key={index}>
+								<li key={_id}>
 									<CommentItem
 										commentId={_id}
 										username={owner?.name!}
