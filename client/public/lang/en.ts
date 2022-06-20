@@ -32,7 +32,7 @@ export default {
 	},
 	placeholder: {
 		defaultSelect: 'Choose an option',
-		search: 'Enter keyword or #tag',
+		search: 'Enter keyword or [tag]',
 	},
 	accountMenu: [
 		{

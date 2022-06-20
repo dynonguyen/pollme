@@ -28,7 +28,7 @@ export default {
 	},
 	placeholder: {
 		defaultSelect: 'Chọn một lựa chọn',
-		search: 'Nhập từ khoá hoặc #tag',
+		search: 'Nhập từ khoá hoặc [tag]',
 	},
 	accountMenu: [
 		{

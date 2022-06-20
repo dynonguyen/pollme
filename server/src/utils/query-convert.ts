@@ -19,8 +19,8 @@ export const voteKeywordSearchToQuery = (keyword: string): Object => {
 	if (!keyword || !keyword.trim()) return {};
 
 	// Check search within tag
-	if (keyword[0] === '#') {
-		const tagKeyword = keyword.slice(1);
+	if (/\[.+\]/.test(keyword)) {
+		const tagKeyword = keyword.replace(/\[(.+)\]/, '$1');
 		return { 'tags.name': { $regex: tagKeyword, $options: 'i' } };
 	}
 
