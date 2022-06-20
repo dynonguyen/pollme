@@ -10,6 +10,7 @@ import { useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import CommentArea from '../../components/Comment/CommentArea';
 import InfoTooltip from '../../components/InfoTooltip';
+import MultipleChoice from '../../components/PollOption/MultipleChoice';
 import SingleChoice from '../../components/PollOption/SingleChoice';
 import ReCAPTCHA from '../../components/ReCAPTCHA';
 import SocialShare from '../../components/SocialShare';
@@ -153,12 +154,12 @@ const Poll: NextPage<
 
 				{/* poll options */}
 				<div className='my-5 grid grid-cols-1 gap-3 md:gap-6'>
-					{vote?.type === VOTE_TYPE.SINGLE_CHOICE && (
+					{vote?.type === VOTE_TYPE.SINGLE_CHOICE ? (
 						<SingleChoice
 							showResult={vote.isShowResult}
-							options={vote?.answers || []}
-							ownerId={vote?.ownerId || ''}
-							pollId={vote?._id || ''}
+							options={vote.answers || []}
+							ownerId={vote.ownerId || ''}
+							pollId={vote._id || ''}
 							isIPDuplicationCheck={vote.isIPDuplicationCheck}
 							onChecked={optionId => {
 								choices.current.votes = [
@@ -169,6 +170,30 @@ const Poll: NextPage<
 								choices.current.unVoteIds = [optionId];
 							}}
 						/>
+					) : vote?.type === VOTE_TYPE.MULTIPLE_CHOICE ? (
+						<MultipleChoice
+							options={vote.answers}
+							ownerId={vote.ownerId}
+							pollId={vote._id}
+							isIPDuplicationCheck={vote.isIPDuplicationCheck}
+							onChecked={({ id, checked }) => {
+								const vIndex = choices.current.votes?.findIndex(
+									v => v.id === id,
+								);
+
+								if (vIndex !== -1 && !checked) {
+									choices.current.votes?.splice(vIndex!, 1);
+								}
+								if (vIndex === -1 && checked)
+									choices.current.votes?.push({ id, rank: null, score: null });
+							}}
+							onUnChecked={id =>
+								!choices.current.unVoteIds?.includes(id) &&
+								choices.current.unVoteIds?.push(id)
+							}
+						/>
+					) : (
+						<></>
 					)}
 				</div>
 
