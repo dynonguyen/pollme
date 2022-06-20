@@ -54,9 +54,6 @@ export class NewVoteInput {
 	maxVote?: number;
 
 	@Field(_type => Int, { nullable: true })
-	maxChoice?: number;
-
-	@Field(_type => Int, { nullable: true })
 	maxScore?: number;
 
 	@Field(_type => Date, { nullable: true })

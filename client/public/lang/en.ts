@@ -232,7 +232,6 @@ export default {
 				showResultBtn: 'Show result button',
 				maxVote: 'Max Vote',
 				endDate: 'End date',
-				maxChoice: 'Max Choice',
 				maxScore: 'Max Score',
 			},
 			labelHelp: {

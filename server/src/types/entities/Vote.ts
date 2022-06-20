@@ -103,9 +103,6 @@ class Vote {
 	@Field(_type => Int, { nullable: true })
 	maxScore?: boolean;
 
-	@Field(_type => Int, { nullable: true })
-	maxChoice?: boolean;
-
 	@Field(_type => Int)
 	totalVote: number;
 

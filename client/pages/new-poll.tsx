@@ -46,7 +46,6 @@ interface AdvanceSettings {
 	isShowResultBtn: boolean;
 	allowAddOption: boolean;
 	maxVote?: number;
-	maxChoice?: number;
 	maxScore?: number;
 	endDate?: Date;
 }
@@ -182,22 +181,6 @@ function AdvanceSettings({
 					}}
 				/>
 			</div>
-
-			{/* Max choice with VOTE_TYPE.MULTIPLE_CHOICE */}
-			{pollType === VOTE_TYPE.MULTIPLE_CHOICE && (
-				<div className='flex items-center gap-3'>
-					<label htmlFor='max-choice' className='new-poll-label w-32 shrink-0'>
-						{newPollLang.fieldLabels.maxChoice}
-					</label>
-					<input
-						id='max-choice'
-						type='number'
-						className={`field ${classes.advanceInput}`}
-						defaultValue={2}
-						onChange={e => (fields.current.maxChoice = Number(e.target.value))}
-					/>
-				</div>
-			)}
 
 			{/* Max choice with VOTE_TYPE.SCORE */}
 			{pollType === VOTE_TYPE.SCORE && (

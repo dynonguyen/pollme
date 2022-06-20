@@ -13,7 +13,6 @@ fragment voteFullInfo on Vote {
 	isReCaptcha
 	isShowResult
 	isShowResultBtn
-	maxChoice
 	maxScore
 	maxVote
 	totalComment

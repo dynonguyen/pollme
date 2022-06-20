@@ -86,10 +86,6 @@ const schema: Schema = new Schema({
 		type: Number,
 		default: DEFAULT.VOTE.MAX_SCORE,
 	},
-	maxChoice: {
-		type: Number,
-		default: 2,
-	},
 	totalVote: {
 		type: Number,
 		required: true,

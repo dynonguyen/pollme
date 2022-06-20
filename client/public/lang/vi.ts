@@ -226,7 +226,6 @@ export default {
 				allowAddOption: 'Cho phép thêm lựa chọn',
 				maxVote: 'Lượng bỏ phiếu tối đa',
 				endDate: 'Ngày kết thúc khảo sát',
-				maxChoice: 'Tối đa vote/người',
 				maxScore: 'Điểm tối đa',
 			},
 			labelHelp: {
