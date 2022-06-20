@@ -1,12 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { IP_ADDRESS_API_URI } from '../constants';
 import { useGetMeLazyQuery } from '../graphql-client/generated/graphql';
 import userAtom, { UserAtom, userAtomDefault } from '../recoil/atoms/user.atom';
 
-export default function useGetMe(): void {
+export default function useGetMe(): boolean {
 	const setUserInfoState = useSetRecoilState(userAtom);
 	const [getMeQuery] = useGetMeLazyQuery();
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		(async function () {
@@ -24,6 +25,9 @@ export default function useGetMe(): void {
 			}
 
 			setUserInfoState({ ...user, ip, loading: false });
+			setLoading(false);
 		})();
 	}, []);
+
+	return loading;
 }

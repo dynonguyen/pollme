@@ -1,10 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { LS_KEY } from '../constants/key';
 import themeAtom from '../recoil/atoms/theme.atom';
 
-export default function useGetTheme() {
+export default function useGetTheme(): boolean {
 	const setTheme = useSetRecoilState(themeAtom);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		const mode = localStorage.getItem(LS_KEY.THEME);
@@ -17,5 +18,9 @@ export default function useGetTheme() {
 			htmlClassList.remove('dark');
 			setTheme({ isDark: false });
 		}
+
+		setLoading(false);
 	}, []);
+
+	return loading;
 }
