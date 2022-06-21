@@ -1,30 +1,6 @@
 import { useRecoilValue } from 'recoil';
+import { DARK_RANKING_COLOR, RANKING_COLOR } from '../../constants/color';
 import themeAtom from '../../recoil/atoms/theme.atom';
-
-const rankingColors = [
-	'#219ebc',
-	'#ca3031',
-	'#00b18e',
-	'#00c7c1',
-	'#097fd9',
-	'#6958df',
-	'#f3c26a',
-	'#e0418d',
-	'#f17d2f',
-	'#9fa9ba',
-];
-const darkRankingColors = [
-	'#50b8d5',
-	'#f57076',
-	'#53e6bb',
-	'#7be3e3',
-	'#6fb1f5',
-	'#9b95f3',
-	'#f5e1a0',
-	'#f374a1',
-	'#f29041',
-	'#c9d0d7',
-];
 
 export default function PollResultBar({
 	rank,
@@ -37,8 +13,8 @@ export default function PollResultBar({
 
 	const percentBarColor = rank
 		? isDark
-			? darkRankingColors[(rank % darkRankingColors.length) - 1]
-			: rankingColors[(rank % rankingColors.length) - 1]
+			? DARK_RANKING_COLOR[(rank % DARK_RANKING_COLOR.length) - 1]
+			: RANKING_COLOR[(rank % RANKING_COLOR.length) - 1]
 		: isDark
 		? '#50b8d5'
 		: '#219ebc';

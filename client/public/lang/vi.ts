@@ -264,6 +264,7 @@ export default {
 		poll: {
 			addOption: 'Thêm tuỳ chọn',
 			showResultBtn: 'Hiển thị kết quả',
+			hideResultBtn: 'Quay lại',
 			submit: 'Tiến hành vote',
 			comment: 'Bình luận',
 			requiredLogin: 'Đăng nhập để submit',

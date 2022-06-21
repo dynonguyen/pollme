@@ -6,10 +6,11 @@ import {
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useRef, useState } from 'react';
+import React, { Suspense, useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import CommentArea from '../../components/Comment/CommentArea';
 import InfoTooltip from '../../components/InfoTooltip';
+import Loading from '../../components/Loading';
 import AddOptionButton from '../../components/PollOption/AddOptionButton';
 import MultipleChoice from '../../components/PollOption/MultipleChoice';
 import ScoreChoice from '../../components/PollOption/ScoreChoice';
@@ -37,17 +38,19 @@ import useToast from '../../hooks/useToast';
 import { addApolloState, initializeApollo } from '../../lib/apolloClient';
 import userAtom from '../../recoil/atoms/user.atom';
 import { dateFormat } from '../../utils/format';
-import { isPollClosed, pollTypeToString } from '../../utils/helper';
-
-const classes = {
-	smGray: 'text-gray-500 dark:text-gray-400 text-sm',
-};
+import {
+	isPollClosed,
+	pollRanking,
+	pollTypeToString,
+} from '../../utils/helper';
+const PollResultChart = React.lazy(
+	() => import('../../components/PollResultChart'),
+);
 
 const Poll: NextPage<
 	InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ voteDoc, commentDoc }) => {
 	const [vote, setVote] = useState(voteDoc.publicVote?.vote);
-
 	const lang = useLanguage();
 	const pollLang = lang.pages.poll;
 	const router = useRouter();
@@ -57,6 +60,10 @@ const Poll: NextPage<
 	const choices = useRef<Partial<VotingInput>>({ unVoteIds: [], votes: [] });
 	const [votingMutation, { loading }] = useVotingMutation();
 	const toast = useToast();
+	const [pollResult, setPollResult] = useState<{
+		data: number[];
+		labels: string[];
+	} | null>(null);
 
 	const isClosed = isPollClosed(
 		vote?.endDate,
@@ -98,6 +105,19 @@ const Poll: NextPage<
 		setVote({ ...newVote });
 	};
 
+	const handleShowResult = () => {
+		const rankingList = pollRanking(
+			vote?.answers,
+			vote?.type === VOTE_TYPE.SCORE,
+		);
+		const pollData: number[] = rankingList.map(r => r.score);
+		const pollLabels: string[] = rankingList.map(
+			rankItem =>
+				vote?.answers.find(ans => ans.id === rankItem.id)?.label || 'Other',
+		);
+		setPollResult({ data: pollData, labels: pollLabels });
+	};
+
 	return (
 		<>
 			<Head>
@@ -125,11 +145,13 @@ const Poll: NextPage<
 							height={24}
 							className='rounded-full'
 						/>
-						<span className={classes.smGray}>{vote?.owner?.name}</span>
-						<span className={classes.smGray}>
+						<span className='text-gray-500 dark:text-gray-400 text-sm'>
+							{vote?.owner?.name}
+						</span>
+						<span className='text-gray-500 dark:text-gray-400 text-sm'>
 							{dateFormat(vote?.createdAt, true)}
 						</span>
-						<span className={classes.smGray}>
+						<span className='text-gray-500 dark:text-gray-400 text-sm'>
 							<b>{vote?.totalVote || 0}</b> voted
 						</span>
 					</div>
@@ -153,124 +175,146 @@ const Poll: NextPage<
 					{vote?.desc}
 				</p>
 
-				{/* Type */}
-				<div className='flex items-center gap-2 mt-3'>
-					<strong className='text-gradient text-xl capitalize'>
-						{pollTypeToString(vote?.type)}
-					</strong>
-					<InfoTooltip title={lang.helper.pollTypes[vote?.type as number]} />
-				</div>
+				{/* Content Or Result */}
+				{pollResult ? (
+					<div className='max-w-lg mx-auto w-full my-5'>
+						<Suspense fallback={<Loading />}>
+							<PollResultChart
+								data={pollResult.data}
+								labels={pollResult.labels}
+							/>
+						</Suspense>
+					</div>
+				) : (
+					<>
+						{/* Type */}
+						<div className='flex items-center gap-2 mt-3'>
+							<strong className='text-gradient text-xl capitalize'>
+								{pollTypeToString(vote?.type)}
+							</strong>
+							<InfoTooltip
+								title={lang.helper.pollTypes[vote?.type as number]}
+							/>
+						</div>
 
-				{/* poll options */}
-				<div className='my-5 grid grid-cols-1 gap-3 md:gap-6'>
-					{vote?.type === VOTE_TYPE.SINGLE_CHOICE ? (
-						<SingleChoice
-							showResult={vote.isShowResult}
-							options={vote.answers || []}
-							ownerId={vote.ownerId || ''}
-							pollId={vote._id || ''}
-							isIPDuplicationCheck={vote.isIPDuplicationCheck}
-							onChecked={optionId => {
-								choices.current.votes = [{ id: optionId, score: null }];
-							}}
-							onUncheck={optionId => {
-								choices.current.unVoteIds = [optionId];
-							}}
-						/>
-					) : vote?.type === VOTE_TYPE.MULTIPLE_CHOICE ? (
-						<MultipleChoice
-							options={vote.answers}
-							ownerId={vote.ownerId}
-							pollId={vote._id}
-							isIPDuplicationCheck={vote.isIPDuplicationCheck}
-							onChecked={({ id, checked }) => {
-								const vIndex = choices.current.votes?.findIndex(
-									v => v.id === id,
-								);
+						{/* poll options */}
+						<div className='my-5 grid grid-cols-1 gap-3 md:gap-6'>
+							{vote?.type === VOTE_TYPE.SINGLE_CHOICE ? (
+								<SingleChoice
+									showResult={vote.isShowResult}
+									options={vote.answers || []}
+									ownerId={vote.ownerId || ''}
+									pollId={vote._id || ''}
+									isIPDuplicationCheck={vote.isIPDuplicationCheck}
+									onChecked={optionId => {
+										choices.current.votes = [{ id: optionId, score: null }];
+									}}
+									onUncheck={optionId => {
+										choices.current.unVoteIds = [optionId];
+									}}
+								/>
+							) : vote?.type === VOTE_TYPE.MULTIPLE_CHOICE ? (
+								<MultipleChoice
+									options={vote.answers}
+									ownerId={vote.ownerId}
+									pollId={vote._id}
+									isIPDuplicationCheck={vote.isIPDuplicationCheck}
+									onChecked={({ id, checked }) => {
+										const vIndex = choices.current.votes?.findIndex(
+											v => v.id === id,
+										);
 
-								if (vIndex !== -1 && !checked) {
-									choices.current.votes?.splice(vIndex!, 1);
-								}
-								if (vIndex === -1 && checked)
-									choices.current.votes?.push({ id, score: null });
-							}}
-							onUnChecked={id =>
-								!choices.current.unVoteIds?.includes(id) &&
-								choices.current.unVoteIds?.push(id)
-							}
-						/>
-					) : vote?.type === VOTE_TYPE.SCORE ? (
-						<ScoreChoice
-							options={vote.answers}
-							ownerId={vote.ownerId}
-							pollId={vote._id}
-							maxScore={vote.maxScore || DEFAULT.VOTE.MAX_SCORE}
-							isIPDuplicationCheck={vote.isIPDuplicationCheck}
-							showResult={vote.isShowResult}
-							onScoreChange={({ id, score }) => {
-								if (choices.current.votes) {
-									const choiceIndex = choices.current.votes.findIndex(
-										c => c.id === id,
-									);
-									if (choiceIndex !== -1) {
-										choices.current.votes[choiceIndex].score = score;
-									} else {
-										choices.current.votes.push({ id, score });
+										if (vIndex !== -1 && !checked) {
+											choices.current.votes?.splice(vIndex!, 1);
+										}
+										if (vIndex === -1 && checked)
+											choices.current.votes?.push({ id, score: null });
+									}}
+									onUnChecked={id =>
+										!choices.current.unVoteIds?.includes(id) &&
+										choices.current.unVoteIds?.push(id)
 									}
-								}
-							}}
-						/>
-					) : (
-						<></>
-					)}
-				</div>
+								/>
+							) : vote?.type === VOTE_TYPE.SCORE ? (
+								<ScoreChoice
+									options={vote.answers}
+									ownerId={vote.ownerId}
+									pollId={vote._id}
+									maxScore={vote.maxScore || DEFAULT.VOTE.MAX_SCORE}
+									isIPDuplicationCheck={vote.isIPDuplicationCheck}
+									showResult={vote.isShowResult}
+									onScoreChange={({ id, score }) => {
+										if (choices.current.votes) {
+											const choiceIndex = choices.current.votes.findIndex(
+												c => c.id === id,
+											);
+											if (choiceIndex !== -1) {
+												choices.current.votes[choiceIndex].score = score;
+											} else {
+												choices.current.votes.push({ id, score });
+											}
+										}
+									}}
+								/>
+							) : (
+								<></>
+							)}
+						</div>
 
-				{/* add option */}
-				{vote?.allowAddOption && (
-					<div className='my-3'>
-						<AddOptionButton
-							pollId={vote._id}
-							ownerId={vote.ownerId}
-							onAddOptionSuccess={handleAddOptionSuccess}
-						/>
-					</div>
-				)}
+						{/* add option */}
+						{vote?.allowAddOption && (
+							<div className='my-3'>
+								<AddOptionButton
+									pollId={vote._id}
+									ownerId={vote.ownerId}
+									onAddOptionSuccess={handleAddOptionSuccess}
+								/>
+							</div>
+						)}
 
-				{/* ReCAPTCHA */}
-				{vote?.isReCaptcha && !isClosed && (
-					<div className='flex justify-end mb-5'>
-						<ReCAPTCHA onChange={token => setReCaptchaToken(token)} />
-					</div>
+						{/* ReCAPTCHA */}
+						{vote?.isReCaptcha && !isClosed && (
+							<div className='flex justify-end mb-5'>
+								<ReCAPTCHA onChange={token => setReCaptchaToken(token)} />
+							</div>
+						)}
+					</>
 				)}
 
 				{/* button group */}
 				<div className='flex justify-end gap-3 pt-3'>
 					{vote?.isShowResultBtn && (
-						<button className='btn-outline md:btn-lg rounded-full font-medium'>
-							{pollLang.showResultBtn}
+						<button
+							className='btn-outline md:btn-lg rounded-full font-medium'
+							onClick={
+								pollResult ? () => setPollResult(null) : handleShowResult
+							}
+						>
+							{pollResult ? pollLang.hideResultBtn : pollLang.showResultBtn}
 						</button>
 					)}
 
-					{!userInfo._id && vote?.isLoginRequired ? (
-						<Link href={lang.pages.login.link}>
-							<button className='btn-accent md:btn-lg rounded-full font-medium'>
-								{pollLang.requiredLogin}
-							</button>
-						</Link>
-					) : (
-						!isClosed && (
-							<button
-								className={`btn-accent md:btn-lg rounded-full font-medium ${
-									(vote?.isReCaptcha && !reCaptchaToken) || loading
-										? 'disabled'
-										: ''
-								}`}
-								onClick={handleVoteSubmit}
-							>
-								{pollLang.submit}
-							</button>
-						)
-					)}
+					{!pollResult &&
+						(!userInfo._id && vote?.isLoginRequired ? (
+							<Link href={lang.pages.login.link}>
+								<button className='btn-accent md:btn-lg rounded-full font-medium'>
+									{pollLang.requiredLogin}
+								</button>
+							</Link>
+						) : (
+							!isClosed && (
+								<button
+									className={`btn-accent md:btn-lg rounded-full font-medium ${
+										(vote?.isReCaptcha && !reCaptchaToken) || loading
+											? 'disabled'
+											: ''
+									}`}
+									onClick={handleVoteSubmit}
+								>
+									{pollLang.submit}
+								</button>
+							)
+						))}
 				</div>
 
 				{/* Comment list */}

@@ -269,6 +269,7 @@ export default {
 		poll: {
 			addOption: 'Add option',
 			showResultBtn: 'Show Result',
+			hideResultBtn: 'Back',
 			submit: 'Submit Vote',
 			comment: 'Comments',
 			requiredLogin: 'Log in to submit',
