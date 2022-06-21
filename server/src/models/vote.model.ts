@@ -43,7 +43,6 @@ const schema: Schema = new Schema({
 						ip: String,
 					},
 					score: Number,
-					rank: Number,
 				},
 			],
 		},

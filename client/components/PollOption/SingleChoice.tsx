@@ -86,9 +86,7 @@ export default function SingleChoice(props: SingleChoiceProps): JSX.Element {
 					? `/upload/user-${ownerId}/${pollId}/${photo}`
 					: null;
 				const photoThumbSrc = photo
-					? `/upload/user-${ownerId}/${pollId}/${toThumbnailSrc(
-							photo as string,
-					  )}`
+					? `/upload/user-${ownerId}/${pollId}/${toThumbnailSrc(photo)}`
 					: null;
 
 				return (

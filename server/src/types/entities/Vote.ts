@@ -21,9 +21,6 @@ class VoteOfUser {
 
 	@Field(_type => Int, { nullable: true })
 	score?: number;
-
-	@Field(_type => Int, { nullable: true })
-	rank?: number;
 }
 
 @ObjectType()

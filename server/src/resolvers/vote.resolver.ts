@@ -209,7 +209,6 @@ export class VoteResolver {
 									ip: userIp,
 									name: username,
 								},
-								rank: v.rank,
 								score: v.score,
 							});
 							numOfIncrease++;
@@ -225,7 +224,6 @@ export class VoteResolver {
 										ip: userIp,
 										name: username,
 									},
-									rank: v.rank,
 									score: v.score,
 								};
 							} else {
@@ -235,7 +233,6 @@ export class VoteResolver {
 										ip: userIp,
 										name: username,
 									},
-									rank: v.rank,
 									score: v.score,
 								});
 								numOfIncrease++;

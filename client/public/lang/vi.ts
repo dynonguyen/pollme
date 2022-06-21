@@ -314,6 +314,7 @@ export default {
 		closed: 'Đã đóng',
 		loadMoreComment: 'Xem thêm bình luận',
 		loading: 'Đang tải dữ liệu ...',
+		scoreMaximum: 'Số điểm tối đa là ',
 	},
 	components: {
 		TagInput: {

@@ -1,78 +1,81 @@
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
+import useLanguage from '../../hooks/useLanguage';
 import userAtom, { UserAtom } from '../../recoil/atoms/user.atom';
 import { AnswerOption } from '../../types/common';
 import { pollRanking, toThumbnailSrc } from '../../utils/helper';
-import PollOptionCheckbox from './PollOptionCheckbox';
+import PollOptionScore from './PollOptionScore';
 
-interface MultipleChoiceProps {
+interface ScoreChoiceProps {
 	options: AnswerOption[];
 	ownerId: string;
 	pollId: string;
+	maxScore: number;
 	showResult?: boolean;
 	isIPDuplicationCheck?: boolean;
-	onChecked: (answer: { id: string; checked: boolean }) => void;
-	onUnChecked: (answerId: string) => void;
+	onScoreChange: (value: { id: string; score: number }) => void;
 }
 
-function findInitUserChecked(
+function findDefaultScore(
 	userInfo: UserAtom,
 	answers: AnswerOption[],
-): string[] {
-	let checkedList: string[] = [];
+): { id: string; score: number }[] {
+	let scores: { id: string; score: number }[] = [];
 	const { _id, ip } = userInfo;
 
 	answers.forEach(answer => {
 		answer.voteList.forEach(v => {
 			if (v.userInfo.ip === ip || v.userInfo.userId === _id) {
-				checkedList.push(answer.id);
+				scores.push({ id: answer.id, score: v.score || 0 });
 			}
 		});
 	});
 
-	return checkedList;
+	return scores;
 }
 
-export default function MultipleChoice(
-	props: MultipleChoiceProps,
-): JSX.Element {
+export default function ScoreChoice(props: ScoreChoiceProps): JSX.Element {
 	const {
 		options = [],
 		showResult = true,
 		ownerId,
 		pollId,
+		maxScore,
 		isIPDuplicationCheck,
-		onChecked,
-		onUnChecked,
+		onScoreChange,
 	} = props;
 	const userInfo = useRecoilValue(userAtom);
-	const pollRanks = pollRanking(options, false);
-	const [checkList, setCheckList] = useState(
-		options.map(o => ({ id: o.id, checked: false })),
-	);
-	const [initUserChecked, setInitUserChecked] = useState<string[]>([]);
+	const pollRanks = pollRanking(options, true);
+	const [scoreList, setScoreList] = useState<
+		{ id: string; score: number | undefined }[]
+	>([]);
+
+	const lang = useLanguage();
 
 	useEffect(() => {
-		const defaultChecked = findInitUserChecked(userInfo, options);
-		setInitUserChecked([...defaultChecked]);
-		setCheckList(
+		const defaultScores = findDefaultScore(userInfo, options);
+		setScoreList(
 			options.map(o => ({
 				id: o.id,
-				checked: isIPDuplicationCheck ? defaultChecked.includes(o.id) : false,
+				score: isIPDuplicationCheck
+					? defaultScores.find(d => d.id === o.id)?.score
+					: undefined,
 			})),
 		);
 	}, [userInfo, options]);
 
-	const handleCheck = (id: string, checked: boolean) => {
-		if (!checked) {
-			// uncheck initial user checked
-			initUserChecked.includes(id) && onUnChecked(id);
+	const handleScoreChange = (id: string, score: number) => {
+		if (score >= 0) {
+			onScoreChange({ id, score });
 		}
-		onChecked({ id, checked });
 	};
 
 	return (
 		<>
+			<p className='text-accent dark:text-d_accent'>
+				{lang.others.scoreMaximum}
+				{maxScore}
+			</p>
 			{options.map((option, index) => {
 				const { label, id, photo } = option;
 				const pollRank = pollRanks.find(p => p.id === id);
@@ -84,17 +87,17 @@ export default function MultipleChoice(
 					: null;
 
 				return (
-					<PollOptionCheckbox
+					<PollOptionScore
 						key={index}
 						title={label}
-						rounded
 						showResult={showResult}
 						rank={pollRank?.rank || 0}
 						percent={pollRank?.percent || 0}
 						photoUrl={photoSrc as string}
 						photoThumbnail={photoThumbSrc as string}
-						checked={checkList.find(c => c.id === id)?.checked}
-						onCheck={checked => handleCheck(id, checked)}
+						onScoreChange={score => handleScoreChange(option.id, score)}
+						maxScore={maxScore}
+						defaultScore={scoreList.find(s => s.id === option.id)?.score}
 					/>
 				);
 			})}

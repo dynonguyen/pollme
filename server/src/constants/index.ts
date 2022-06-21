@@ -14,8 +14,7 @@ export const SESSION_SECRET = process.env.SESSION_SECRET || 'Secret';
 export const VOTE_TYPE = {
 	SINGLE_CHOICE: 0,
 	MULTIPLE_CHOICE: 1,
-	RANKED_CHOICE: 2,
-	SCORE: 3,
+	SCORE: 2,
 };
 export const COOKIE = {
 	ACCESS_MAX_AGE: 3 * 24 * 3600_000, // 3 days

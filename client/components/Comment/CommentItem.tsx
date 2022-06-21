@@ -1,6 +1,6 @@
 import { HeartIcon } from '@heroicons/react/solid';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { DEFAULT } from '../../constants/default';
 import { useFavoriteCommentMutation } from '../../graphql-client/generated/graphql';
@@ -29,16 +29,13 @@ export default function CommentItem(props: CommentItemProps): JSX.Element {
 	const userAvt = avt ? avt : DEFAULT.USER_AVT;
 	const userInfo = useRecoilValue(userAtom);
 	const { _id, ip } = userInfo;
-	const [liked, setLiked] = useState(false);
+	const [liked, setLiked] = useState(
+		favorites.findIndex(f => f === _id || f === ip) !== -1,
+	);
 	const [totalFavorite, setTotalFavorite] = useState(favorites.length);
 	const [favoriteCommentMutation] = useFavoriteCommentMutation();
 	const router = useRouter();
 	const lang = useLanguage();
-
-	useEffect(() => {
-		//  Only setState on CSR
-		setLiked(favorites.findIndex(f => f === _id || f === ip) !== -1);
-	}, [userInfo]);
 
 	const handleFavorite = async () => {
 		if (!userInfo._id) {

@@ -1,73 +1,62 @@
-import { useRecoilValue } from 'recoil';
-import themeAtom from '../../recoil/atoms/theme.atom';
+import { ChangeEvent, useRef } from 'react';
+import { DEFAULT } from '../../constants/default';
+import { debounce } from '../../utils/helper';
 import ImagePreview from '../core/ImagePreview';
+import PollResultBar from './PollResultBar';
 
-const rankingColors = [
-	'#219ebc',
-	'#ca3031',
-	'#00b18e',
-	'#00c7c1',
-	'#097fd9',
-	'#6958df',
-	'#f3c26a',
-	'#e0418d',
-	'#f17d2f',
-	'#9fa9ba',
-];
-const darkRankingColors = [
-	'#50b8d5',
-	'#f57076',
-	'#53e6bb',
-	'#7be3e3',
-	'#6fb1f5',
-	'#9b95f3',
-	'#f5e1a0',
-	'#f374a1',
-	'#f29041',
-	'#c9d0d7',
-];
-
-interface PollOptionCheckboxProps {
+interface PollOptionScoreProps {
 	title: string;
+	maxScore: number;
 	showResult?: boolean;
 	percent?: number;
 	rank?: number;
 	photoUrl?: string;
 	photoThumbnail?: string;
-	onChange?: (score: number) => void;
+	defaultScore?: number;
+	onScoreChange: (score: number) => void;
 }
 
 export default function PollOptionScore(
-	props: PollOptionCheckboxProps,
+	props: PollOptionScoreProps,
 ): JSX.Element {
 	const {
 		title,
+		maxScore = DEFAULT.VOTE.MAX_SCORE,
 		showResult = true,
+		defaultScore,
 		percent = 0,
 		rank = 0,
 		photoUrl = '',
 		photoThumbnail = '',
-		onChange,
+		onScoreChange,
 	} = props;
+	const timer = useRef<number | null>();
 
-	const { isDark } = useRecoilValue(themeAtom);
-
-	const percentBarColor = rank
-		? isDark
-			? darkRankingColors[(rank % darkRankingColors.length) - 1]
-			: rankingColors[(rank % rankingColors.length) - 1]
-		: isDark
-		? '#50b8d5'
-		: '#219ebc';
+	const handleScoreChange = (e: ChangeEvent<HTMLInputElement>) => {
+		timer.current = debounce(timer.current, 250, () => {
+			const score = Number(e.target.value);
+			if (score > maxScore) {
+				e.target.value = maxScore.toString();
+				onScoreChange(maxScore);
+			} else if (score < 0) {
+				e.target.value = '0';
+				onScoreChange(0);
+			} else {
+				onScoreChange(score);
+			}
+		});
+	};
 
 	return (
 		<div>
 			<div className='flex items-center gap-2 mb-1'>
 				<input
-					className='field w-24 flex-shrink-0'
-					placeholder='Score'
+					className='field w-20 py-1 px-2 flex-shrink-0'
 					type='number'
-					onChange={e => onChange && onChange(Number(e.target.value))}
+					placeholder='score'
+					defaultValue={defaultScore}
+					max={maxScore}
+					onChange={handleScoreChange}
 				/>
 				<strong className='text-base md:text-xl text-slate-500 dark:text-slate-300 font-normal'>
 					{title}
@@ -75,19 +64,7 @@ export default function PollOptionScore(
 				{photoUrl && <ImagePreview src={photoUrl} thumbnail={photoThumbnail} />}
 			</div>
 
-			{showResult && (
-				<div className='flex gap-2 items-center'>
-					<div className='w-full h-2 md:h-3 bg-slate-300 dark:bg-slate-600 rounded-full overflow-hidden relative'>
-						<div
-							className='absolute left-0 top-0 h-full rounded-full'
-							style={{ width: `${percent}%`, backgroundColor: percentBarColor }}
-						></div>
-					</div>
-					<span className='w-12 flex-shrink-0 text-slate-500 dark:text-slate-300'>
-						{percent}%
-					</span>
-				</div>
-			)}
+			{showResult && <PollResultBar percent={percent} rank={rank} />}
 		</div>
 	);
 }

@@ -319,6 +319,7 @@ export default {
 		closed: 'Closed',
 		loadMoreComment: 'Load more comments',
 		loading: 'Loading ...',
+		scoreMaximum: 'The maximum score is',
 	},
 	components: {
 		TagInput: {

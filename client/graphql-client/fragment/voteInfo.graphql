@@ -26,7 +26,6 @@ fragment voteFullInfo on Vote {
 		label
 		photo
 		voteList {
-			rank
 			score
 			userInfo {
 				ip

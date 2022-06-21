@@ -11,6 +11,7 @@ import { useRecoilValue } from 'recoil';
 import CommentArea from '../../components/Comment/CommentArea';
 import InfoTooltip from '../../components/InfoTooltip';
 import MultipleChoice from '../../components/PollOption/MultipleChoice';
+import ScoreChoice from '../../components/PollOption/ScoreChoice';
 import SingleChoice from '../../components/PollOption/SingleChoice';
 import ReCAPTCHA from '../../components/ReCAPTCHA';
 import SocialShare from '../../components/SocialShare';
@@ -162,9 +163,7 @@ const Poll: NextPage<
 							pollId={vote._id || ''}
 							isIPDuplicationCheck={vote.isIPDuplicationCheck}
 							onChecked={optionId => {
-								choices.current.votes = [
-									{ id: optionId, rank: null, score: null },
-								];
+								choices.current.votes = [{ id: optionId, score: null }];
 							}}
 							onUncheck={optionId => {
 								choices.current.unVoteIds = [optionId];
@@ -185,12 +184,33 @@ const Poll: NextPage<
 									choices.current.votes?.splice(vIndex!, 1);
 								}
 								if (vIndex === -1 && checked)
-									choices.current.votes?.push({ id, rank: null, score: null });
+									choices.current.votes?.push({ id, score: null });
 							}}
 							onUnChecked={id =>
 								!choices.current.unVoteIds?.includes(id) &&
 								choices.current.unVoteIds?.push(id)
 							}
+						/>
+					) : vote?.type === VOTE_TYPE.SCORE ? (
+						<ScoreChoice
+							options={vote.answers}
+							ownerId={vote.ownerId}
+							pollId={vote._id}
+							maxScore={vote.maxScore || DEFAULT.VOTE.MAX_SCORE}
+							isIPDuplicationCheck={vote.isIPDuplicationCheck}
+							showResult={vote.isShowResult}
+							onScoreChange={({ id, score }) => {
+								if (choices.current.votes) {
+									const choiceIndex = choices.current.votes.findIndex(
+										c => c.id === id,
+									);
+									if (choiceIndex !== -1) {
+										choices.current.votes[choiceIndex].score = score;
+									} else {
+										choices.current.votes.push({ id, score });
+									}
+								}
+							}}
 						/>
 					) : (
 						<></>

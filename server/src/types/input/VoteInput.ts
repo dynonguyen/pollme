@@ -7,9 +7,6 @@ class VoteInput {
 
 	@Field(_type => Float, { nullable: true, defaultValue: null })
 	score: number;
-
-	@Field(_type => Float, { nullable: true, defaultValue: null })
-	rank: number;
 }
 
 @InputType()
