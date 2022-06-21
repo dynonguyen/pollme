@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
 	Comment,
 	CommentPaginatedResponse,
@@ -11,10 +11,10 @@ interface CommentAreaProps {
 	initialComments: CommentPaginatedResponse;
 }
 
-export default function CommentArea({
+function CommentArea({
 	initialComments,
 	voteId,
-}: CommentAreaProps) {
+}: CommentAreaProps): JSX.Element {
 	const [newComment, setNewComment] = useState<Comment>();
 
 	return (
@@ -31,3 +31,5 @@ export default function CommentArea({
 		</>
 	);
 }
+
+export default React.memo(CommentArea);
