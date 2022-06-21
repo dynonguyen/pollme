@@ -33,11 +33,11 @@ export default {
 	},
 	accountMenu: [
 		{
-			to: '/khao-sat-cua-toi',
+			to: '/account/polls',
 			title: 'Khảo sát của tôi',
 		},
 		{
-			to: '/cai-dat-tai-khoan',
+			to: '/account/settings',
 			title: 'Cài đặt tài khoản',
 		},
 	],
@@ -274,6 +274,9 @@ export default {
 		faq: {
 			title: 'Câu hỏi thường gặp',
 		},
+		accountPolls: {
+			title: 'Khảo sát của tôi',
+		},
 	},
 	pageSEO: {
 		home: {
@@ -311,6 +314,11 @@ export default {
 			title: 'Câu hỏi thường gặp - FAQs',
 			desc: `FAQ nơi giải đáp tất cả các thắc mắc, câu hỏi thường gặp của mọi người về ứng dụng ${APP_NAME}.`,
 		},
+		accountPolls: {
+			pathname: '/account/polls',
+			title: 'Khảo sát của tôi',
+			desc: `Khảo sát của tôi trên ${APP_NAME}`,
+		},
 	},
 	others: {
 		loginOAuthBreak: 'Hoặc tiếp tục với',
@@ -319,6 +327,7 @@ export default {
 		loadMoreComment: 'Xem thêm bình luận',
 		loading: 'Đang tải dữ liệu ...',
 		scoreMaximum: 'Số điểm tối đa là ',
+		sort: 'Sắp xếp',
 	},
 	components: {
 		TagInput: {

@@ -37,11 +37,11 @@ export default {
 	},
 	accountMenu: [
 		{
-			to: '/my-polls',
+			to: '/account/polls',
 			title: 'My Polls',
 		},
 		{
-			to: '/account-settings',
+			to: '/account/settings',
 			title: 'Account Settings',
 		},
 	],
@@ -279,6 +279,9 @@ export default {
 		faq: {
 			title: 'Frequently asked questions',
 		},
+		accountPolls: {
+			title: 'My Polls',
+		},
 	},
 	pageSEO: {
 		home: {
@@ -316,6 +319,11 @@ export default {
 			title: 'Frequently asked questions - FAQs',
 			desc: `FAQs Where to answer all people's frequently asked questions and questions about the ${APP_NAME} app.`,
 		},
+		accountPolls: {
+			pathname: '/account/polls',
+			title: 'My Polls',
+			desc: `My poll in ${APP_NAME}`,
+		},
 	},
 	others: {
 		loginOAuthBreak: 'Or continue with',
@@ -324,6 +332,7 @@ export default {
 		loadMoreComment: 'Load more comments',
 		loading: 'Loading ...',
 		scoreMaximum: 'The maximum score is',
+		sort: 'Sort',
 	},
 	components: {
 		TagInput: {

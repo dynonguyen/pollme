@@ -19,32 +19,14 @@ query Discover(
 		sort
 		filter
 		docs {
-			_id
-			title
-			shortDesc
-			createdAt
-			endDate
-			slug
-			tags {
-				name
-				slug
-			}
-			totalComment
-			maxVote
-			totalVote
-			owner {
-				_id
-				avt
-				name
-			}
+			...voteSummaryInfo
 		}
 	}
 }
 
 query GetPublicVoteById($voteId: String!) {
 	publicVote(voteId: $voteId) {
-		code
-		message
+		...queryStatus
 		vote {
 			...voteFullInfo
 		}
@@ -53,10 +35,18 @@ query GetPublicVoteById($voteId: String!) {
 
 query GetPrivateVoteByLink($privateLink: String!) {
 	privateVote(privateLink: $privateLink) {
-		code
-		message
+		...queryStatus
 		vote {
 			...voteFullInfo
+		}
+	}
+}
+
+query GetVoteListOfUser {
+	votesOfUser {
+		...queryStatus
+		votes {
+			...voteSummaryInfo
 		}
 	}
 }

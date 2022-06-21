@@ -21,7 +21,10 @@ import Vote from '../types/entities/Vote';
 import { NewVoteInput } from '../types/input/NewVoteInput';
 import { VotePaginationArg } from '../types/input/VoteArg';
 import { VotingInput } from '../types/input/VoteInput';
-import { VotePaginatedResponse } from '../types/response/VoteResponse';
+import {
+	VoteListQueryResponse,
+	VotePaginatedResponse,
+} from '../types/response/VoteResponse';
 import mongoosePaginate from '../utils/mongoose-paginate';
 import {
 	voteFilterToQuery,
@@ -152,6 +155,24 @@ export class VoteResolver {
 			return {
 				code: ERROR_CODE.INTERNAL_ERROR,
 			};
+		}
+	}
+
+	@Authorized(ROLES.USER)
+	@Query(_return => VoteListQueryResponse)
+	async votesOfUser(
+		@Ctx() { res }: ExpressContext,
+	): Promise<VoteListQueryResponse> {
+		try {
+			const { user } = res.locals;
+			if (!user || !user?._id) {
+				return { code: ERROR_CODE.UNAUTHORIZED };
+			}
+			const votes = await VoteModel.find({ ownerId: user._id });
+			return { code: SUCCESS_CODE.OK, votes };
+		} catch (error) {
+			console.error('VOTE OF USER QUERY ERROR: ', error);
+			return { code: ERROR_CODE.INTERNAL_ERROR };
 		}
 	}
 

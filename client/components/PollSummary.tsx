@@ -20,6 +20,8 @@ interface PollSummaryProps {
 	tags: { slug: string; name: string }[];
 	totalComment: number;
 	totalVote: number;
+	className?: string;
+	hideOwner?: boolean;
 }
 
 export default function PollSummary(props: PollSummaryProps): JSX.Element {
@@ -35,15 +37,17 @@ export default function PollSummary(props: PollSummaryProps): JSX.Element {
 		createdAt,
 		endDate,
 		user,
+		className = '',
+		hideOwner = false,
 	} = props;
 
 	const userAvt = user.avt || DEFAULT.USER_AVT;
 	const isClosed = isPollClosed(endDate, maxVote, totalVote);
 	const lang = useLanguage();
-	const linkOfTag = `${lang.pages.discover.link}?${QUERY_KEY.SEARCH}=#`;
+	const linkOfTag = `${lang.pages.discover.link}?${QUERY_KEY.SEARCH}=`;
 
 	return (
-		<div className='poll-summary__bg flex flex-col gap-2'>
+		<div className={`poll-summary__bg flex flex-col gap-2 ${className}`}>
 			<div>
 				<h3 className='poll-summary__title'>
 					<Link href={`/poll/${pollId}/${pollSlug}`}>
@@ -66,19 +70,23 @@ export default function PollSummary(props: PollSummaryProps): JSX.Element {
 				<ul className='flex gap-2 flex-wrap xl:justify-start mb-3'>
 					{tags.map((tag, index) => (
 						<li className='tag-link' key={index}>
-							<Link href={`${linkOfTag}${tag.name}`}>{`#${tag.name}`}</Link>
+							<Link href={`${linkOfTag}[${tag.name}]`}>{`#${tag.name}`}</Link>
 						</li>
 					))}
 				</ul>
 				<div className='flex items-center justify-between gap-2 flex-wrap'>
 					<div className='flex justify-end items-center gap-1 md:gap-2 xl:col-span-2'>
-						<img
-							src={userAvt}
-							width={24}
-							height={24}
-							className='rounded-full'
-						/>
-						<span className='break-all text-sm'>{user.name}</span>
+						{!hideOwner && (
+							<>
+								<img
+									src={userAvt}
+									width={24}
+									height={24}
+									className='rounded-full'
+								/>
+								<span className='break-all text-sm'>{user.name}</span>
+							</>
+						)}
 						<span
 							className='text-gray-500 text-sm'
 							title={dateFormat(createdAt, true)}
@@ -86,7 +94,7 @@ export default function PollSummary(props: PollSummaryProps): JSX.Element {
 							{dateFormat(createdAt, false)}
 						</span>
 					</div>
-					<div className='font-medium text-gray-500 dark:text-gray-400 text-base md:text-md text-right'>
+					<div className='font-medium text-gray-500 dark:text-gray-400 text-base md:text-md ml-auto text-right'>
 						<span className='mr-3'>{totalComment} Comments</span>
 						<span>{totalVote} Votes</span>
 					</div>

@@ -107,7 +107,7 @@ function SortButton(): JSX.Element {
 	return (
 		<div className='relative group w-1/2 md:w-[120px]'>
 			<button className='btn-outline w-full flex-center gap-2'>
-				<span>Sort</span>
+				<span>{lang.others.sort}</span>
 				<SortIcon className='w-5' />
 			</button>
 			<div className='menu z-50 w-56 right-0'>

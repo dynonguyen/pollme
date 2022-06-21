@@ -39,3 +39,24 @@ fragment voteFullInfo on Vote {
 		name
 	}
 }
+
+fragment voteSummaryInfo on Vote {
+	_id
+	title
+	shortDesc
+	createdAt
+	endDate
+	slug
+	tags {
+		name
+		slug
+	}
+	totalComment
+	maxVote
+	totalVote
+	owner {
+		_id
+		avt
+		name
+	}
+}

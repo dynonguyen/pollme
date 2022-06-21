@@ -23,3 +23,9 @@ export class VoteQueryResponse extends QueryResponse {
 	@Field(_type => Vote, { nullable: true })
 	vote?: Vote;
 }
+
+@ObjectType({ implements: QueryResponse })
+export class VoteListQueryResponse extends QueryResponse {
+	@Field(_type => [Vote])
+	votes?: Vote[];
+}

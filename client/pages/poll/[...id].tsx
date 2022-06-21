@@ -59,7 +59,7 @@ const Poll: NextPage<
 	const pollLang = lang.pages.poll;
 	const router = useRouter();
 	const userInfo = useRecoilValue(userAtom);
-	const linkOfTag = `${lang.pages.discover.link}?${QUERY_KEY.SEARCH}=#`;
+	const linkOfTag = `${lang.pages.discover.link}?${QUERY_KEY.SEARCH}=`;
 	const [reCaptchaToken, setReCaptchaToken] = useState<string | null>(null);
 	const choices = useRef<Partial<VotingInput>>({ unVoteIds: [], votes: [] });
 	const [votingMutation, { loading }] = useVotingMutation();
@@ -169,7 +169,7 @@ const Poll: NextPage<
 				<ul className='flex gap-2 flex-wrap xl:justify-start my-3'>
 					{voteState.tags.map((tag, index) => (
 						<li className='tag-link' key={index}>
-							<Link href={`${linkOfTag}${tag.name}`}>{`#${tag.name}`}</Link>
+							<Link href={`${linkOfTag}[${tag.name}]`}>{`#${tag.name}`}</Link>
 						</li>
 					))}
 				</ul>
