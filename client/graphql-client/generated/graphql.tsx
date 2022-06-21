@@ -179,6 +179,7 @@ export type Query = {
   comments: CommentPaginatedResponse;
   count: CountingAggregation;
   me?: Maybe<User>;
+  privateVote?: Maybe<VoteQueryResponse>;
   publicVote?: Maybe<VoteQueryResponse>;
   publicVotes?: Maybe<VotePaginatedResponse>;
   tags: TagPaginatedResponse;
@@ -190,6 +191,11 @@ export type QueryCommentsArgs = {
   page?: InputMaybe<Scalars['Int']>;
   pageSize?: InputMaybe<Scalars['Int']>;
   voteId: Scalars['String'];
+};
+
+
+export type QueryPrivateVoteArgs = {
+  privateLink: Scalars['String'];
 };
 
 
@@ -534,6 +540,13 @@ export type GetPublicVoteByIdQueryVariables = Exact<{
 
 
 export type GetPublicVoteByIdQuery = { __typename?: 'Query', publicVote?: { __typename?: 'VoteQueryResponse', code: number, message?: string | null, vote?: { __typename?: 'Vote', _id: string, ownerId: string, title: string, desc?: string | null, type: number, createdAt: any, updatedAt?: any | null, endDate?: any | null, allowAddOption: boolean, isIPDuplicationCheck: boolean, isLoginRequired: boolean, isReCaptcha: boolean, isShowResult: boolean, isShowResultBtn: boolean, maxScore?: number | null, maxVote?: number | null, totalComment: number, totalVote: number, tags: Array<{ __typename?: 'TagInVote', name: string, slug: string }>, answers: Array<{ __typename?: 'VoteAnswer', id: string, label: string, photo?: string | null, voteList: Array<{ __typename?: 'VoteOfUser', score?: number | null, userInfo: { __typename?: 'UserInfoInVote', ip?: string | null, name?: string | null, userId?: string | null } }> }>, owner?: { __typename?: 'User', avt?: string | null, name: string } | null } | null } | null };
+
+export type GetPrivateVoteByLinkQueryVariables = Exact<{
+  privateLink: Scalars['String'];
+}>;
+
+
+export type GetPrivateVoteByLinkQuery = { __typename?: 'Query', privateVote?: { __typename?: 'VoteQueryResponse', code: number, message?: string | null, vote?: { __typename?: 'Vote', _id: string, ownerId: string, title: string, desc?: string | null, type: number, createdAt: any, updatedAt?: any | null, endDate?: any | null, allowAddOption: boolean, isIPDuplicationCheck: boolean, isLoginRequired: boolean, isReCaptcha: boolean, isShowResult: boolean, isShowResultBtn: boolean, maxScore?: number | null, maxVote?: number | null, totalComment: number, totalVote: number, tags: Array<{ __typename?: 'TagInVote', name: string, slug: string }>, answers: Array<{ __typename?: 'VoteAnswer', id: string, label: string, photo?: string | null, voteList: Array<{ __typename?: 'VoteOfUser', score?: number | null, userInfo: { __typename?: 'UserInfoInVote', ip?: string | null, name?: string | null, userId?: string | null } }> }>, owner?: { __typename?: 'User', avt?: string | null, name: string } | null } | null } | null };
 
 export const MutationStatusFragmentDoc = gql`
     fragment mutationStatus on MutationResponse {
@@ -1326,3 +1339,42 @@ export function useGetPublicVoteByIdLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type GetPublicVoteByIdQueryHookResult = ReturnType<typeof useGetPublicVoteByIdQuery>;
 export type GetPublicVoteByIdLazyQueryHookResult = ReturnType<typeof useGetPublicVoteByIdLazyQuery>;
 export type GetPublicVoteByIdQueryResult = Apollo.QueryResult<GetPublicVoteByIdQuery, GetPublicVoteByIdQueryVariables>;
+export const GetPrivateVoteByLinkDocument = gql`
+    query GetPrivateVoteByLink($privateLink: String!) {
+  privateVote(privateLink: $privateLink) {
+    code
+    message
+    vote {
+      ...voteFullInfo
+    }
+  }
+}
+    ${VoteFullInfoFragmentDoc}`;
+
+/**
+ * __useGetPrivateVoteByLinkQuery__
+ *
+ * To run a query within a React component, call `useGetPrivateVoteByLinkQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPrivateVoteByLinkQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPrivateVoteByLinkQuery({
+ *   variables: {
+ *      privateLink: // value for 'privateLink'
+ *   },
+ * });
+ */
+export function useGetPrivateVoteByLinkQuery(baseOptions: Apollo.QueryHookOptions<GetPrivateVoteByLinkQuery, GetPrivateVoteByLinkQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPrivateVoteByLinkQuery, GetPrivateVoteByLinkQueryVariables>(GetPrivateVoteByLinkDocument, options);
+      }
+export function useGetPrivateVoteByLinkLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPrivateVoteByLinkQuery, GetPrivateVoteByLinkQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPrivateVoteByLinkQuery, GetPrivateVoteByLinkQueryVariables>(GetPrivateVoteByLinkDocument, options);
+        }
+export type GetPrivateVoteByLinkQueryHookResult = ReturnType<typeof useGetPrivateVoteByLinkQuery>;
+export type GetPrivateVoteByLinkLazyQueryHookResult = ReturnType<typeof useGetPrivateVoteByLinkLazyQuery>;
+export type GetPrivateVoteByLinkQueryResult = Apollo.QueryResult<GetPrivateVoteByLinkQuery, GetPrivateVoteByLinkQueryVariables>;

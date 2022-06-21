@@ -13,3 +13,5 @@ export const QUERY_KEY = {
 	FILTER: 'filter',
 	SEARCH: 'search',
 };
+
+export const PRIVATE_POLL_PARAM = 'p';

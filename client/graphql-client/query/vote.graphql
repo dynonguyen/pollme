@@ -50,3 +50,13 @@ query GetPublicVoteById($voteId: String!) {
 		}
 	}
 }
+
+query GetPrivateVoteByLink($privateLink: String!) {
+	privateVote(privateLink: $privateLink) {
+		code
+		message
+		vote {
+			...voteFullInfo
+		}
+	}
+}

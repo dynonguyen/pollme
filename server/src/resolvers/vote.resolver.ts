@@ -127,6 +127,34 @@ export class VoteResolver {
 		}
 	}
 
+	@Query(_return => VoteQueryResponse, { nullable: true })
+	async privateVote(
+		@Arg('privateLink') privateLink: String,
+	): Promise<VoteQueryResponse> {
+		try {
+			if (!privateLink) return { code: ERROR_CODE.BAD_REQUEST };
+
+			const vote = await VoteModel.findOne({ isPrivate: true, privateLink });
+
+			if (vote) {
+				return {
+					code: SUCCESS_CODE.OK,
+					vote,
+				};
+			}
+
+			return {
+				code: ERROR_CODE.NOT_FOUND,
+				message: 'Vote not found',
+			};
+		} catch (error) {
+			console.error('Public vote query error: ', error);
+			return {
+				code: ERROR_CODE.INTERNAL_ERROR,
+			};
+		}
+	}
+
 	@Authorized(ROLES.USER)
 	@Mutation(_return => VoteMutationResponse)
 	async createVote(

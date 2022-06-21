@@ -334,7 +334,7 @@ const NewVote: NextPage = () => {
 
 				const newPollUrl = createShareUrl(
 					newVote?.isPrivate,
-					newVote?.privateLink as string,
+					`${newVote?.privateLink}/${pollId}`,
 					`${pollId}/${newVote?.slug}`,
 				);
 				setCreatedPollLink(newPollUrl);
