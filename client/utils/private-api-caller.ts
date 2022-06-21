@@ -22,7 +22,7 @@ export const uploadOptionPhoto = async (
 		POLL_PHOTO_THUMBNAIL_HEIGHT,
 	);
 
-	fetch('/api/upload', {
+	await fetch('/api/upload', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -35,4 +35,6 @@ export const uploadOptionPhoto = async (
 			optionId,
 		}),
 	});
+
+	return true;
 };

@@ -29,6 +29,7 @@ export default {
 		login: 'Log in',
 		register: 'Sign up',
 		logout: 'Log out',
+		add: 'Add',
 	},
 	placeholder: {
 		defaultSelect: 'Choose an option',
@@ -48,6 +49,8 @@ export default {
 		logoutSuccess: 'Logout Successful',
 		createVoteFailed: 'Create a failed poll, please try again 😢',
 		createVoteSuccess: 'Create successfully 😙',
+		addOptionSuccess: 'Add option successfully 😊',
+		addOptionFailed: 'Add option failed 😢',
 	},
 	pages: {
 		notfound: {

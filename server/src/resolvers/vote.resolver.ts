@@ -13,6 +13,7 @@ import { MAX } from '../constants/validation';
 import UserModel from '../models/user.model';
 import VoteModel from '../models/vote.model';
 import { ExpressContext } from '../types/core/ExpressContext';
+import { MutationResponseImpl } from '../types/core/MutationResponse';
 import { paginatedResponseDefault } from '../types/core/QueryResponse';
 import { ROLES } from '../types/core/Role';
 import User from '../types/entities/User';
@@ -30,6 +31,7 @@ import { DEFAULT } from './../constants/default';
 import { VoteFilterOptions } from './../constants/enum';
 import { ERROR_CODE, SUCCESS_CODE } from './../constants/status';
 import { VoteAnswer } from './../types/entities/Vote';
+import { AddAnswerInput } from './../types/input/VoteInput';
 import {
 	VoteMutationResponse,
 	VoteQueryResponse,
@@ -266,6 +268,39 @@ export class VoteResolver {
 				code: ERROR_CODE.INTERNAL_ERROR,
 				success: false,
 			};
+		}
+	}
+
+	@Mutation(_return => MutationResponseImpl)
+	async addAnswerOption(
+		@Arg('addAnswerInput') { answer, voteId }: AddAnswerInput,
+	): Promise<MutationResponseImpl> {
+		try {
+			const vote = await VoteModel.findById(voteId);
+			if (!vote) {
+				return { code: ERROR_CODE.NOT_FOUND, success: false };
+			}
+			const { answers } = vote;
+			const existingIndex = answers.findIndex(
+				ans => ans.label.toLowerCase() === answer.label.toLowerCase(),
+			);
+			if (existingIndex !== -1) {
+				return {
+					code: ERROR_CODE.CONFLICT,
+					success: false,
+					message: 'Answer option already exists !',
+				};
+			}
+
+			const newAnswer = { voteList: [], ...answer };
+			await VoteModel.updateOne(
+				{ _id: voteId },
+				{ $push: { answers: newAnswer } },
+			);
+			return { code: SUCCESS_CODE.OK, success: true };
+		} catch (error) {
+			console.error('AddAnswerOption ERROR: ', error);
+			return { code: ERROR_CODE.INTERNAL_ERROR, success: false };
 		}
 	}
 }

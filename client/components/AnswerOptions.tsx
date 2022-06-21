@@ -30,7 +30,7 @@ const initAnswers = [
 	{ id: (Date.now() + 1).toString(), label: '', photo: null },
 ];
 
-function AnswerOptionItem({
+export function AnswerOptionItem({
 	allowDelete,
 	onDelete,
 	onInputChange,
@@ -133,8 +133,9 @@ export default function AnswerOptions({
 	const handleAddOption = () => {
 		if (answers.length < MAX.ANSWER_OPTIONS) {
 			const newOption = { id: Date.now().toString(), label: '', photo: null };
-			answersRef.current = [...answersRef.current, newOption];
-			setAnswers([...answers, newOption]);
+			const newAnswers = [...answersRef.current, newOption];
+			setAnswers([...newAnswers]);
+			answersRef.current = [...newAnswers];
 		}
 	};
 

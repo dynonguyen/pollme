@@ -24,7 +24,7 @@ export default async function handler(
 		fs.writeFileSync(`${savedPath}/${optionId}.jpeg`, buff);
 		fs.writeFileSync(`${savedPath}/${optionId}_thumb.jpeg`, thumbnailBuff);
 
-		return res.status(200);
+		return res.status(200).json({ message: 'Success' });
 	} catch (error) {
 		console.error('UPLOAD API ERROR: ', error);
 		return res.status(500).json({ message: 'Server error' });

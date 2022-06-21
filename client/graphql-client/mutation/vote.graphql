@@ -18,3 +18,9 @@ mutation Voting($votingInput: VotingInput!) {
 		}
 	}
 }
+
+mutation AddAnswerOption($addAnswerInput: AddAnswerInput!) {
+	addAnswerOption(addAnswerInput: $addAnswerInput) {
+		...mutationStatus
+	}
+}

@@ -17,6 +17,11 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type AddAnswerInput = {
+  answer: AnswerItem;
+  voteId: Scalars['String'];
+};
+
 export type AddCommentInput = {
   content: Scalars['String'];
   ownerId: Scalars['String'];
@@ -80,6 +85,7 @@ export type LoginInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addAnswerOption: MutationResponseImpl;
   createComment: CreateCommentMutationResponse;
   createVote: VoteMutationResponse;
   favoriteComment: MutationResponseImpl;
@@ -88,6 +94,11 @@ export type Mutation = {
   logout: Scalars['Boolean'];
   register: UserMutationResponse;
   voting: VoteMutationResponse;
+};
+
+
+export type MutationAddAnswerOptionArgs = {
+  addAnswerInput: AddAnswerInput;
 };
 
 
@@ -442,6 +453,13 @@ export type VotingMutationVariables = Exact<{
 
 
 export type VotingMutation = { __typename?: 'Mutation', voting: { __typename?: 'VoteMutationResponse', code: number, success: boolean, message?: string | null, vote?: { __typename?: 'Vote', _id: string, ownerId: string, title: string, desc?: string | null, type: number, createdAt: any, updatedAt?: any | null, endDate?: any | null, allowAddOption: boolean, isIPDuplicationCheck: boolean, isLoginRequired: boolean, isReCaptcha: boolean, isShowResult: boolean, isShowResultBtn: boolean, maxScore?: number | null, maxVote?: number | null, totalComment: number, totalVote: number, tags: Array<{ __typename?: 'TagInVote', name: string, slug: string }>, answers: Array<{ __typename?: 'VoteAnswer', id: string, label: string, photo?: string | null, voteList: Array<{ __typename?: 'VoteOfUser', score?: number | null, userInfo: { __typename?: 'UserInfoInVote', ip?: string | null, name?: string | null, userId?: string | null } }> }>, owner?: { __typename?: 'User', avt?: string | null, name: string } | null } | null } };
+
+export type AddAnswerOptionMutationVariables = Exact<{
+  addAnswerInput: AddAnswerInput;
+}>;
+
+
+export type AddAnswerOptionMutation = { __typename?: 'Mutation', addAnswerOption: { __typename?: 'MutationResponseImpl', code: number, success: boolean, message?: string | null } };
 
 export type HomeAnalysisQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -868,6 +886,39 @@ export function useVotingMutation(baseOptions?: Apollo.MutationHookOptions<Votin
 export type VotingMutationHookResult = ReturnType<typeof useVotingMutation>;
 export type VotingMutationResult = Apollo.MutationResult<VotingMutation>;
 export type VotingMutationOptions = Apollo.BaseMutationOptions<VotingMutation, VotingMutationVariables>;
+export const AddAnswerOptionDocument = gql`
+    mutation AddAnswerOption($addAnswerInput: AddAnswerInput!) {
+  addAnswerOption(addAnswerInput: $addAnswerInput) {
+    ...mutationStatus
+  }
+}
+    ${MutationStatusFragmentDoc}`;
+export type AddAnswerOptionMutationFn = Apollo.MutationFunction<AddAnswerOptionMutation, AddAnswerOptionMutationVariables>;
+
+/**
+ * __useAddAnswerOptionMutation__
+ *
+ * To run a mutation, you first call `useAddAnswerOptionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddAnswerOptionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addAnswerOptionMutation, { data, loading, error }] = useAddAnswerOptionMutation({
+ *   variables: {
+ *      addAnswerInput: // value for 'addAnswerInput'
+ *   },
+ * });
+ */
+export function useAddAnswerOptionMutation(baseOptions?: Apollo.MutationHookOptions<AddAnswerOptionMutation, AddAnswerOptionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddAnswerOptionMutation, AddAnswerOptionMutationVariables>(AddAnswerOptionDocument, options);
+      }
+export type AddAnswerOptionMutationHookResult = ReturnType<typeof useAddAnswerOptionMutation>;
+export type AddAnswerOptionMutationResult = Apollo.MutationResult<AddAnswerOptionMutation>;
+export type AddAnswerOptionMutationOptions = Apollo.BaseMutationOptions<AddAnswerOptionMutation, AddAnswerOptionMutationVariables>;
 export const HomeAnalysisDocument = gql`
     query HomeAnalysis {
   count {

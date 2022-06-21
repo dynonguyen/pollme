@@ -10,6 +10,7 @@ import { useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import CommentArea from '../../components/Comment/CommentArea';
 import InfoTooltip from '../../components/InfoTooltip';
+import AddOptionButton from '../../components/PollOption/AddOptionButton';
 import MultipleChoice from '../../components/PollOption/MultipleChoice';
 import ScoreChoice from '../../components/PollOption/ScoreChoice';
 import SingleChoice from '../../components/PollOption/SingleChoice';
@@ -20,6 +21,7 @@ import { DEFAULT } from '../../constants/default';
 import { QUERY_KEY } from '../../constants/key';
 import { SUCCESS_CODE } from '../../constants/status';
 import {
+	AnswerItem,
 	CommentPaginatedResponse,
 	CommentsDocument,
 	CommentsQuery,
@@ -88,6 +90,12 @@ const Poll: NextPage<
 		} else {
 			toast.show({ message: pollLang.votingFailed, type: 'error' });
 		}
+	};
+
+	const handleAddOptionSuccess = (newAnswer: AnswerItem) => {
+		const newAnswers: AnswerItem[] = [...(vote?.answers || []), newAnswer];
+		const newVote: any = { ...vote, answers: newAnswers };
+		setVote({ ...newVote });
 	};
 
 	return (
@@ -216,6 +224,17 @@ const Poll: NextPage<
 						<></>
 					)}
 				</div>
+
+				{/* add option */}
+				{vote?.allowAddOption && (
+					<div className='my-3'>
+						<AddOptionButton
+							pollId={vote._id}
+							ownerId={vote.ownerId}
+							onAddOptionSuccess={handleAddOptionSuccess}
+						/>
+					</div>
+				)}
 
 				{/* ReCAPTCHA */}
 				{vote?.isReCaptcha && !isClosed && (

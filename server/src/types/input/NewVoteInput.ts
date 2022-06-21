@@ -1,7 +1,7 @@
 import { Field, ID, InputType, Int } from 'type-graphql';
 
 @InputType()
-class AnswerItem {
+export class AnswerItem {
 	@Field(_type => ID)
 	id: number;
 

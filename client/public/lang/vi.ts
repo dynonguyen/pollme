@@ -25,6 +25,7 @@ export default {
 		login: 'Đăng nhập',
 		register: 'Đăng ký',
 		logout: 'Đăng xuất',
+		add: 'Thêm',
 	},
 	placeholder: {
 		defaultSelect: 'Chọn một lựa chọn',
@@ -44,6 +45,8 @@ export default {
 		logoutSuccess: 'Đăng xuất thành công',
 		createVoteFailed: 'Tạo bài khảo sát thất bại, vui lòng thử lại 😢',
 		createVoteSuccess: 'Tạo bài khảo sát thành công 😙',
+		addOptionSuccess: 'Thêm lựa chọn thành công 😊',
+		addOptionFailed: 'Thêm lựa chọn thất bại, thử lại 😢',
 	},
 	pages: {
 		notfound: {

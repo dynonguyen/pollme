@@ -1,4 +1,5 @@
 import { Field, Float, InputType } from 'type-graphql';
+import { AnswerItem } from './NewVoteInput';
 
 @InputType()
 class VoteInput {
@@ -34,4 +35,13 @@ export class VotingInput {
 
 	@Field(_type => [String], { defaultValue: [] })
 	unVoteIds: string[];
+}
+
+@InputType()
+export class AddAnswerInput {
+	@Field(_type => String)
+	voteId: string;
+
+	@Field(_type => AnswerItem)
+	answer: AnswerItem;
 }
