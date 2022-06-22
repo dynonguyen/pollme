@@ -27,6 +27,8 @@ export default {
 		logout: 'Đăng xuất',
 		add: 'Thêm',
 		createPoll: 'Tạo khảo sát ngay',
+		close: 'Đóng',
+		update: 'Cập nhật',
 	},
 	placeholder: {
 		defaultSelect: 'Chọn một lựa chọn',
@@ -50,6 +52,8 @@ export default {
 		addOptionFailed: 'Thêm lựa chọn thất bại, thử lại 😢',
 		deleteVoteFailed: 'Xoá bài khảo sát thất bại, vui lòng thử lại 😢',
 		deleteVoteSuccess: 'Xoá bài khảo sát thành công 😙',
+		updateVoteFailed: 'Cập nhật bài khảo sát thất bại, vui lòng thử lại 😢',
+		updateVoteSuccess: 'Cập nhật bài khảo sát thành công 😙',
 	},
 	pages: {
 		notfound: {
@@ -359,6 +363,11 @@ export default {
 			loginToComment: 'Đăng nhập để bình luận',
 			commentSuccess: 'Bình luận thành công.',
 			commentFailed: 'Bình luận thất bại.',
+		},
+		EditVoteModal: {
+			newLink: 'Thu hồi link, tạo link mới',
+			closePoll: 'Đóng khảo sát',
+			modalTitle: 'Cài đặt khảo sát',
 		},
 	},
 	helper: {

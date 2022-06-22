@@ -31,6 +31,8 @@ export default {
 		logout: 'Log out',
 		add: 'Add',
 		createPoll: 'Create a poll now',
+		close: 'Close',
+		update: 'Update',
 	},
 	placeholder: {
 		defaultSelect: 'Choose an option',
@@ -52,8 +54,10 @@ export default {
 		createVoteSuccess: 'Create successfully 😙',
 		addOptionSuccess: 'Add option successfully 😊',
 		addOptionFailed: 'Add option failed 😢',
-		deleteVoteFailed: 'Delete a failed poll, please try again 😢',
+		deleteVoteFailed: 'Delete poll failed, please try again 😢',
 		deleteVoteSuccess: 'Delete successfully 😙',
+		updateVoteFailed: 'Update poll failed, please try again 😢',
+		updateVoteSuccess: 'Update successfully 😙',
 	},
 	pages: {
 		notfound: {
@@ -364,6 +368,11 @@ export default {
 			loginToComment: 'Login to comment',
 			commentSuccess: 'Comment successfully',
 			commentFailed: 'Comment failed',
+		},
+		EditVoteModal: {
+			newLink: 'Revoke the link, create a new link',
+			closePoll: 'Close the poll',
+			modalTitle: 'Poll settings',
 		},
 	},
 	helper: {

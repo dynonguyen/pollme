@@ -1,12 +1,12 @@
 import { NextPage } from 'next';
-import dynamic from 'next/dynamic';
-import { useEffect, useRef, useState } from 'react';
+import React, { Suspense, useEffect, useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import AnswerOptions from '../components/AnswerOptions';
 import CheckboxSwitch from '../components/core/CheckboxSwitch';
 import Select from '../components/core/Select';
 import TagInput from '../components/core/TagInput';
 import InfoTooltip from '../components/InfoTooltip';
+import Loading from '../components/Loading';
 import { VOTE_TYPE } from '../constants';
 import { DEFAULT } from '../constants/default';
 import { SUCCESS_CODE } from '../constants/status';
@@ -16,49 +16,24 @@ import useCheckUserLogin from '../hooks/useCheckUserLogin';
 import useLanguage from '../hooks/useLanguage';
 import useToast from '../hooks/useToast';
 import userAtom from '../recoil/atoms/user.atom';
+import { AdvanceVoteSettings, BasicVoteSettings } from '../types/vote-setting';
 import { createShareUrl } from '../utils/helper';
 import { uploadOptionPhoto } from '../utils/private-api-caller';
 import { newPollValidate } from '../utils/validation';
 const VOTE_DEFAULT = DEFAULT.VOTE;
-const CreatePollSuccess = dynamic(
+const CreatePollSuccess = React.lazy(
 	() => import('../components/CreatePollSuccess'),
-	{ ssr: false },
 );
 
-interface BasicSettings {
-	title: string;
-	desc: string;
-	tags: string[];
-	answers: Array<{
-		id: string;
-		label: string;
-		photo?: string | ArrayBuffer | null;
-	}>;
-}
+export interface NewPollFields extends BasicVoteSettings, AdvanceVoteSettings {}
 
-interface AdvanceSettings {
-	type: number;
-	isPrivate: boolean;
-	isReCaptcha: boolean;
-	isIPDuplicationCheck: boolean;
-	isLoginRequired: boolean;
-	isShowResult: boolean;
-	isShowResultBtn: boolean;
-	allowAddOption: boolean;
-	maxVote?: number;
-	maxScore?: number;
-	endDate?: Date;
-}
-
-export interface NewPollFields extends BasicSettings, AdvanceSettings {}
-
-const defaultBasicSettings: BasicSettings = {
+const defaultBasicSettings: BasicVoteSettings = {
 	title: '',
 	answers: [],
 	desc: '',
 	tags: [],
 };
-const defaultAdvanceSettings: AdvanceSettings = {
+const defaultAdvanceSettings: AdvanceVoteSettings = {
 	type: VOTE_DEFAULT.TYPE,
 	isPrivate: VOTE_DEFAULT.IS_PRIVATE,
 	isReCaptcha: VOTE_DEFAULT.IS_RECAPTCHA,
@@ -84,9 +59,9 @@ const pollTypeOptions = Object.keys(pollTypes).map(key => ({
 function BasicSettings({
 	onCollectData,
 }: {
-	onCollectData?: (data: BasicSettings) => void;
+	onCollectData?: (data: BasicVoteSettings) => void;
 }): JSX.Element {
-	const fields = useRef<BasicSettings>(defaultBasicSettings);
+	const fields = useRef<BasicVoteSettings>(defaultBasicSettings);
 	const lang = useLanguage();
 	const newPollLang = lang.pages.newPoll;
 
@@ -151,9 +126,9 @@ function BasicSettings({
 function AdvanceSettings({
 	onCollectData,
 }: {
-	onCollectData?: (data: AdvanceSettings) => void;
+	onCollectData?: (data: AdvanceVoteSettings) => void;
 }): JSX.Element {
-	const fields = useRef<AdvanceSettings>(defaultAdvanceSettings);
+	const fields = useRef<AdvanceVoteSettings>(defaultAdvanceSettings);
 	const [pollType, setPollType] = useState(VOTE_DEFAULT.TYPE);
 	const lang = useLanguage();
 	const newPollLang = lang.pages.newPoll;
@@ -368,7 +343,9 @@ const NewVote: NextPage = () => {
 	return (
 		<>
 			{createdPollLink ? (
-				<CreatePollSuccess url={createdPollLink} />
+				<Suspense fallback={<Loading />}>
+					<CreatePollSuccess url={createdPollLink} />
+				</Suspense>
 			) : (
 				<div className='container mb-5'>
 					<div className='py-5 md:py-0 lg:bg-[url("/images/create-poll-bg.svg")] lg:dark:bg-[url("/images/create-poll-bg-dark.svg")] bg-no-repeat bg-right-top lg:h-32'>

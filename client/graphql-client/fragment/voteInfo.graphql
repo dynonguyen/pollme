@@ -7,6 +7,7 @@ fragment voteFullInfo on Vote {
 	createdAt
 	updatedAt
 	endDate
+	isPrivate
 	allowAddOption
 	isIPDuplicationCheck
 	isLoginRequired
@@ -17,6 +18,7 @@ fragment voteFullInfo on Vote {
 	maxVote
 	totalComment
 	totalVote
+	privateLink
 	tags {
 		name
 		slug

@@ -30,3 +30,9 @@ mutation DeleteVote($voteId: String!) {
 		...mutationStatus
 	}
 }
+
+mutation UpdateVote($updateInput: UpdateVoteInput!) {
+	updateVote(updateInput: $updateInput) {
+		...mutationStatus
+	}
+}

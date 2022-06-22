@@ -5,6 +5,7 @@ import React, { Suspense, useEffect, useRef, useState } from 'react';
 import Loading from '../../components/Loading';
 import PollSummary from '../../components/PollSummary';
 import {
+	UpdateVoteInput,
 	useDeleteVoteMutation,
 	useGetVoteListOfUserQuery,
 	Vote,
@@ -15,6 +16,9 @@ import useLanguage from '../../hooks/useLanguage';
 import useToast from '../../hooks/useToast';
 import { createShareUrl } from '../../utils/helper';
 import { deletePhotoFolder } from '../../utils/private-api-caller';
+const EditVoteModal = React.lazy(
+	() => import('../../components/EditVoteModal'),
+);
 const LinkShare = React.lazy(() => import('../../components/LinkShare'));
 
 const AccountPolls: NextPage = () => {
@@ -29,6 +33,7 @@ const AccountPolls: NextPage = () => {
 	const outsideRef = useRef(null);
 	const [deleteVoteMutation] = useDeleteVoteMutation();
 	const toast = useToast();
+	const [editingVote, setEditingVote] = useState<Vote | null>(null);
 
 	useEffect(() => {
 		if (!loading) {
@@ -49,6 +54,18 @@ const AccountPolls: NextPage = () => {
 		} else {
 			toast.show({ type: 'error', message: lang.messages.deleteVoteFailed });
 		}
+	};
+
+	const handleUpdateSuccess = ({
+		voteId,
+		...updatedValue
+	}: UpdateVoteInput) => {
+		const newVotes = votes.map(v =>
+			v._id === voteId ? { ...v, ...updatedValue } : v,
+		);
+		console.log(newVotes);
+		setVotes([...newVotes]);
+		setEditingVote(null);
 	};
 
 	return (
@@ -92,7 +109,10 @@ const AccountPolls: NextPage = () => {
 							/>
 
 							<div className='hidden group-hover:flex gap-2 absolute right-4 top-4'>
-								<CogIcon className='w-5 cursor-pointer text-color-normal hover:brightness-75 duration-200' />
+								<CogIcon
+									className='w-5 cursor-pointer text-color-normal hover:brightness-75 duration-200'
+									onClick={() => setEditingVote(vote)}
+								/>
 								<TrashIcon
 									className='w-5 cursor-pointer error-text hover:brightness-75 duration-200'
 									onClick={() => handleDeleteVote(vote._id, vote.owner?._id!)}
@@ -130,10 +150,20 @@ const AccountPolls: NextPage = () => {
 						ref={outsideRef}
 					>
 						<Suspense fallback={<Loading />}>
-							<LinkShare className='bg-white' url={linkSharing} />
+							<LinkShare className='bg-white dark:bg-d_bg' url={linkSharing} />
 						</Suspense>
 					</div>
 				</div>
+			)}
+
+			{editingVote && (
+				<Suspense fallback={<Loading />}>
+					<EditVoteModal
+						vote={editingVote}
+						onClose={() => setEditingVote(null)}
+						onUpdateSuccess={handleUpdateSuccess}
+					/>
+				</Suspense>
 			)}
 		</div>
 	);

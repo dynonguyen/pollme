@@ -94,6 +94,7 @@ export type Mutation = {
   loginWithOAuth: UserMutationResponse;
   logout: Scalars['Boolean'];
   register: UserMutationResponse;
+  updateVote: MutationResponseImpl;
   voting: VoteMutationResponse;
 };
 
@@ -135,6 +136,11 @@ export type MutationLoginWithOAuthArgs = {
 
 export type MutationRegisterArgs = {
   registerInput: RegisterInput;
+};
+
+
+export type MutationUpdateVoteArgs = {
+  updateInput: UpdateVoteInput;
 };
 
 
@@ -270,6 +276,20 @@ export type TagPaginatedResponse = QueryResponse & {
   search?: Maybe<Scalars['String']>;
   sort?: Maybe<Scalars['String']>;
   total: Scalars['Int'];
+};
+
+export type UpdateVoteInput = {
+  allowAddOption: Scalars['Boolean'];
+  endDate?: InputMaybe<Scalars['String']>;
+  isIPDuplicationCheck: Scalars['Boolean'];
+  isLoginRequired: Scalars['Boolean'];
+  isPrivate: Scalars['Boolean'];
+  isReCaptcha: Scalars['Boolean'];
+  isShowResult: Scalars['Boolean'];
+  isShowResultBtn: Scalars['Boolean'];
+  maxVote?: InputMaybe<Scalars['Int']>;
+  refreshLink?: InputMaybe<Scalars['Boolean']>;
+  voteId: Scalars['String'];
 };
 
 export type User = {
@@ -420,7 +440,7 @@ export type QueryStatusFragment = QueryStatus_CommentPaginatedResponse_Fragment 
 
 export type UserInfoFragment = { __typename?: 'User', _id: string, email: string, name: string, avt?: string | null };
 
-export type VoteFullInfoFragment = { __typename?: 'Vote', _id: string, ownerId: string, title: string, desc?: string | null, type: number, createdAt: any, updatedAt?: any | null, endDate?: any | null, allowAddOption: boolean, isIPDuplicationCheck: boolean, isLoginRequired: boolean, isReCaptcha: boolean, isShowResult: boolean, isShowResultBtn: boolean, maxScore?: number | null, maxVote?: number | null, totalComment: number, totalVote: number, tags: Array<{ __typename?: 'TagInVote', name: string, slug: string }>, answers: Array<{ __typename?: 'VoteAnswer', id: string, label: string, photo?: string | null, voteList: Array<{ __typename?: 'VoteOfUser', score?: number | null, userInfo: { __typename?: 'UserInfoInVote', ip?: string | null, name?: string | null, userId?: string | null } }> }>, owner?: { __typename?: 'User', avt?: string | null, name: string } | null };
+export type VoteFullInfoFragment = { __typename?: 'Vote', _id: string, ownerId: string, title: string, desc?: string | null, type: number, createdAt: any, updatedAt?: any | null, endDate?: any | null, isPrivate: boolean, allowAddOption: boolean, isIPDuplicationCheck: boolean, isLoginRequired: boolean, isReCaptcha: boolean, isShowResult: boolean, isShowResultBtn: boolean, maxScore?: number | null, maxVote?: number | null, totalComment: number, totalVote: number, privateLink?: string | null, tags: Array<{ __typename?: 'TagInVote', name: string, slug: string }>, answers: Array<{ __typename?: 'VoteAnswer', id: string, label: string, photo?: string | null, voteList: Array<{ __typename?: 'VoteOfUser', score?: number | null, userInfo: { __typename?: 'UserInfoInVote', ip?: string | null, name?: string | null, userId?: string | null } }> }>, owner?: { __typename?: 'User', avt?: string | null, name: string } | null };
 
 export type VoteSummaryInfoFragment = { __typename?: 'Vote', _id: string, title: string, shortDesc?: string | null, createdAt: any, endDate?: any | null, slug: string, totalComment: number, maxVote?: number | null, totalVote: number, tags: Array<{ __typename?: 'TagInVote', name: string, slug: string }>, owner?: { __typename?: 'User', _id: string, avt?: string | null, name: string } | null };
 
@@ -476,7 +496,7 @@ export type VotingMutationVariables = Exact<{
 }>;
 
 
-export type VotingMutation = { __typename?: 'Mutation', voting: { __typename?: 'VoteMutationResponse', code: number, success: boolean, message?: string | null, vote?: { __typename?: 'Vote', _id: string, ownerId: string, title: string, desc?: string | null, type: number, createdAt: any, updatedAt?: any | null, endDate?: any | null, allowAddOption: boolean, isIPDuplicationCheck: boolean, isLoginRequired: boolean, isReCaptcha: boolean, isShowResult: boolean, isShowResultBtn: boolean, maxScore?: number | null, maxVote?: number | null, totalComment: number, totalVote: number, tags: Array<{ __typename?: 'TagInVote', name: string, slug: string }>, answers: Array<{ __typename?: 'VoteAnswer', id: string, label: string, photo?: string | null, voteList: Array<{ __typename?: 'VoteOfUser', score?: number | null, userInfo: { __typename?: 'UserInfoInVote', ip?: string | null, name?: string | null, userId?: string | null } }> }>, owner?: { __typename?: 'User', avt?: string | null, name: string } | null } | null } };
+export type VotingMutation = { __typename?: 'Mutation', voting: { __typename?: 'VoteMutationResponse', code: number, success: boolean, message?: string | null, vote?: { __typename?: 'Vote', _id: string, ownerId: string, title: string, desc?: string | null, type: number, createdAt: any, updatedAt?: any | null, endDate?: any | null, isPrivate: boolean, allowAddOption: boolean, isIPDuplicationCheck: boolean, isLoginRequired: boolean, isReCaptcha: boolean, isShowResult: boolean, isShowResultBtn: boolean, maxScore?: number | null, maxVote?: number | null, totalComment: number, totalVote: number, privateLink?: string | null, tags: Array<{ __typename?: 'TagInVote', name: string, slug: string }>, answers: Array<{ __typename?: 'VoteAnswer', id: string, label: string, photo?: string | null, voteList: Array<{ __typename?: 'VoteOfUser', score?: number | null, userInfo: { __typename?: 'UserInfoInVote', ip?: string | null, name?: string | null, userId?: string | null } }> }>, owner?: { __typename?: 'User', avt?: string | null, name: string } | null } | null } };
 
 export type AddAnswerOptionMutationVariables = Exact<{
   addAnswerInput: AddAnswerInput;
@@ -491,6 +511,13 @@ export type DeleteVoteMutationVariables = Exact<{
 
 
 export type DeleteVoteMutation = { __typename?: 'Mutation', deleteVote: { __typename?: 'MutationResponseImpl', code: number, success: boolean, message?: string | null } };
+
+export type UpdateVoteMutationVariables = Exact<{
+  updateInput: UpdateVoteInput;
+}>;
+
+
+export type UpdateVoteMutation = { __typename?: 'Mutation', updateVote: { __typename?: 'MutationResponseImpl', code: number, success: boolean, message?: string | null } };
 
 export type HomeAnalysisQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -564,19 +591,19 @@ export type GetPublicVoteByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetPublicVoteByIdQuery = { __typename?: 'Query', publicVote?: { __typename?: 'VoteQueryResponse', code: number, message?: string | null, vote?: { __typename?: 'Vote', _id: string, ownerId: string, title: string, desc?: string | null, type: number, createdAt: any, updatedAt?: any | null, endDate?: any | null, allowAddOption: boolean, isIPDuplicationCheck: boolean, isLoginRequired: boolean, isReCaptcha: boolean, isShowResult: boolean, isShowResultBtn: boolean, maxScore?: number | null, maxVote?: number | null, totalComment: number, totalVote: number, tags: Array<{ __typename?: 'TagInVote', name: string, slug: string }>, answers: Array<{ __typename?: 'VoteAnswer', id: string, label: string, photo?: string | null, voteList: Array<{ __typename?: 'VoteOfUser', score?: number | null, userInfo: { __typename?: 'UserInfoInVote', ip?: string | null, name?: string | null, userId?: string | null } }> }>, owner?: { __typename?: 'User', avt?: string | null, name: string } | null } | null } | null };
+export type GetPublicVoteByIdQuery = { __typename?: 'Query', publicVote?: { __typename?: 'VoteQueryResponse', code: number, message?: string | null, vote?: { __typename?: 'Vote', _id: string, ownerId: string, title: string, desc?: string | null, type: number, createdAt: any, updatedAt?: any | null, endDate?: any | null, isPrivate: boolean, allowAddOption: boolean, isIPDuplicationCheck: boolean, isLoginRequired: boolean, isReCaptcha: boolean, isShowResult: boolean, isShowResultBtn: boolean, maxScore?: number | null, maxVote?: number | null, totalComment: number, totalVote: number, privateLink?: string | null, tags: Array<{ __typename?: 'TagInVote', name: string, slug: string }>, answers: Array<{ __typename?: 'VoteAnswer', id: string, label: string, photo?: string | null, voteList: Array<{ __typename?: 'VoteOfUser', score?: number | null, userInfo: { __typename?: 'UserInfoInVote', ip?: string | null, name?: string | null, userId?: string | null } }> }>, owner?: { __typename?: 'User', avt?: string | null, name: string } | null } | null } | null };
 
 export type GetPrivateVoteByLinkQueryVariables = Exact<{
   privateLink: Scalars['String'];
 }>;
 
 
-export type GetPrivateVoteByLinkQuery = { __typename?: 'Query', privateVote?: { __typename?: 'VoteQueryResponse', code: number, message?: string | null, vote?: { __typename?: 'Vote', _id: string, ownerId: string, title: string, desc?: string | null, type: number, createdAt: any, updatedAt?: any | null, endDate?: any | null, allowAddOption: boolean, isIPDuplicationCheck: boolean, isLoginRequired: boolean, isReCaptcha: boolean, isShowResult: boolean, isShowResultBtn: boolean, maxScore?: number | null, maxVote?: number | null, totalComment: number, totalVote: number, tags: Array<{ __typename?: 'TagInVote', name: string, slug: string }>, answers: Array<{ __typename?: 'VoteAnswer', id: string, label: string, photo?: string | null, voteList: Array<{ __typename?: 'VoteOfUser', score?: number | null, userInfo: { __typename?: 'UserInfoInVote', ip?: string | null, name?: string | null, userId?: string | null } }> }>, owner?: { __typename?: 'User', avt?: string | null, name: string } | null } | null } | null };
+export type GetPrivateVoteByLinkQuery = { __typename?: 'Query', privateVote?: { __typename?: 'VoteQueryResponse', code: number, message?: string | null, vote?: { __typename?: 'Vote', _id: string, ownerId: string, title: string, desc?: string | null, type: number, createdAt: any, updatedAt?: any | null, endDate?: any | null, isPrivate: boolean, allowAddOption: boolean, isIPDuplicationCheck: boolean, isLoginRequired: boolean, isReCaptcha: boolean, isShowResult: boolean, isShowResultBtn: boolean, maxScore?: number | null, maxVote?: number | null, totalComment: number, totalVote: number, privateLink?: string | null, tags: Array<{ __typename?: 'TagInVote', name: string, slug: string }>, answers: Array<{ __typename?: 'VoteAnswer', id: string, label: string, photo?: string | null, voteList: Array<{ __typename?: 'VoteOfUser', score?: number | null, userInfo: { __typename?: 'UserInfoInVote', ip?: string | null, name?: string | null, userId?: string | null } }> }>, owner?: { __typename?: 'User', avt?: string | null, name: string } | null } | null } | null };
 
 export type GetVoteListOfUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetVoteListOfUserQuery = { __typename?: 'Query', votesOfUser: { __typename?: 'VoteListQueryResponse', code: number, message?: string | null, votes: Array<{ __typename?: 'Vote', isPrivate: boolean, privateLink?: string | null, _id: string, title: string, shortDesc?: string | null, createdAt: any, endDate?: any | null, slug: string, totalComment: number, maxVote?: number | null, totalVote: number, tags: Array<{ __typename?: 'TagInVote', name: string, slug: string }>, owner?: { __typename?: 'User', _id: string, avt?: string | null, name: string } | null }> } };
+export type GetVoteListOfUserQuery = { __typename?: 'Query', votesOfUser: { __typename?: 'VoteListQueryResponse', code: number, message?: string | null, votes: Array<{ __typename?: 'Vote', _id: string, ownerId: string, title: string, desc?: string | null, type: number, createdAt: any, updatedAt?: any | null, endDate?: any | null, isPrivate: boolean, allowAddOption: boolean, isIPDuplicationCheck: boolean, isLoginRequired: boolean, isReCaptcha: boolean, isShowResult: boolean, isShowResultBtn: boolean, maxScore?: number | null, maxVote?: number | null, totalComment: number, totalVote: number, privateLink?: string | null, tags: Array<{ __typename?: 'TagInVote', name: string, slug: string }>, answers: Array<{ __typename?: 'VoteAnswer', id: string, label: string, photo?: string | null, voteList: Array<{ __typename?: 'VoteOfUser', score?: number | null, userInfo: { __typename?: 'UserInfoInVote', ip?: string | null, name?: string | null, userId?: string | null } }> }>, owner?: { __typename?: 'User', avt?: string | null, name: string } | null }> } };
 
 export const MutationStatusFragmentDoc = gql`
     fragment mutationStatus on MutationResponse {
@@ -609,6 +636,7 @@ export const VoteFullInfoFragmentDoc = gql`
   createdAt
   updatedAt
   endDate
+  isPrivate
   allowAddOption
   isIPDuplicationCheck
   isLoginRequired
@@ -619,6 +647,7 @@ export const VoteFullInfoFragmentDoc = gql`
   maxVote
   totalComment
   totalVote
+  privateLink
   tags {
     name
     slug
@@ -1017,6 +1046,39 @@ export function useDeleteVoteMutation(baseOptions?: Apollo.MutationHookOptions<D
 export type DeleteVoteMutationHookResult = ReturnType<typeof useDeleteVoteMutation>;
 export type DeleteVoteMutationResult = Apollo.MutationResult<DeleteVoteMutation>;
 export type DeleteVoteMutationOptions = Apollo.BaseMutationOptions<DeleteVoteMutation, DeleteVoteMutationVariables>;
+export const UpdateVoteDocument = gql`
+    mutation UpdateVote($updateInput: UpdateVoteInput!) {
+  updateVote(updateInput: $updateInput) {
+    ...mutationStatus
+  }
+}
+    ${MutationStatusFragmentDoc}`;
+export type UpdateVoteMutationFn = Apollo.MutationFunction<UpdateVoteMutation, UpdateVoteMutationVariables>;
+
+/**
+ * __useUpdateVoteMutation__
+ *
+ * To run a mutation, you first call `useUpdateVoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateVoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateVoteMutation, { data, loading, error }] = useUpdateVoteMutation({
+ *   variables: {
+ *      updateInput: // value for 'updateInput'
+ *   },
+ * });
+ */
+export function useUpdateVoteMutation(baseOptions?: Apollo.MutationHookOptions<UpdateVoteMutation, UpdateVoteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateVoteMutation, UpdateVoteMutationVariables>(UpdateVoteDocument, options);
+      }
+export type UpdateVoteMutationHookResult = ReturnType<typeof useUpdateVoteMutation>;
+export type UpdateVoteMutationResult = Apollo.MutationResult<UpdateVoteMutation>;
+export type UpdateVoteMutationOptions = Apollo.BaseMutationOptions<UpdateVoteMutation, UpdateVoteMutationVariables>;
 export const HomeAnalysisDocument = gql`
     query HomeAnalysis {
   count {
@@ -1452,14 +1514,12 @@ export const GetVoteListOfUserDocument = gql`
   votesOfUser {
     ...queryStatus
     votes {
-      ...voteSummaryInfo
-      isPrivate
-      privateLink
+      ...voteFullInfo
     }
   }
 }
     ${QueryStatusFragmentDoc}
-${VoteSummaryInfoFragmentDoc}`;
+${VoteFullInfoFragmentDoc}`;
 
 /**
  * __useGetVoteListOfUserQuery__

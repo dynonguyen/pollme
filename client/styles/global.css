@@ -36,7 +36,7 @@
 		@apply !py-2 text-lg;
 	}
 	.btn-outline {
-		@apply btn border-solid border-gray-200 dark:border-gray-700 border text-gray-600 dark:text-d_text_primary;
+		@apply btn border-solid border-gray-300 dark:border-gray-700 border text-gray-600 dark:text-d_text_primary;
 	}
 	.btn-primary {
 		@apply btn bg-primary text-white dark:bg-d_primary dark:text-gray-50;
