@@ -150,7 +150,10 @@ const AccountPolls: NextPage = () => {
 						ref={outsideRef}
 					>
 						<Suspense fallback={<Loading />}>
-							<LinkShare className='bg-white dark:bg-d_bg' url={linkSharing} />
+							<LinkShare
+								className='bg-white dark:bg-d_bg dark:!border-none'
+								url={linkSharing}
+							/>
 						</Suspense>
 					</div>
 				</div>

@@ -16,5 +16,10 @@ export default function InitialWrapper(props: {
 		}
 	}, [getMeLoading, getThemeLoading]);
 
-	return <>{loading ? <GlobalLoading /> : props.children}</>;
+	return (
+		<>
+			{loading && <GlobalLoading />}
+			{props.children}
+		</>
+	);
 }

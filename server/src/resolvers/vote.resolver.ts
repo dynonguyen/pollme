@@ -22,7 +22,7 @@ import User from '../types/entities/User';
 import Vote from '../types/entities/Vote';
 import { NewVoteInput } from '../types/input/NewVoteInput';
 import { VotePaginationArg } from '../types/input/VoteArg';
-import { VotingInput } from '../types/input/VoteInput';
+import { UpdateVoteInput, VotingInput } from '../types/input/VoteInput';
 import {
 	VoteListQueryResponse,
 	VotePaginatedResponse,
@@ -390,6 +390,36 @@ export class VoteResolver {
 			return { code: SUCCESS_CODE.OK, success: true };
 		} catch (error) {
 			console.error('DELETE VOTE MUTATION ERROR: ', error);
+			return { code: ERROR_CODE.INTERNAL_ERROR, success: false };
+		}
+	}
+
+	@Authorized(ROLES.USER)
+	@Mutation(_return => MutationResponseImpl)
+	async updateVote(
+		@Arg('updateInput') updateInput: UpdateVoteInput,
+		@Ctx() { res }: ExpressContext,
+	): Promise<MutationResponseImpl> {
+		try {
+			const { voteId, refreshLink, ...restInput } = updateInput;
+			const { user } = res.locals;
+			if (!voteId || !user) {
+				return {
+					code: ERROR_CODE.NOT_ACCEPTABLE,
+					message: 'Invalid Params',
+					success: false,
+				};
+			}
+
+			const newPrivateLink = refreshLink ? { privateLink: randomString() } : {};
+			await VoteModel.updateOne(
+				{ _id: voteId, ownerId: user._id },
+				{ $set: { ...restInput, ...newPrivateLink } },
+			);
+
+			return { code: SUCCESS_CODE.OK, success: true };
+		} catch (error) {
+			console.error('VOTE UPDATE ERROR: ', error);
 			return { code: ERROR_CODE.INTERNAL_ERROR, success: false };
 		}
 	}

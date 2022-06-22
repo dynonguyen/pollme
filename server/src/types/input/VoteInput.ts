@@ -1,4 +1,4 @@
-import { Field, Float, InputType } from 'type-graphql';
+import { Field, Float, InputType, Int } from 'type-graphql';
 import { AnswerItem } from './NewVoteInput';
 
 @InputType()
@@ -44,4 +44,40 @@ export class AddAnswerInput {
 
 	@Field(_type => AnswerItem)
 	answer: AnswerItem;
+}
+
+@InputType()
+export class UpdateVoteInput {
+	@Field(_type => String)
+	voteId: string;
+
+	@Field(_type => Boolean)
+	isPrivate: boolean;
+
+	@Field(_type => Boolean)
+	allowAddOption: boolean;
+
+	@Field(_type => Boolean)
+	isIPDuplicationCheck: boolean;
+
+	@Field(_type => Boolean)
+	isLoginRequired: boolean;
+
+	@Field(_type => Boolean)
+	isReCaptcha: boolean;
+
+	@Field(_type => Boolean)
+	isShowResult: boolean;
+
+	@Field(_type => Boolean)
+	isShowResultBtn: boolean;
+
+	@Field(_type => Boolean, { defaultValue: false })
+	refreshLink: boolean;
+
+	@Field(_type => String, { nullable: true })
+	endDate: string | Date;
+
+	@Field(_type => Int, { nullable: true })
+	maxVote: number;
 }
