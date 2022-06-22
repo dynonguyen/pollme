@@ -47,6 +47,8 @@ query GetVoteListOfUser {
 		...queryStatus
 		votes {
 			...voteSummaryInfo
+			isPrivate
+			privateLink
 		}
 	}
 }

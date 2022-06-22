@@ -85,12 +85,20 @@ function CopyURL({ url }: { url: string }): JSX.Element {
 	);
 }
 
-export default function LinkShare({ url }: { url: string }) {
+export default function LinkShare({
+	url,
+	className = '',
+}: {
+	url: string;
+	className?: string;
+}) {
 	const lang = useLanguage();
 	const shareLang = lang.components.LinkShare;
 
 	return (
-		<div className='py-5 px-6 rounded-lg shadow-md dark:shadow-none dark:border dark:border-slate-600 max-w-xl mx-auto'>
+		<div
+			className={`py-5 px-6 rounded-lg shadow-md dark:shadow-none dark:border dark:border-slate-600 max-w-xl mx-auto ${className}`}
+		>
 			<div className='text-center mb-2'>
 				<strong className='text-lg font-normal text-gray-700 dark:text-d_text_title'>
 					{shareLang.title}

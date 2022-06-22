@@ -563,7 +563,7 @@ export type GetPrivateVoteByLinkQuery = { __typename?: 'Query', privateVote?: { 
 export type GetVoteListOfUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetVoteListOfUserQuery = { __typename?: 'Query', votesOfUser: { __typename?: 'VoteListQueryResponse', code: number, message?: string | null, votes: Array<{ __typename?: 'Vote', _id: string, title: string, shortDesc?: string | null, createdAt: any, endDate?: any | null, slug: string, totalComment: number, maxVote?: number | null, totalVote: number, tags: Array<{ __typename?: 'TagInVote', name: string, slug: string }>, owner?: { __typename?: 'User', _id: string, avt?: string | null, name: string } | null }> } };
+export type GetVoteListOfUserQuery = { __typename?: 'Query', votesOfUser: { __typename?: 'VoteListQueryResponse', code: number, message?: string | null, votes: Array<{ __typename?: 'Vote', isPrivate: boolean, privateLink?: string | null, _id: string, title: string, shortDesc?: string | null, createdAt: any, endDate?: any | null, slug: string, totalComment: number, maxVote?: number | null, totalVote: number, tags: Array<{ __typename?: 'TagInVote', name: string, slug: string }>, owner?: { __typename?: 'User', _id: string, avt?: string | null, name: string } | null }> } };
 
 export const MutationStatusFragmentDoc = gql`
     fragment mutationStatus on MutationResponse {
@@ -1407,6 +1407,8 @@ export const GetVoteListOfUserDocument = gql`
     ...queryStatus
     votes {
       ...voteSummaryInfo
+      isPrivate
+      privateLink
     }
   }
 }

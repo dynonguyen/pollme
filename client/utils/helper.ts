@@ -1,5 +1,5 @@
 import { VOTE_TYPE } from '../constants';
-import { QUERY_KEY } from './../constants/key';
+import { PRIVATE_POLL_PARAM, QUERY_KEY } from './../constants/key';
 import { AnswerOption } from './../types/common';
 
 export const getPageQuery = (
@@ -82,7 +82,7 @@ export const createShareUrl = (
 	publicSlug: string = '',
 ): string => {
 	const { origin } = location;
-	if (isPrivate) return `${origin}/poll/p/${privateSlug}`;
+	if (isPrivate) return `${origin}/poll/${PRIVATE_POLL_PARAM}/${privateSlug}`;
 
 	return `${origin}/poll/${publicSlug}`;
 };
