@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { DEFAULT } from '../constants/default';
-import { QUERY_KEY } from '../constants/key';
+import { PRIVATE_POLL_PARAM, QUERY_KEY } from '../constants/key';
 import useLanguage from '../hooks/useLanguage';
 import { dateFormat } from '../utils/format';
 import { isPollClosed } from '../utils/helper';
@@ -22,6 +22,8 @@ interface PollSummaryProps {
 	totalVote: number;
 	className?: string;
 	hideOwner?: boolean;
+	isPrivate?: boolean;
+	privateLink?: string;
 }
 
 export default function PollSummary(props: PollSummaryProps): JSX.Element {
@@ -39,18 +41,23 @@ export default function PollSummary(props: PollSummaryProps): JSX.Element {
 		user,
 		className = '',
 		hideOwner = false,
+		isPrivate = false,
+		privateLink = '',
 	} = props;
 
 	const userAvt = user.avt || DEFAULT.USER_AVT;
 	const isClosed = isPollClosed(endDate, maxVote, totalVote);
 	const lang = useLanguage();
 	const linkOfTag = `${lang.pages.discover.link}?${QUERY_KEY.SEARCH}=`;
+	const pollUrl = isPrivate
+		? `/poll/${PRIVATE_POLL_PARAM}/${privateLink}/${pollId}`
+		: `/poll/${pollId}/${pollSlug}`;
 
 	return (
 		<div className={`poll-summary__bg flex flex-col gap-2 ${className}`}>
 			<div>
 				<h3 className='poll-summary__title'>
-					<Link href={`/poll/${pollId}/${pollSlug}`}>
+					<Link href={pollUrl}>
 						<a>
 							{title}
 							{isClosed && (

@@ -1,27 +1,55 @@
 import { CogIcon, ShareIcon, TrashIcon } from '@heroicons/react/solid';
 import { NextPage } from 'next';
-import React, { Suspense, useRef, useState } from 'react';
+import Link from 'next/link';
+import React, { Suspense, useEffect, useRef, useState } from 'react';
 import Loading from '../../components/Loading';
 import PollSummary from '../../components/PollSummary';
-import { useGetVoteListOfUserQuery } from '../../graphql-client/generated/graphql';
+import {
+	useDeleteVoteMutation,
+	useGetVoteListOfUserQuery,
+	Vote,
+} from '../../graphql-client/generated/graphql';
 import useCheckUserLogin from '../../hooks/useCheckUserLogin';
 import useOnClickOutside from '../../hooks/useClickOutside';
 import useLanguage from '../../hooks/useLanguage';
+import useToast from '../../hooks/useToast';
 import { createShareUrl } from '../../utils/helper';
+import { deletePhotoFolder } from '../../utils/private-api-caller';
 const LinkShare = React.lazy(() => import('../../components/LinkShare'));
 
 const AccountPolls: NextPage = () => {
 	useCheckUserLogin({ isLoginPage: false });
 	const lang = useLanguage();
 	const pollLang = lang.pages.accountPolls;
-	const { loading, data } = useGetVoteListOfUserQuery();
-	const votes = data?.votesOfUser.votes;
+	const { loading, data } = useGetVoteListOfUserQuery({
+		fetchPolicy: 'no-cache',
+	});
+	const [votes, setVotes] = useState<Vote[]>([]);
 	const [linkSharing, setLinkSharing] = useState('');
 	const outsideRef = useRef(null);
+	const [deleteVoteMutation] = useDeleteVoteMutation();
+	const toast = useToast();
+
+	useEffect(() => {
+		if (!loading) {
+			setVotes([...(data?.votesOfUser.votes as Vote[])]);
+		}
+	}, [loading, data]);
 
 	useOnClickOutside(outsideRef, () => {
 		setLinkSharing('');
 	});
+
+	const handleDeleteVote = async (voteId: string, ownerId: string) => {
+		const { data } = await deleteVoteMutation({ variables: { voteId } });
+		if (data?.deleteVote.success) {
+			toast.show({ type: 'success', message: lang.messages.deleteVoteSuccess });
+			setVotes([...votes.filter(v => v._id !== voteId)]);
+			await deletePhotoFolder(voteId, ownerId);
+		} else {
+			toast.show({ type: 'error', message: lang.messages.deleteVoteFailed });
+		}
+	};
 
 	return (
 		<div className='container my-6'>
@@ -38,7 +66,7 @@ const AccountPolls: NextPage = () => {
 
 			{loading ? (
 				<Loading className='mt-5 w-24' />
-			) : (
+			) : votes.length > 0 ? (
 				<ul className='grid grid-cols-1 md:grid-cols-2 mt-5 gap-8'>
 					{votes?.map(vote => (
 						<li className='h-full relative group' key={vote._id}>
@@ -59,11 +87,16 @@ const AccountPolls: NextPage = () => {
 									name: vote.owner!.name,
 									avt: vote.owner?.avt as string,
 								}}
+								isPrivate={vote.isPrivate}
+								privateLink={vote.privateLink!}
 							/>
 
 							<div className='hidden group-hover:flex gap-2 absolute right-4 top-4'>
 								<CogIcon className='w-5 cursor-pointer text-color-normal hover:brightness-75 duration-200' />
-								<TrashIcon className='w-5 cursor-pointer error-text hover:brightness-75 duration-200' />
+								<TrashIcon
+									className='w-5 cursor-pointer error-text hover:brightness-75 duration-200'
+									onClick={() => handleDeleteVote(vote._id, vote.owner?._id!)}
+								/>
 								<ShareIcon
 									className='w-5 cursor-pointer text-primary	dark:text-d_primary hover:brightness-75 duration-200'
 									onClick={() =>
@@ -80,6 +113,14 @@ const AccountPolls: NextPage = () => {
 						</li>
 					))}
 				</ul>
+			) : (
+				<Link href={lang.pages.newPoll.link}>
+					<div className='text-center'>
+						<button className='btn-primary btn-lg mt-5'>
+							{lang.button.createPoll}
+						</button>
+					</div>
+				</Link>
 			)}
 
 			{linkSharing && (

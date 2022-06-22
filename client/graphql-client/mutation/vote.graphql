@@ -24,3 +24,9 @@ mutation AddAnswerOption($addAnswerInput: AddAnswerInput!) {
 		...mutationStatus
 	}
 }
+
+mutation DeleteVote($voteId: String!) {
+	deleteVote(voteId: $voteId) {
+		...mutationStatus
+	}
+}

@@ -22,7 +22,7 @@ export const uploadOptionPhoto = async (
 		POLL_PHOTO_THUMBNAIL_HEIGHT,
 	);
 
-	await fetch('/api/upload', {
+	return await fetch('/api/upload', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -35,6 +35,14 @@ export const uploadOptionPhoto = async (
 			optionId,
 		}),
 	});
+};
 
-	return true;
+export const deletePhotoFolder = async (pollId: string, userId: string) => {
+	return await fetch('/api/delete-photo', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify({ pollId, userId }),
+	});
 };

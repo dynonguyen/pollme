@@ -10,6 +10,8 @@ import {
 	Root,
 } from 'type-graphql';
 import { MAX } from '../constants/validation';
+import CommentModel from '../models/comment.model';
+import TagModel from '../models/tag.model';
 import UserModel from '../models/user.model';
 import VoteModel from '../models/vote.model';
 import { ExpressContext } from '../types/core/ExpressContext';
@@ -349,6 +351,45 @@ export class VoteResolver {
 			return { code: SUCCESS_CODE.OK, success: true };
 		} catch (error) {
 			console.error('AddAnswerOption ERROR: ', error);
+			return { code: ERROR_CODE.INTERNAL_ERROR, success: false };
+		}
+	}
+
+	@Authorized(ROLES.USER)
+	@Mutation(_return => MutationResponseImpl)
+	async deleteVote(
+		@Arg('voteId') voteId: String,
+		@Ctx() { res }: ExpressContext,
+	): Promise<MutationResponseImpl> {
+		try {
+			const { user } = res.locals;
+			if (!voteId || !user) {
+				return {
+					code: ERROR_CODE.NOT_ACCEPTABLE,
+					message: 'Invalid Params',
+					success: false,
+				};
+			}
+
+			const vote = await VoteModel.findById(voteId);
+			if (!vote) {
+				return { code: ERROR_CODE.NOT_FOUND, success: false };
+			}
+			const tags = vote.tags.map(t => t.name.toLowerCase());
+
+			const promises = [
+				VoteModel.deleteOne({ _id: voteId, ownerId: user._id }),
+				CommentModel.remove({ voteId }),
+				TagModel.updateMany(
+					{ name: { $in: tags } },
+					{ $inc: { totalVote: -1 } },
+				),
+			];
+			await Promise.all(promises);
+
+			return { code: SUCCESS_CODE.OK, success: true };
+		} catch (error) {
+			console.error('DELETE VOTE MUTATION ERROR: ', error);
 			return { code: ERROR_CODE.INTERNAL_ERROR, success: false };
 		}
 	}

@@ -30,6 +30,7 @@ export default {
 		register: 'Sign up',
 		logout: 'Log out',
 		add: 'Add',
+		createPoll: 'Create a poll now',
 	},
 	placeholder: {
 		defaultSelect: 'Choose an option',
@@ -51,6 +52,8 @@ export default {
 		createVoteSuccess: 'Create successfully 😙',
 		addOptionSuccess: 'Add option successfully 😊',
 		addOptionFailed: 'Add option failed 😢',
+		deleteVoteFailed: 'Delete a failed poll, please try again 😢',
+		deleteVoteSuccess: 'Delete successfully 😙',
 	},
 	pages: {
 		notfound: {
@@ -215,6 +218,7 @@ export default {
 			pollNotfound: 'Not tags found',
 		},
 		newPoll: {
+			link: '/new-poll',
 			title: 'Create a new poll',
 			addOptionBtn: 'Add Option',
 			submitBtn: 'Create Poll',

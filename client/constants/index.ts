@@ -10,8 +10,8 @@ export const VOTE_TYPE = {
 	MULTIPLE_CHOICE: 1,
 	SCORE: 2,
 };
-export const POLL_PHOTO_WIDTH = 300;
-export const POLL_PHOTO_HEIGHT = 300;
+export const POLL_PHOTO_WIDTH = 800;
+export const POLL_PHOTO_HEIGHT = 800;
 export const POLL_PHOTO_THUMBNAIL_WIDTH = 32;
 export const POLL_PHOTO_THUMBNAIL_HEIGHT = 32;
 export const IP_ADDRESS_API_URI = 'https://jsonip.com';

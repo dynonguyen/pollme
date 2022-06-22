@@ -62,6 +62,7 @@ const FAQs: NextPage = () => {
 			<ul className='grid grid-cols-1 gap-2 md:gap-4'>
 				{faqs.map((faq, index) => (
 					<FAQItem
+						key={index}
 						defaultShowAnswer={!index}
 						question={faq.question}
 						answer={faq.answer}

@@ -88,6 +88,7 @@ export type Mutation = {
   addAnswerOption: MutationResponseImpl;
   createComment: CreateCommentMutationResponse;
   createVote: VoteMutationResponse;
+  deleteVote: MutationResponseImpl;
   favoriteComment: MutationResponseImpl;
   login: UserMutationResponse;
   loginWithOAuth: UserMutationResponse;
@@ -109,6 +110,11 @@ export type MutationCreateCommentArgs = {
 
 export type MutationCreateVoteArgs = {
   newVoteInput: NewVoteInput;
+};
+
+
+export type MutationDeleteVoteArgs = {
+  voteId: Scalars['String'];
 };
 
 
@@ -478,6 +484,13 @@ export type AddAnswerOptionMutationVariables = Exact<{
 
 
 export type AddAnswerOptionMutation = { __typename?: 'Mutation', addAnswerOption: { __typename?: 'MutationResponseImpl', code: number, success: boolean, message?: string | null } };
+
+export type DeleteVoteMutationVariables = Exact<{
+  voteId: Scalars['String'];
+}>;
+
+
+export type DeleteVoteMutation = { __typename?: 'Mutation', deleteVote: { __typename?: 'MutationResponseImpl', code: number, success: boolean, message?: string | null } };
 
 export type HomeAnalysisQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -971,6 +984,39 @@ export function useAddAnswerOptionMutation(baseOptions?: Apollo.MutationHookOpti
 export type AddAnswerOptionMutationHookResult = ReturnType<typeof useAddAnswerOptionMutation>;
 export type AddAnswerOptionMutationResult = Apollo.MutationResult<AddAnswerOptionMutation>;
 export type AddAnswerOptionMutationOptions = Apollo.BaseMutationOptions<AddAnswerOptionMutation, AddAnswerOptionMutationVariables>;
+export const DeleteVoteDocument = gql`
+    mutation DeleteVote($voteId: String!) {
+  deleteVote(voteId: $voteId) {
+    ...mutationStatus
+  }
+}
+    ${MutationStatusFragmentDoc}`;
+export type DeleteVoteMutationFn = Apollo.MutationFunction<DeleteVoteMutation, DeleteVoteMutationVariables>;
+
+/**
+ * __useDeleteVoteMutation__
+ *
+ * To run a mutation, you first call `useDeleteVoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteVoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteVoteMutation, { data, loading, error }] = useDeleteVoteMutation({
+ *   variables: {
+ *      voteId: // value for 'voteId'
+ *   },
+ * });
+ */
+export function useDeleteVoteMutation(baseOptions?: Apollo.MutationHookOptions<DeleteVoteMutation, DeleteVoteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteVoteMutation, DeleteVoteMutationVariables>(DeleteVoteDocument, options);
+      }
+export type DeleteVoteMutationHookResult = ReturnType<typeof useDeleteVoteMutation>;
+export type DeleteVoteMutationResult = Apollo.MutationResult<DeleteVoteMutation>;
+export type DeleteVoteMutationOptions = Apollo.BaseMutationOptions<DeleteVoteMutation, DeleteVoteMutationVariables>;
 export const HomeAnalysisDocument = gql`
     query HomeAnalysis {
   count {

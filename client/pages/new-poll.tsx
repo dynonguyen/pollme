@@ -321,16 +321,20 @@ const NewVote: NextPage = () => {
 				const pollId = newVote?._id;
 
 				// Upload image to public folder
+				const promises: Promise<any>[] = [];
 				answers.forEach(answer => {
 					if (answer.photo) {
-						uploadOptionPhoto(
-							answer.photo as string,
-							userInfo._id,
-							pollId!,
-							answer.id.toString(),
+						promises.push(
+							uploadOptionPhoto(
+								answer.photo as string,
+								userInfo._id,
+								pollId!,
+								answer.id.toString(),
+							),
 						);
 					}
 				});
+				await Promise.all(promises);
 
 				const newPollUrl = createShareUrl(
 					newVote?.isPrivate,

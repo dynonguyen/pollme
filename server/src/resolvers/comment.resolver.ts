@@ -13,6 +13,7 @@ import { ERROR_CODE, SUCCESS_CODE } from '../constants/status';
 import { MAX } from '../constants/validation';
 import CommentModel from '../models/comment.model';
 import UserModel from '../models/user.model';
+import VoteModel from '../models/vote.model';
 import { paginatedResponseDefault } from '../types/core/QueryResponse';
 import { ROLES } from '../types/core/Role';
 import Comment from '../types/entities/Comment';
@@ -111,6 +112,10 @@ export class CommentResolver {
 			});
 
 			if (newComment) {
+				await VoteModel.updateOne(
+					{ _id: voteId },
+					{ $inc: { totalComment: 1 } },
+				);
 				return {
 					code: SUCCESS_CODE.CREATED,
 					success: true,

@@ -26,6 +26,7 @@ export default {
 		register: 'Đăng ký',
 		logout: 'Đăng xuất',
 		add: 'Thêm',
+		createPoll: 'Tạo khảo sát ngay',
 	},
 	placeholder: {
 		defaultSelect: 'Chọn một lựa chọn',
@@ -47,6 +48,8 @@ export default {
 		createVoteSuccess: 'Tạo bài khảo sát thành công 😙',
 		addOptionSuccess: 'Thêm lựa chọn thành công 😊',
 		addOptionFailed: 'Thêm lựa chọn thất bại, thử lại 😢',
+		deleteVoteFailed: 'Xoá bài khảo sát thất bại, vui lòng thử lại 😢',
+		deleteVoteSuccess: 'Xoá bài khảo sát thành công 😙',
 	},
 	pages: {
 		notfound: {
@@ -209,6 +212,7 @@ export default {
 			pollNotfound: 'Không tìm thấy tag nào phù hợp',
 		},
 		newPoll: {
+			link: '/tao-khao-sat',
 			title: 'Tạo một khảo sát mới',
 			addOptionBtn: 'Thêm lựa chọn',
 			submitBtn: 'Tạo khảo sát',

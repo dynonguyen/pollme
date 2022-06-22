@@ -115,7 +115,7 @@
 		@apply bg-slate-100/25 dark:bg-slate-800/25 w-full rounded-lg shadow-md py-3 px-5 md:py-5 md:px-8;
 	}
 	.poll-summary__title {
-		@apply text-lg md:text-xl font-normal text-primary dark:text-d_primary duration-300 hover:brightness-90;
+		@apply text-lg md:text-xl font-normal text-primary dark:text-d_primary duration-300 hover:brightness-90 break-words;
 	}
 
 	.pagination {
