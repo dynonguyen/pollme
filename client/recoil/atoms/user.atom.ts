@@ -5,6 +5,7 @@ export interface UserAtom {
 	email: string;
 	name: string;
 	ip: string;
+	createdAt?: Date;
 	avt?: string;
 	loading?: boolean;
 }
@@ -15,6 +16,7 @@ export const userAtomDefault: UserAtom = {
 	email: '',
 	avt: '',
 	ip: '',
+	createdAt: new Date(),
 	loading: true,
 };
 

@@ -22,6 +22,7 @@ export default function useGetMe(): boolean {
 				user.avt = me.avt!;
 				user.email = me.email;
 				user.name = me.name;
+				user.createdAt = me.createdAt;
 			}
 
 			setUserInfoState({ ...user, ip, loading: false });

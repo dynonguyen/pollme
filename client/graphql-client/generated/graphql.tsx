@@ -296,12 +296,10 @@ export type User = {
   __typename?: 'User';
   _id: Scalars['ID'];
   avt?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
   email: Scalars['String'];
-  favorites: Array<Scalars['String']>;
   name: Scalars['String'];
   oauthId?: Maybe<Scalars['String']>;
-  voted: Array<Scalars['String']>;
-  votes: Array<Scalars['String']>;
 };
 
 export type UserInfoInVote = {
@@ -438,7 +436,7 @@ type QueryStatus_VoteQueryResponse_Fragment = { __typename?: 'VoteQueryResponse'
 
 export type QueryStatusFragment = QueryStatus_CommentPaginatedResponse_Fragment | QueryStatus_CountingAggregation_Fragment | QueryStatus_TagPaginatedResponse_Fragment | QueryStatus_VoteListQueryResponse_Fragment | QueryStatus_VotePaginatedResponse_Fragment | QueryStatus_VoteQueryResponse_Fragment;
 
-export type UserInfoFragment = { __typename?: 'User', _id: string, email: string, name: string, avt?: string | null };
+export type UserInfoFragment = { __typename?: 'User', _id: string, email: string, name: string, avt?: string | null, createdAt: any };
 
 export type VoteFullInfoFragment = { __typename?: 'Vote', _id: string, ownerId: string, title: string, desc?: string | null, type: number, createdAt: any, updatedAt?: any | null, endDate?: any | null, isPrivate: boolean, allowAddOption: boolean, isIPDuplicationCheck: boolean, isLoginRequired: boolean, isReCaptcha: boolean, isShowResult: boolean, isShowResultBtn: boolean, maxScore?: number | null, maxVote?: number | null, totalComment: number, totalVote: number, privateLink?: string | null, tags: Array<{ __typename?: 'TagInVote', name: string, slug: string }>, answers: Array<{ __typename?: 'VoteAnswer', id: string, label: string, photo?: string | null, voteList: Array<{ __typename?: 'VoteOfUser', score?: number | null, userInfo: { __typename?: 'UserInfoInVote', ip?: string | null, name?: string | null, userId?: string | null } }> }>, owner?: { __typename?: 'User', avt?: string | null, name: string } | null };
 
@@ -463,21 +461,21 @@ export type RegisterMutationVariables = Exact<{
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null, user?: { __typename?: 'User', _id: string, email: string, name: string, avt?: string | null } | null } };
+export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null, user?: { __typename?: 'User', _id: string, email: string, name: string, avt?: string | null, createdAt: any } | null } };
 
 export type LoginMutationVariables = Exact<{
   loginInput: LoginInput;
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null, user?: { __typename?: 'User', _id: string, email: string, name: string, avt?: string | null } | null } };
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null, user?: { __typename?: 'User', _id: string, email: string, name: string, avt?: string | null, createdAt: any } | null } };
 
 export type LoginOAuthMutationVariables = Exact<{
   loginInput: OAuthLoginInput;
 }>;
 
 
-export type LoginOAuthMutation = { __typename?: 'Mutation', loginWithOAuth: { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null, user?: { __typename?: 'User', _id: string, email: string, name: string, avt?: string | null } | null } };
+export type LoginOAuthMutation = { __typename?: 'Mutation', loginWithOAuth: { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null, user?: { __typename?: 'User', _id: string, email: string, name: string, avt?: string | null, createdAt: any } | null } };
 
 export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -568,12 +566,12 @@ export type GetCoreUserInfoQueryVariables = Exact<{
 }>;
 
 
-export type GetCoreUserInfoQuery = { __typename?: 'Query', user?: { __typename?: 'User', _id: string, email: string, name: string, avt?: string | null } | null };
+export type GetCoreUserInfoQuery = { __typename?: 'Query', user?: { __typename?: 'User', _id: string, email: string, name: string, avt?: string | null, createdAt: any } | null };
 
 export type GetMeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetMeQuery = { __typename?: 'Query', me?: { __typename?: 'User', _id: string, email: string, name: string, avt?: string | null } | null };
+export type GetMeQuery = { __typename?: 'Query', me?: { __typename?: 'User', _id: string, email: string, name: string, avt?: string | null, createdAt: any } | null };
 
 export type DiscoverQueryVariables = Exact<{
   page?: InputMaybe<Scalars['Int']>;
@@ -624,6 +622,7 @@ export const UserInfoFragmentDoc = gql`
   email
   name
   avt
+  createdAt
 }
     `;
 export const VoteFullInfoFragmentDoc = gql`

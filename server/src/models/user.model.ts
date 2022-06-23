@@ -25,17 +25,9 @@ const schema: Schema = new Schema({
 		type: String,
 		required: false,
 	},
-	voted: {
-		type: [Schema.Types.ObjectId],
-		ref: 'Vote',
-	},
-	votes: {
-		type: [Schema.Types.ObjectId],
-		ref: 'Vote',
-	},
-	favorites: {
-		type: [Schema.Types.ObjectId],
-		ref: 'Vote',
+	createdAt: {
+		type: Date,
+		default: new Date(),
 	},
 });
 

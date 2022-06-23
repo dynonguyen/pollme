@@ -285,6 +285,11 @@ export default {
 		accountPolls: {
 			title: 'Khảo sát của tôi',
 		},
+		accountSettings: {
+			changePwd: 'Thay đổi mật khẩu',
+			updateBtn: 'Cập nhật',
+			createdDate: 'Đã tham gia vào',
+		},
 	},
 	pageSEO: {
 		home: {
@@ -326,6 +331,11 @@ export default {
 			pathname: '/account/polls',
 			title: 'Khảo sát của tôi',
 			desc: `Khảo sát của tôi trên ${APP_NAME}`,
+		},
+		accountSettings: {
+			pathname: '/account/settings',
+			title: 'Thiết lập tài khoản',
+			desc: 'Thiết lập tài khoản',
 		},
 	},
 	others: {

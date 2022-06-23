@@ -12,22 +12,16 @@ class User {
 	@Field(_type => String)
 	email: string;
 
-	@Field({ nullable: true })
+	@Field(_type => String, { nullable: true })
 	avt?: string;
 
 	password?: string;
 
-	@Field({ nullable: true })
+	@Field(_type => String, { nullable: true })
 	oauthId?: string;
 
-	@Field(_type => [String])
-	voted: MongoID[];
-
-	@Field(_type => [String])
-	votes: MongoID[];
-
-	@Field(_type => [String])
-	favorites: MongoID[];
+	@Field(_type => Date)
+	createdAt: Date;
 
 	// Mongoose fields for field resolver (can't access itself directly)
 	_doc?: User;
@@ -35,7 +29,7 @@ class User {
 
 export type CoreUserInfo = Pick<
 	Partial<User>,
-	'_id' | 'email' | 'name' | 'avt'
+	'_id' | 'email' | 'name' | 'avt' | 'createdAt'
 >;
 
 export default User;

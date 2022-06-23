@@ -290,6 +290,11 @@ export default {
 		accountPolls: {
 			title: 'My Polls',
 		},
+		accountSettings: {
+			changePwd: 'Change password',
+			updateBtn: 'Update',
+			createdDate: 'Participated in',
+		},
 	},
 	pageSEO: {
 		home: {
@@ -331,6 +336,11 @@ export default {
 			pathname: '/account/polls',
 			title: 'My Polls',
 			desc: `My poll in ${APP_NAME}`,
+		},
+		accountSettings: {
+			pathname: '/account/settings',
+			title: 'Account Settings',
+			desc: 'Account settings',
 		},
 	},
 	others: {

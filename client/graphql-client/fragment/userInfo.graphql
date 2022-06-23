@@ -3,4 +3,5 @@ fragment userInfo on User {
 	email
 	name
 	avt
+	createdAt
 }
