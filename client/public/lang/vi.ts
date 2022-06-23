@@ -289,6 +289,9 @@ export default {
 			changePwd: 'Thay đổi mật khẩu',
 			updateBtn: 'Cập nhật',
 			createdDate: 'Đã tham gia vào',
+			maxAvtSize: `Kích thước ảnh đại diện tối đa ${MAX.USER_AVT_SIZE} MB`,
+			updateSuccess: 'Cập nhật thông tin thành công',
+			updateFailed: 'Cập nhật thông tin thất bại',
 		},
 	},
 	pageSEO: {
@@ -336,6 +339,11 @@ export default {
 			pathname: '/account/settings',
 			title: 'Thiết lập tài khoản',
 			desc: 'Thiết lập tài khoản',
+		},
+		changePwd: {
+			pathname: '/account/change-password',
+			title: 'Thay đổi mật khẩu',
+			desc: 'Thay đổi mật khẩu',
 		},
 	},
 	others: {

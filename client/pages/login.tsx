@@ -30,8 +30,13 @@ const Login: NextPage = () => {
 			const response = await loginMutation({ variables: { loginInput } });
 			if (response.data?.login.code === SUCCESS_CODE.OK) {
 				const user = response.data.login.user as UserInfoFragment;
-				const { __typename, avt, ...rest } = user;
-				setUserInfoAtom({ ...userInfo, ...rest, avt: avt as string });
+				const { __typename, avt, createdAt, ...rest } = user;
+				setUserInfoAtom({
+					...userInfo,
+					...rest,
+					avt: avt as string,
+					createdAt: new Date(createdAt),
+				});
 				toast.show({
 					type: 'success',
 					message: loginLang.message.success(user.name),
@@ -55,11 +60,11 @@ const Login: NextPage = () => {
 
 	return (
 		<div
-			className={`flex items-center flex-col my-16 ${
+			className={`my-16 flex flex-col items-center ${
 				isSubmitting ? 'disabled' : ''
 			}`}
 		>
-			<h1 className='text-2xl md:text-4xl font-extrabold text-center tracking-[1px] mb-6'>
+			<h1 className='mb-6 text-center text-2xl font-extrabold tracking-[1px] md:text-4xl'>
 				{lang.pageSEO.login.title}
 			</h1>
 

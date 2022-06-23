@@ -5,9 +5,11 @@ import User from '../types/entities/User';
 import { COOKIE, SALT_PASSWORD } from './../constants/index';
 import { ERROR_CODE, SUCCESS_CODE } from './../constants/status';
 import { ExpressContext } from './../types/core/ExpressContext';
+import { MutationResponseImpl } from './../types/core/MutationResponse';
 import { ROLES } from './../types/core/Role';
 import { LoginInput, OAuthLoginInput } from './../types/input/LoginInput';
 import { RegisterInput } from './../types/input/RegisterInput';
+import { UpdateUserInfoInput } from './../types/input/UserInput';
 import { UserMutationResponse } from './../types/response/UserResponse';
 import { onLoginSuccess } from './../utils/helper';
 
@@ -119,6 +121,27 @@ export class UserResolver {
 				success: false,
 				message: 'Login failed',
 			};
+		}
+	}
+
+	@Authorized(ROLES.USER)
+	@Mutation(_return => MutationResponseImpl)
+	async updateUserInfo(
+		@Arg('updateInput') { avt, name }: UpdateUserInfoInput,
+		@Ctx() { res }: ExpressContext,
+	): Promise<MutationResponseImpl> {
+		const { _id } = res.locals.user;
+
+		let setFields = {};
+		if (avt) setFields = { avt };
+		if (name) setFields = { ...setFields, name };
+
+		try {
+			await UserModel.updateOne({ _id }, { $set: setFields });
+			return { code: SUCCESS_CODE.OK, success: true };
+		} catch (error) {
+			console.error('UPDATE USER INFO MUTATION ERROR: ', error);
+			return { code: ERROR_CODE.INTERNAL_ERROR, success: false };
 		}
 	}
 

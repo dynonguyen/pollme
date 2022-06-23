@@ -94,6 +94,7 @@ export type Mutation = {
   loginWithOAuth: UserMutationResponse;
   logout: Scalars['Boolean'];
   register: UserMutationResponse;
+  updateUserInfo: MutationResponseImpl;
   updateVote: MutationResponseImpl;
   voting: VoteMutationResponse;
 };
@@ -136,6 +137,11 @@ export type MutationLoginWithOAuthArgs = {
 
 export type MutationRegisterArgs = {
   registerInput: RegisterInput;
+};
+
+
+export type MutationUpdateUserInfoArgs = {
+  updateInput: UpdateUserInfoInput;
 };
 
 
@@ -276,6 +282,11 @@ export type TagPaginatedResponse = QueryResponse & {
   search?: Maybe<Scalars['String']>;
   sort?: Maybe<Scalars['String']>;
   total: Scalars['Int'];
+};
+
+export type UpdateUserInfoInput = {
+  avt?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateVoteInput = {
@@ -481,6 +492,13 @@ export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
 
 export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
+
+export type UpdateUserInfoMutationVariables = Exact<{
+  updateInput: UpdateUserInfoInput;
+}>;
+
+
+export type UpdateUserInfoMutation = { __typename?: 'Mutation', updateUserInfo: { __typename?: 'MutationResponseImpl', code: number, success: boolean, message?: string | null } };
 
 export type CreateVoteMutationVariables = Exact<{
   newVoteInput: NewVoteInput;
@@ -903,6 +921,39 @@ export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<Logou
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
+export const UpdateUserInfoDocument = gql`
+    mutation UpdateUserInfo($updateInput: UpdateUserInfoInput!) {
+  updateUserInfo(updateInput: $updateInput) {
+    ...mutationStatus
+  }
+}
+    ${MutationStatusFragmentDoc}`;
+export type UpdateUserInfoMutationFn = Apollo.MutationFunction<UpdateUserInfoMutation, UpdateUserInfoMutationVariables>;
+
+/**
+ * __useUpdateUserInfoMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserInfoMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserInfoMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserInfoMutation, { data, loading, error }] = useUpdateUserInfoMutation({
+ *   variables: {
+ *      updateInput: // value for 'updateInput'
+ *   },
+ * });
+ */
+export function useUpdateUserInfoMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserInfoMutation, UpdateUserInfoMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateUserInfoMutation, UpdateUserInfoMutationVariables>(UpdateUserInfoDocument, options);
+      }
+export type UpdateUserInfoMutationHookResult = ReturnType<typeof useUpdateUserInfoMutation>;
+export type UpdateUserInfoMutationResult = Apollo.MutationResult<UpdateUserInfoMutation>;
+export type UpdateUserInfoMutationOptions = Apollo.BaseMutationOptions<UpdateUserInfoMutation, UpdateUserInfoMutationVariables>;
 export const CreateVoteDocument = gql`
     mutation CreateVote($newVoteInput: NewVoteInput!) {
   createVote(newVoteInput: $newVoteInput) {

@@ -5,7 +5,6 @@ import React, { useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { APP_NAME } from '../constants';
 import { QUERY_KEY } from '../constants/key';
-import { UserInfoFragment } from '../graphql-client/generated/graphql';
 import useLanguage from '../hooks/useLanguage';
 import userAtom from '../recoil/atoms/user.atom';
 import LanguageSelect from './LanguageSelect';
@@ -44,7 +43,7 @@ function Navbar(): JSX.Element {
 		<>
 			{lang.navbarItems.map((item, index) => (
 				<Link href={item.link} key={index}>
-					<a className='font-medium capitalize text-gray-500 dark:text-d_text_title hover:text-gray-800 duration-300'>
+					<a className='font-medium capitalize text-gray-500 duration-300 hover:text-gray-800 dark:text-d_text_title'>
 						{item.label}
 					</a>
 				</Link>
@@ -54,7 +53,7 @@ function Navbar(): JSX.Element {
 }
 
 function NavbarAction(): JSX.Element {
-	const userInfo = useRecoilValue<UserInfoFragment>(userAtom);
+	const userInfo = useRecoilValue(userAtom);
 	const isAuth = Boolean(userInfo._id);
 
 	return <>{isAuth ? <NavbarAccountAvatar /> : <LoginRegister />}</>;
@@ -67,15 +66,15 @@ function MenuSlider(): JSX.Element {
 		<div className='lg:hidden'>
 			<MenuIcon className={ICON_STYLES} onClick={() => setShowMenu(true)} />
 			<div className={`bg-overlay ${showMenu ? '' : 'hidden'}`}>
-				<div className='bg-white dark:bg-d_bg p-5 max-w-xs h-full'>
+				<div className='h-full max-w-xs bg-white p-5 dark:bg-d_bg'>
 					<XIcon
 						className={`ml-auto ${ICON_STYLES}`}
 						onClick={() => setShowMenu(false)}
 					/>
-					<div className='flex gap-3 mt-5 mb-8'>
+					<div className='mt-5 mb-8 flex gap-3'>
 						<NavbarAction />
 					</div>
-					<nav className='gap-6 flex flex-col pl-1'>
+					<nav className='flex flex-col gap-6 pl-1'>
 						<Navbar />
 					</nav>
 				</div>
@@ -101,11 +100,11 @@ function SearchBar(): JSX.Element {
 
 	return (
 		<>
-			<SearchIcon className='w-5 h-5 absolute top-1/2 left-2 text-gray-400 dark:text-gray-500 font-normal -translate-y-1/2' />
+			<SearchIcon className='absolute top-1/2 left-2 h-5 w-5 -translate-y-1/2 font-normal text-gray-400 dark:text-gray-500' />
 			<input
 				type='text'
 				autoFocus
-				className='field pl-9 py-1 rounded-full text-gray-700 dark:text-d_text_title'
+				className='field rounded-full py-1 pl-9 text-gray-700 dark:text-d_text_title'
 				placeholder={lang.placeholder.search}
 				onChange={e => (searchInput.current = e.target.value)}
 				onKeyDown={handlePressEnter}
@@ -121,11 +120,11 @@ function MobileSearch(): JSX.Element {
 		<div className='xl:hidden'>
 			<SearchIcon className={ICON_STYLES} onClick={() => setShowSearch(true)} />
 			<div className={`${showSearch ? 'bg-overlay' : 'hidden'}`}>
-				<div className='absolute w-4/5 h-8 top-20 left-1/2 -translate-x-1/2'>
+				<div className='absolute top-20 left-1/2 h-8 w-4/5 -translate-x-1/2'>
 					<div className='flex'>
 						<SearchBar />
 						<XIcon
-							className='w-8 h-8 text-gray-50 hover:text-gray-200 cursor-pointer dark:text-d_text_primary'
+							className='h-8 w-8 cursor-pointer text-gray-50 hover:text-gray-200 dark:text-d_text_primary'
 							onClick={() => setShowSearch(false)}
 						/>
 					</div>
@@ -137,30 +136,30 @@ function MobileSearch(): JSX.Element {
 
 export default function Header(): JSX.Element {
 	return (
-		<header className='border-b border-color sticky top-0 z-50 bg-white dark:bg-d_bg'>
-			<div className='px-3 md:px-5 py-4 flex items-center justify-between gap-2 xxl:container'>
+		<header className='border-color sticky top-0 z-50 border-b bg-white dark:bg-d_bg'>
+			<div className='flex items-center justify-between gap-2 px-3 py-4 md:px-5 xxl:container'>
 				<div className='flex items-center gap-3'>
 					<MenuSlider />
 					<Link href='/'>
-						<a className='flex gap-2 cursor-pointer'>
-							<img src='/images/logo.svg' alt='Logo' className='w-6 h-6' />
-							<strong className='text-lg text-primary dark:text-d_primary tracking-wide'>
+						<a className='flex cursor-pointer gap-2'>
+							<img src='/images/logo.svg' alt='Logo' className='h-6 w-6' />
+							<strong className='text-lg tracking-wide text-primary dark:text-d_primary'>
 								{APP_NAME}
 							</strong>
 						</a>
 					</Link>
 				</div>
 
-				<nav className='hidden lg:flex gap-5 lg:gap-8 flex-grow ml-2 lg:ml-5'>
+				<nav className='ml-2 hidden flex-grow gap-5 lg:ml-5 lg:flex lg:gap-8'>
 					<Navbar />
 				</nav>
 
-				<div className='hidden lg:flex md:gap-2 md:items-center'>
-					<div className='hidden xl:block w-44 lg:w-64 relative'>
+				<div className='hidden md:items-center md:gap-2 lg:flex'>
+					<div className='relative hidden w-44 lg:w-64 xl:block'>
 						<SearchBar />
 					</div>
 					<NavbarAction />
-					<div className='bg-gray-200 dark:bg-gray-600 w-[1px] mx-2 h-8'></div>
+					<div className='mx-2 h-8 w-[1px] bg-gray-200 dark:bg-gray-600'></div>
 				</div>
 
 				<div className='flex items-center gap-3'>

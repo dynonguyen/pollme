@@ -36,7 +36,12 @@ export default function GoogleLogin(): JSX.Element {
 			if (response.data?.loginWithOAuth.code === SUCCESS_CODE.OK) {
 				const user = response.data.loginWithOAuth.user as UserInfoFragment;
 				const { __typename, avt, ...rest } = user;
-				setUserInfoAtom({ ...userInfo, ...rest, avt: avt as string });
+				setUserInfoAtom({
+					...userInfo,
+					...rest,
+					createdAt: new Date(),
+					avt: avt as string,
+				});
 				toast.show({
 					type: 'success',
 					message: loginLang.message.success(user.name),
@@ -58,7 +63,7 @@ export default function GoogleLogin(): JSX.Element {
 		<>
 			<div className='my-6'>
 				<div className='relative h-[1px] bg-gray-300 dark:bg-gray-700'>
-					<span className='absolute text-gray-400 text-sm md:text-base top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-d_bg px-3'>
+					<span className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-3 text-sm text-gray-400 dark:bg-d_bg md:text-base'>
 						{lang.others.loginOAuthBreak}
 					</span>
 				</div>

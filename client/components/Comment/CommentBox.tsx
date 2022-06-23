@@ -62,9 +62,7 @@ export default function CommentBox({
 						name: userInfo.name,
 						avt: userInfo.avt,
 						email: '',
-						favorites: [],
-						voted: [],
-						votes: [],
+						createdAt: '',
 					},
 				});
 				inputRef.current!.value = '';
@@ -75,7 +73,7 @@ export default function CommentBox({
 
 	return (
 		<div className='my-5'>
-			<h3 className='text-xl mb-2 text-primary dark:text-d_primary'>
+			<h3 className='mb-2 text-xl text-primary dark:text-d_primary'>
 				{commentLang.addComment}
 			</h3>
 			<textarea
@@ -89,7 +87,7 @@ export default function CommentBox({
 			<p className='text-right text-sm text-gray-500'>
 				<span ref={charLeftRef}>{MAX.COMMENT_LEN}</span> {commentLang.charLeft}
 			</p>
-			<div className='text-right mt-2'>
+			<div className='mt-2 text-right'>
 				{userInfo._id ? (
 					<button
 						className='btn btn-primary md:btn-lg capitalize'

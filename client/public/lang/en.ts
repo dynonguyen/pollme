@@ -294,6 +294,9 @@ export default {
 			changePwd: 'Change password',
 			updateBtn: 'Update',
 			createdDate: 'Participated in',
+			maxAvtSize: `Maximum avatar size ${MAX.USER_AVT_SIZE} MB`,
+			updateSuccess: 'Update information successfully',
+			updateFailed: 'Update information failed',
 		},
 	},
 	pageSEO: {
@@ -341,6 +344,11 @@ export default {
 			pathname: '/account/settings',
 			title: 'Account Settings',
 			desc: 'Account settings',
+		},
+		changePwd: {
+			pathname: '/account/change-password',
+			title: 'Change password',
+			desc: 'Change password',
 		},
 	},
 	others: {
