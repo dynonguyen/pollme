@@ -293,6 +293,17 @@ export default {
 			updateSuccess: 'Cập nhật thông tin thành công',
 			updateFailed: 'Cập nhật thông tin thất bại',
 		},
+		changePwd: {
+			title: 'Thay đổi mật khẩu',
+			oldPwd: 'Mật khẩu cũ',
+			newPwd: 'Mật khẩu mới',
+			confirmPwd: 'Nhập lại mật khẩu mới',
+			submitBtn: 'Cập nhật',
+			noMatch: 'Mật khẩu không trùng khớp',
+			changePwdSuccess: 'Thay đổi mật khẩu thành công',
+			changePwdFailed: 'Thay đổi mật khẩu thất bại',
+			incorrectPwd: 'Mật khẩu không chính xác'
+		},
 	},
 	pageSEO: {
 		home: {

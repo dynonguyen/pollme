@@ -9,7 +9,10 @@ import { MutationResponseImpl } from './../types/core/MutationResponse';
 import { ROLES } from './../types/core/Role';
 import { LoginInput, OAuthLoginInput } from './../types/input/LoginInput';
 import { RegisterInput } from './../types/input/RegisterInput';
-import { UpdateUserInfoInput } from './../types/input/UserInput';
+import {
+	ChangePasswordInput,
+	UpdateUserInfoInput,
+} from './../types/input/UserInput';
 import { UserMutationResponse } from './../types/response/UserResponse';
 import { onLoginSuccess } from './../utils/helper';
 
@@ -141,6 +144,40 @@ export class UserResolver {
 			return { code: SUCCESS_CODE.OK, success: true };
 		} catch (error) {
 			console.error('UPDATE USER INFO MUTATION ERROR: ', error);
+			return { code: ERROR_CODE.INTERNAL_ERROR, success: false };
+		}
+	}
+
+	@Authorized(ROLES.USER)
+	@Mutation(_return => MutationResponseImpl)
+	async changePassword(
+		@Arg('changePwdInput') { newPwd, oldPwd }: ChangePasswordInput,
+		@Ctx() { res }: ExpressContext,
+	): Promise<MutationResponseImpl> {
+		const { _id: userId, password, oauthId } = res.locals.user as User;
+		try {
+			let isValidOldPwd = false;
+
+			if (oauthId && !password) isValidOldPwd = true;
+			else {
+				isValidOldPwd = await bcrypt.compare(oldPwd, password!);
+			}
+			if (!isValidOldPwd) {
+				return {
+					code: ERROR_CODE.UNAUTHORIZED,
+					success: false,
+					message: 'Incorrect Password',
+				};
+			}
+
+			const newHashPwd = await bcrypt.hash(newPwd, SALT_PASSWORD);
+			await UserModel.updateOne(
+				{ _id: userId },
+				{ $set: { password: newHashPwd } },
+			);
+			return { code: SUCCESS_CODE.OK, success: true };
+		} catch (error) {
+			console.error('CHANGE PASSWORD MUTATION ERROR: ', error);
 			return { code: ERROR_CODE.INTERNAL_ERROR, success: false };
 		}
 	}

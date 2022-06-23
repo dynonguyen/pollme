@@ -7,6 +7,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { DEFAULT } from '../../constants/default';
 import { MAX } from '../../constants/validation';
 import { useUpdateUserInfoMutation } from '../../graphql-client/generated/graphql';
+import useCheckUserLogin from '../../hooks/useCheckUserLogin';
 import useLanguage from '../../hooks/useLanguage';
 import useToast from '../../hooks/useToast';
 import userAtom from '../../recoil/atoms/user.atom';
@@ -133,6 +134,7 @@ function UserAvatar({
 }
 
 const AccountSettings: NextPage = () => {
+	useCheckUserLogin({ isLoginPage: false });
 	const lang = useLanguage();
 	const settingLang = lang.pages.accountSettings;
 	const [userInfo, setUserInfo] = useRecoilState(userAtom);

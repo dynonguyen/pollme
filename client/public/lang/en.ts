@@ -298,6 +298,17 @@ export default {
 			updateSuccess: 'Update information successfully',
 			updateFailed: 'Update information failed',
 		},
+		changePwd: {
+			title: 'Change Password',
+			oldPwd: 'Old password',
+			newPwd: 'New password',
+			confirmPwd: 'Re-enter new password',
+			submitBtn: 'Submit',
+			noMatch: 'Password does not match',
+			changePwdSuccess: 'Change password successfully.',
+			changePwdFailed: 'Change password failed.',
+			incorrectPwd: 'Incorrect password',
+		},
 	},
 	pageSEO: {
 		home: {

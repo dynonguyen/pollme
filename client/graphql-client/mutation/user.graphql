@@ -34,3 +34,9 @@ mutation UpdateUserInfo($updateInput: UpdateUserInfoInput!) {
 		...mutationStatus
 	}
 }
+
+mutation ChangePassword($changePwdInput: ChangePasswordInput!) {
+	changePassword(changePwdInput: $changePwdInput) {
+		...mutationStatus
+	}
+}

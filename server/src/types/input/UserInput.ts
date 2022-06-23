@@ -8,3 +8,12 @@ export class UpdateUserInfoInput {
 	@Field(_type => String, { nullable: true })
 	avt?: string;
 }
+
+@InputType()
+export class ChangePasswordInput {
+	@Field(_type => String)
+	oldPwd: string;
+
+	@Field(_type => String)
+	newPwd: string;
+}

@@ -34,6 +34,11 @@ export type AnswerItem = {
   photo?: InputMaybe<Scalars['String']>;
 };
 
+export type ChangePasswordInput = {
+  newPwd: Scalars['String'];
+  oldPwd: Scalars['String'];
+};
+
 export type Comment = {
   __typename?: 'Comment';
   _id: Scalars['ID'];
@@ -86,6 +91,7 @@ export type LoginInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   addAnswerOption: MutationResponseImpl;
+  changePassword: MutationResponseImpl;
   createComment: CreateCommentMutationResponse;
   createVote: VoteMutationResponse;
   deleteVote: MutationResponseImpl;
@@ -102,6 +108,11 @@ export type Mutation = {
 
 export type MutationAddAnswerOptionArgs = {
   addAnswerInput: AddAnswerInput;
+};
+
+
+export type MutationChangePasswordArgs = {
+  changePwdInput: ChangePasswordInput;
 };
 
 
@@ -499,6 +510,13 @@ export type UpdateUserInfoMutationVariables = Exact<{
 
 
 export type UpdateUserInfoMutation = { __typename?: 'Mutation', updateUserInfo: { __typename?: 'MutationResponseImpl', code: number, success: boolean, message?: string | null } };
+
+export type ChangePasswordMutationVariables = Exact<{
+  changePwdInput: ChangePasswordInput;
+}>;
+
+
+export type ChangePasswordMutation = { __typename?: 'Mutation', changePassword: { __typename?: 'MutationResponseImpl', code: number, success: boolean, message?: string | null } };
 
 export type CreateVoteMutationVariables = Exact<{
   newVoteInput: NewVoteInput;
@@ -954,6 +972,39 @@ export function useUpdateUserInfoMutation(baseOptions?: Apollo.MutationHookOptio
 export type UpdateUserInfoMutationHookResult = ReturnType<typeof useUpdateUserInfoMutation>;
 export type UpdateUserInfoMutationResult = Apollo.MutationResult<UpdateUserInfoMutation>;
 export type UpdateUserInfoMutationOptions = Apollo.BaseMutationOptions<UpdateUserInfoMutation, UpdateUserInfoMutationVariables>;
+export const ChangePasswordDocument = gql`
+    mutation ChangePassword($changePwdInput: ChangePasswordInput!) {
+  changePassword(changePwdInput: $changePwdInput) {
+    ...mutationStatus
+  }
+}
+    ${MutationStatusFragmentDoc}`;
+export type ChangePasswordMutationFn = Apollo.MutationFunction<ChangePasswordMutation, ChangePasswordMutationVariables>;
+
+/**
+ * __useChangePasswordMutation__
+ *
+ * To run a mutation, you first call `useChangePasswordMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangePasswordMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changePasswordMutation, { data, loading, error }] = useChangePasswordMutation({
+ *   variables: {
+ *      changePwdInput: // value for 'changePwdInput'
+ *   },
+ * });
+ */
+export function useChangePasswordMutation(baseOptions?: Apollo.MutationHookOptions<ChangePasswordMutation, ChangePasswordMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ChangePasswordMutation, ChangePasswordMutationVariables>(ChangePasswordDocument, options);
+      }
+export type ChangePasswordMutationHookResult = ReturnType<typeof useChangePasswordMutation>;
+export type ChangePasswordMutationResult = Apollo.MutationResult<ChangePasswordMutation>;
+export type ChangePasswordMutationOptions = Apollo.BaseMutationOptions<ChangePasswordMutation, ChangePasswordMutationVariables>;
 export const CreateVoteDocument = gql`
     mutation CreateVote($newVoteInput: NewVoteInput!) {
   createVote(newVoteInput: $newVoteInput) {
