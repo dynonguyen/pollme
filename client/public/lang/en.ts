@@ -92,9 +92,9 @@ export default {
 						'With just a few steps, you can create your poll and share it with your friends.',
 				},
 				{
-					title: 'Analysis & reporting',
+					title: 'Real-time analysis',
 					content:
-						'Analyze poll results through comprehensive dashboards and graphs. Export it all to Excel or PDF.',
+						'Phân tích kết quả thăm dò ý kiến thông qua bảng điều khiển và đồ thị toàn diện theo giời gian thực.',
 				},
 				{
 					title: 'Simple interface, easy to use',

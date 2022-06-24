@@ -89,12 +89,14 @@ function SearchBar(): JSX.Element {
 	const router = useRouter();
 
 	const handlePressEnter = (e: React.KeyboardEvent) => {
-		if (e.key === 'Enter' && searchInput.current.trim()) {
-			router.push(
-				`${lang.pages.discover.link}?${
-					QUERY_KEY.SEARCH
-				}=${searchInput.current.trim()}`,
-			);
+		if (e.key === 'Enter') {
+			if (searchInput.current.trim()) {
+				router.query[QUERY_KEY.SEARCH] = searchInput.current.trim();
+			} else {
+				delete router.query[QUERY_KEY.SEARCH];
+			}
+			router.pathname = lang.pages.discover.link;
+			router.push(router);
 		}
 	};
 

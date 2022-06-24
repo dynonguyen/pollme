@@ -89,9 +89,9 @@ export default {
 						'Chỉ với vài bước, bạn có thể tạo một của khảo sát cho riêng mình và chia sẻ nó tới những người bạn của mình.',
 				},
 				{
-					title: 'Phân tích & báo cáo',
+					title: 'Phân tích theo thời gian thực',
 					content:
-						'Phân tích kết quả thăm dò ý kiến thông qua bảng điều khiển và đồ thị toàn diện. Xuất tất cả sang Excel hoặc PDF.',
+						'Phân tích kết quả thăm dò ý kiến thông qua bảng điều khiển và đồ thị toàn diện theo giời gian thực.',
 				},
 				{
 					title: 'Giao diện đơn giản, dễ dùng',
