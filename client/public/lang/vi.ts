@@ -1,6 +1,7 @@
 import { VoteFilterOptions } from '../../constants/enum';
 import { MAX, MIN } from '../../constants/validation';
 import { APP_NAME } from './../../constants/index';
+import { VERIFY_CODE_LEN } from './../../constants/validation';
 
 export default {
 	navbarItems: [
@@ -54,6 +55,7 @@ export default {
 		deleteVoteSuccess: 'Xoá bài khảo sát thành công 😙',
 		updateVoteFailed: 'Cập nhật bài khảo sát thất bại, vui lòng thử lại 😢',
 		updateVoteSuccess: 'Cập nhật bài khảo sát thành công 😙',
+		accountNotExist: 'Tài khoản không tồn tại !',
 	},
 	pages: {
 		notfound: {
@@ -298,11 +300,22 @@ export default {
 			oldPwd: 'Mật khẩu cũ',
 			newPwd: 'Mật khẩu mới',
 			confirmPwd: 'Nhập lại mật khẩu mới',
-			submitBtn: 'Cập nhật',
+			submitBtn: 'Thay đổi mật khẩu',
 			noMatch: 'Mật khẩu không trùng khớp',
 			changePwdSuccess: 'Thay đổi mật khẩu thành công',
 			changePwdFailed: 'Thay đổi mật khẩu thất bại',
-			incorrectPwd: 'Mật khẩu không chính xác'
+			incorrectPwd: 'Mật khẩu không chính xác',
+		},
+		forgotPwd: {
+			title: 'Quên mật khẩu',
+			getVerifyCode: 'Lấy mã xác thực',
+			verifyCode: `Mã xác thực (${VERIFY_CODE_LEN} ký tự)`,
+			messageVerifyCode: `Mã xác thực có ${VERIFY_CODE_LEN} ký tự !`,
+			invalidEmail: 'Email không hợp lệ !',
+			sentCode: 'Kiểm tra email',
+			sendCodeSuccess: 'Gửi mã xác thực thành công, kiểm tra Email của bạn',
+			sendCodeFailed: 'Gửi mã xác thực thất bại, thử lại !',
+			invalidCode: 'Mã xác thực không hợp lệ hoặc đã hết hạn',
 		},
 	},
 	pageSEO: {
@@ -355,6 +368,11 @@ export default {
 			pathname: '/account/change-password',
 			title: 'Thay đổi mật khẩu',
 			desc: 'Thay đổi mật khẩu',
+		},
+		forgotPwd: {
+			pathname: '/account/forgot-password',
+			title: 'Quên mật khẩu',
+			desc: `Bạn quên mật khẩu, Đừng lo lắng! ${APP_NAME} sẽ giúp bạn lấy lại mật khẩu ngay bây giờ.`,
 		},
 	},
 	others: {

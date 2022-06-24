@@ -39,6 +39,12 @@ export type ChangePasswordInput = {
   oldPwd: Scalars['String'];
 };
 
+export type ChangePwdByCodeInput = {
+  email: Scalars['String'];
+  password: Scalars['String'];
+  verifyCode: Scalars['String'];
+};
+
 export type Comment = {
   __typename?: 'Comment';
   _id: Scalars['ID'];
@@ -83,6 +89,11 @@ export type FavoriteCommentInput = {
   userId: Scalars['String'];
 };
 
+export type ForgotPwdSendMailInput = {
+  email: Scalars['String'];
+  lang?: InputMaybe<Scalars['String']>;
+};
+
 export type LoginInput = {
   email: Scalars['String'];
   password: Scalars['String'];
@@ -92,10 +103,12 @@ export type Mutation = {
   __typename?: 'Mutation';
   addAnswerOption: MutationResponseImpl;
   changePassword: MutationResponseImpl;
+  changePwdByVerifyCode: MutationResponseImpl;
   createComment: CreateCommentMutationResponse;
   createVote: VoteMutationResponse;
   deleteVote: MutationResponseImpl;
   favoriteComment: MutationResponseImpl;
+  forgotPwdSendMail: MutationResponseImpl;
   login: UserMutationResponse;
   loginWithOAuth: UserMutationResponse;
   logout: Scalars['Boolean'];
@@ -116,6 +129,11 @@ export type MutationChangePasswordArgs = {
 };
 
 
+export type MutationChangePwdByVerifyCodeArgs = {
+  changePwdInput: ChangePwdByCodeInput;
+};
+
+
 export type MutationCreateCommentArgs = {
   addCommentInput: AddCommentInput;
 };
@@ -133,6 +151,11 @@ export type MutationDeleteVoteArgs = {
 
 export type MutationFavoriteCommentArgs = {
   favoriteCommentInput: FavoriteCommentInput;
+};
+
+
+export type MutationForgotPwdSendMailArgs = {
+  sendMailInput: ForgotPwdSendMailInput;
 };
 
 
@@ -517,6 +540,20 @@ export type ChangePasswordMutationVariables = Exact<{
 
 
 export type ChangePasswordMutation = { __typename?: 'Mutation', changePassword: { __typename?: 'MutationResponseImpl', code: number, success: boolean, message?: string | null } };
+
+export type ForgotPwdSendMailMutationVariables = Exact<{
+  sendMailInput: ForgotPwdSendMailInput;
+}>;
+
+
+export type ForgotPwdSendMailMutation = { __typename?: 'Mutation', forgotPwdSendMail: { __typename?: 'MutationResponseImpl', code: number, success: boolean, message?: string | null } };
+
+export type ChangePwdByVerifyCodeMutationVariables = Exact<{
+  changePwdInput: ChangePwdByCodeInput;
+}>;
+
+
+export type ChangePwdByVerifyCodeMutation = { __typename?: 'Mutation', changePwdByVerifyCode: { __typename?: 'MutationResponseImpl', code: number, success: boolean, message?: string | null } };
 
 export type CreateVoteMutationVariables = Exact<{
   newVoteInput: NewVoteInput;
@@ -1005,6 +1042,72 @@ export function useChangePasswordMutation(baseOptions?: Apollo.MutationHookOptio
 export type ChangePasswordMutationHookResult = ReturnType<typeof useChangePasswordMutation>;
 export type ChangePasswordMutationResult = Apollo.MutationResult<ChangePasswordMutation>;
 export type ChangePasswordMutationOptions = Apollo.BaseMutationOptions<ChangePasswordMutation, ChangePasswordMutationVariables>;
+export const ForgotPwdSendMailDocument = gql`
+    mutation ForgotPwdSendMail($sendMailInput: ForgotPwdSendMailInput!) {
+  forgotPwdSendMail(sendMailInput: $sendMailInput) {
+    ...mutationStatus
+  }
+}
+    ${MutationStatusFragmentDoc}`;
+export type ForgotPwdSendMailMutationFn = Apollo.MutationFunction<ForgotPwdSendMailMutation, ForgotPwdSendMailMutationVariables>;
+
+/**
+ * __useForgotPwdSendMailMutation__
+ *
+ * To run a mutation, you first call `useForgotPwdSendMailMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useForgotPwdSendMailMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [forgotPwdSendMailMutation, { data, loading, error }] = useForgotPwdSendMailMutation({
+ *   variables: {
+ *      sendMailInput: // value for 'sendMailInput'
+ *   },
+ * });
+ */
+export function useForgotPwdSendMailMutation(baseOptions?: Apollo.MutationHookOptions<ForgotPwdSendMailMutation, ForgotPwdSendMailMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ForgotPwdSendMailMutation, ForgotPwdSendMailMutationVariables>(ForgotPwdSendMailDocument, options);
+      }
+export type ForgotPwdSendMailMutationHookResult = ReturnType<typeof useForgotPwdSendMailMutation>;
+export type ForgotPwdSendMailMutationResult = Apollo.MutationResult<ForgotPwdSendMailMutation>;
+export type ForgotPwdSendMailMutationOptions = Apollo.BaseMutationOptions<ForgotPwdSendMailMutation, ForgotPwdSendMailMutationVariables>;
+export const ChangePwdByVerifyCodeDocument = gql`
+    mutation ChangePwdByVerifyCode($changePwdInput: ChangePwdByCodeInput!) {
+  changePwdByVerifyCode(changePwdInput: $changePwdInput) {
+    ...mutationStatus
+  }
+}
+    ${MutationStatusFragmentDoc}`;
+export type ChangePwdByVerifyCodeMutationFn = Apollo.MutationFunction<ChangePwdByVerifyCodeMutation, ChangePwdByVerifyCodeMutationVariables>;
+
+/**
+ * __useChangePwdByVerifyCodeMutation__
+ *
+ * To run a mutation, you first call `useChangePwdByVerifyCodeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangePwdByVerifyCodeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changePwdByVerifyCodeMutation, { data, loading, error }] = useChangePwdByVerifyCodeMutation({
+ *   variables: {
+ *      changePwdInput: // value for 'changePwdInput'
+ *   },
+ * });
+ */
+export function useChangePwdByVerifyCodeMutation(baseOptions?: Apollo.MutationHookOptions<ChangePwdByVerifyCodeMutation, ChangePwdByVerifyCodeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ChangePwdByVerifyCodeMutation, ChangePwdByVerifyCodeMutationVariables>(ChangePwdByVerifyCodeDocument, options);
+      }
+export type ChangePwdByVerifyCodeMutationHookResult = ReturnType<typeof useChangePwdByVerifyCodeMutation>;
+export type ChangePwdByVerifyCodeMutationResult = Apollo.MutationResult<ChangePwdByVerifyCodeMutation>;
+export type ChangePwdByVerifyCodeMutationOptions = Apollo.BaseMutationOptions<ChangePwdByVerifyCodeMutation, ChangePwdByVerifyCodeMutationVariables>;
 export const CreateVoteDocument = gql`
     mutation CreateVote($newVoteInput: NewVoteInput!) {
   createVote(newVoteInput: $newVoteInput) {

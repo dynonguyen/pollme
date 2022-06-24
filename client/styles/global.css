@@ -7,7 +7,7 @@
 @layer base {
 	html,
 	body {
-		@apply font-inter bg-white dark:bg-d_bg dark:text-d_text_primary;
+		@apply bg-white font-inter dark:bg-d_bg dark:text-d_text_primary;
 	}
 
 	body {
@@ -20,7 +20,7 @@
 	h4,
 	h5,
 	h6 {
-		@apply text-text_title dark:text-d_text_title font-medium;
+		@apply font-medium text-text_title dark:text-d_text_title;
 	}
 
 	h1 {
@@ -30,13 +30,13 @@
 
 @layer components {
 	.btn {
-		@apply px-4 py-1 duration-300 hover:brightness-90 rounded-md;
+		@apply rounded-md px-4 py-1 duration-300 hover:brightness-90;
 	}
 	.btn-lg {
 		@apply !py-2 text-lg;
 	}
 	.btn-outline {
-		@apply btn border-solid border-gray-300 dark:border-gray-700 border text-gray-600 dark:text-d_text_primary;
+		@apply btn border border-solid border-gray-300 text-gray-600 dark:border-gray-700 dark:text-d_text_primary;
 	}
 	.btn-primary {
 		@apply btn bg-primary text-white dark:bg-d_primary dark:text-gray-50;
@@ -50,14 +50,14 @@
 	}
 
 	.field {
-		@apply border border-color outline-none py-2 px-4 w-full rounded-md text-gray-500 dark:bg-slate-800 dark:text-gray-200 dark:border-none;
+		@apply border-color w-full rounded-md border py-2 px-4 text-gray-500 outline-none dark:border-none dark:bg-slate-800 dark:text-gray-200;
 	}
 	.field-error {
 		@apply border-red-600 dark:border-red-400;
 	}
 
 	.filter-item {
-		@apply cursor-pointer p-3 rounded-lg duration-300 text-gray-500 hover:text-gray-800 dark:hover:text-d_text_title hover:bg-gray-100 dark:hover:bg-d_bg_hover;
+		@apply cursor-pointer rounded-lg p-3 text-gray-500 duration-300 hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-d_bg_hover dark:hover:text-d_text_title;
 	}
 
 	.flex-center {
@@ -65,14 +65,17 @@
 	}
 
 	.bg-overlay {
-		@apply fixed top-0 left-0 w-full h-full z-[99] bg-black bg-opacity-40 dark:bg-opacity-80;
+		@apply fixed top-0 left-0 z-[99] h-full w-full bg-black bg-opacity-40 dark:bg-opacity-80;
 	}
 	.bg-gradient {
 		@apply bg-gradient-to-r from-primary to-secondary dark:from-d_primary dark:to-d_secondary;
 	}
+	.bg-success {
+		@apply bg-green-700 dark:bg-green-400;
+	}
 
 	.text-gradient {
-		@apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary dark:from-d_primary dark:to-d_secondary;
+		@apply bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent dark:from-d_primary dark:to-d_secondary;
 	}
 	.text-color-normal {
 		@apply text-text_primary dark:text-d_text_primary;
@@ -88,7 +91,7 @@
 	}
 
 	.disabled {
-		@apply opacity-75 cursor-no-drop pointer-events-none;
+		@apply pointer-events-none cursor-no-drop opacity-75;
 	}
 
 	.no-scrollbar::-webkit-scrollbar {
@@ -98,31 +101,31 @@
 	}
 
 	.menu {
-		@apply hidden pt-2 group-hover:block absolute rounded-lg shadow-lg focus:outline-none;
+		@apply absolute hidden rounded-lg pt-2 shadow-lg focus:outline-none group-hover:block;
 	}
 	.menu ul {
 		@apply bg-slate-50 dark:bg-d_bg;
 	}
 	.menu-item {
-		@apply duration-150 block px-4 py-2 capitalize text-gray-600 dark:text-d_text_primary hover:bg-slate-200 dark:hover:bg-d_bg_hover text-sm md:text-base cursor-pointer;
+		@apply block cursor-pointer px-4 py-2 text-sm capitalize text-gray-600 duration-150 hover:bg-slate-200 dark:text-d_text_primary dark:hover:bg-d_bg_hover md:text-base;
 	}
 
 	.tag-link {
-		@apply py-1 px-2 bg-primary/10 dark:bg-d_primary/10 rounded-md text-primary dark:text-d_primary text-sm hover:brightness-90 duration-300;
+		@apply rounded-md bg-primary/10 py-1 px-2 text-sm text-primary duration-300 hover:brightness-90 dark:bg-d_primary/10 dark:text-d_primary;
 	}
 
 	.poll-summary__bg {
-		@apply bg-slate-100/25 dark:bg-slate-800/25 w-full rounded-lg shadow-md py-3 px-5 md:py-5 md:px-8;
+		@apply w-full rounded-lg bg-slate-100/25 py-3 px-5 shadow-md dark:bg-slate-800/25 md:py-5 md:px-8;
 	}
 	.poll-summary__title {
-		@apply text-lg md:text-xl font-normal text-primary dark:text-d_primary duration-300 hover:brightness-90 break-words;
+		@apply break-words text-lg font-normal text-primary duration-300 hover:brightness-90 dark:text-d_primary md:text-xl;
 	}
 
 	.pagination {
-		@apply flex -space-x-px w-full justify-center;
+		@apply flex w-full justify-center -space-x-px;
 	}
 	.pagination__item {
-		@apply py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-200 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white;
+		@apply border border-gray-200 bg-white py-2 px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white;
 	}
 	.pagination__next {
 		@apply pagination__item rounded-r-lg;
@@ -134,7 +137,7 @@
 		@apply pagination__item disabled;
 	}
 	.pagination__active {
-		@apply !bg-accent/25 dark:!bg-d_accent/25 !text-accent dark:!text-d_accent font-semibold disabled;
+		@apply disabled !bg-accent/25 font-semibold !text-accent dark:!bg-d_accent/25 dark:!text-d_accent;
 	}
 
 	.transform-center {
@@ -142,7 +145,7 @@
 	}
 
 	.new-poll-label {
-		@apply text-gray-600 dark:text-gray-400 text-base;
+		@apply text-base text-gray-600 dark:text-gray-400;
 	}
 }
 

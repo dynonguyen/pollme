@@ -1,5 +1,5 @@
 import { VoteFilterOptions } from '../../constants/enum';
-import { MAX, MIN } from '../../constants/validation';
+import { MAX, MIN, VERIFY_CODE_LEN } from '../../constants/validation';
 import { APP_NAME } from './../../constants/index';
 
 export default {
@@ -58,6 +58,7 @@ export default {
 		deleteVoteSuccess: 'Delete successfully 😙',
 		updateVoteFailed: 'Update poll failed, please try again 😢',
 		updateVoteSuccess: 'Update successfully 😙',
+		accountNotExist: 'Account does not exists !',
 	},
 	pages: {
 		notfound: {
@@ -309,6 +310,18 @@ export default {
 			changePwdFailed: 'Change password failed.',
 			incorrectPwd: 'Incorrect password',
 		},
+		forgotPwd: {
+			title: 'Forgot Password',
+			getVerifyCode: 'Get verify code',
+			verifyCode: `Verify code (${VERIFY_CODE_LEN} characters)`,
+			messageVerifyCode: `The verify code has ${VERIFY_CODE_LEN} characters!`,
+			invalidEmail: 'Invalid Email !',
+			sentCode: 'check email',
+			sendCodeSuccess:
+				'Send a verify code successfully, please check your email',
+			sendCodeFailed: 'Send the verify code failed, try again!',
+			invalidCode: 'Invalid or expired verify code',
+		},
 	},
 	pageSEO: {
 		home: {
@@ -360,6 +373,11 @@ export default {
 			pathname: '/account/change-password',
 			title: 'Change password',
 			desc: 'Change password',
+		},
+		forgotPwd: {
+			pathname: '/account/forgot-password',
+			title: 'Forgot Password',
+			desc: `You forgot the password, don't worry! ${APP_NAME} will help you get your password back now.`,
 		},
 	},
 	others: {

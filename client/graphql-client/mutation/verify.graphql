@@ -1,0 +1,11 @@
+mutation ForgotPwdSendMail($sendMailInput: ForgotPwdSendMailInput!) {
+	forgotPwdSendMail(sendMailInput: $sendMailInput) {
+		...mutationStatus
+	}
+}
+
+mutation ChangePwdByVerifyCode($changePwdInput: ChangePwdByCodeInput!) {
+	changePwdByVerifyCode(changePwdInput: $changePwdInput) {
+		...mutationStatus
+	}
+}

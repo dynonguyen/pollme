@@ -1,4 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import Link from 'next/link';
 import { useMemo } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -49,7 +50,7 @@ export default function LoginForm({ onSubmit }: RegisterProps): JSX.Element {
 
 	return (
 		<form
-			className='w-11/12 sm:w-[420px] px-6 py-5 rounded-lg shadow-md dark:shadow-none dark:border dark:border-gray-600'
+			className='w-11/12 rounded-lg px-6 py-5 shadow-md dark:border dark:border-gray-600 dark:shadow-none sm:w-[420px]'
 			onSubmit={handleSubmit(handleFormSubmit)}
 		>
 			<InputFieldRegister
@@ -71,7 +72,13 @@ export default function LoginForm({ onSubmit }: RegisterProps): JSX.Element {
 				error={errors.password?.message}
 			/>
 
-			<button className='btn-primary btn-lg w-full mt-3 uppercase font-medium'>
+			<Link href={lang.pageSEO.forgotPwd.pathname}>
+				<a className='font-medium text-accent dark:text-d_accent'>
+					{lang.pageSEO.forgotPwd.title} ?
+				</a>
+			</Link>
+
+			<button className='btn-primary btn-lg mt-3 w-full font-medium uppercase'>
 				{loginLang.submitBtn}
 			</button>
 

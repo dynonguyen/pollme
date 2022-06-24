@@ -16,3 +16,5 @@ export const MAX = {
 export const MIN = {
 	PASSWORD_LEN: 8,
 };
+
+export const VERIFY_CODE_LEN = 6;
