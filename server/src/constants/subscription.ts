@@ -1,0 +1,3 @@
+export const SUB_TOPICS = {
+	COMMENT_ADDED: 'COMMENT_ADDED',
+};

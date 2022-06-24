@@ -4,6 +4,8 @@ import {
 	Authorized,
 	FieldResolver,
 	Mutation,
+	Publisher,
+	PubSub,
 	Query,
 	Resolver,
 	Root,
@@ -19,6 +21,7 @@ import { ROLES } from '../types/core/Role';
 import Comment from '../types/entities/Comment';
 import User from '../types/entities/User';
 import mongoosePaginate from '../utils/mongoose-paginate';
+import { SUB_TOPICS } from './../constants/subscription';
 import { MutationResponseImpl } from './../types/core/MutationResponse';
 import { CommentPaginationArg } from './../types/input/CommentArg';
 import {
@@ -99,6 +102,7 @@ export class CommentResolver {
 	@Mutation(_return => CreateCommentMutationResponse)
 	async createComment(
 		@Arg('addCommentInput') { voteId, content, ownerId }: AddCommentInput,
+		@PubSub(SUB_TOPICS.COMMENT_ADDED) publish: Publisher<Comment>,
 	): Promise<CreateCommentMutationResponse> {
 		try {
 			if (content.length > MAX.COMMENT_LEN) {
@@ -116,6 +120,8 @@ export class CommentResolver {
 					{ _id: voteId },
 					{ $inc: { totalComment: 1 } },
 				);
+
+				publish(newComment._doc!);
 				return {
 					code: SUCCESS_CODE.CREATED,
 					success: true,
