@@ -1,5 +1,5 @@
 export const __PROD__ = process.env.NODE_ENV === 'production';
-export const APP_NAME = process.env.APP_NAME || 'Pollme_Api';
+export const APP_NAME = process.env.APP_NAME || 'Pollme';
 export const CORS_ORIGINS: string[] = [
 	process.env.CLIENT_WEB_ORIGIN || '',
 	'https://studio.apollographql.com',
@@ -23,4 +23,9 @@ export const COOKIE = {
 export const JWT = {
 	SECRET_KEY: process.env.JWT_SECRET_KEY || 'Secret',
 	MAX_AGE: 3 * 24 * 3600,
+};
+export const MAILER = {
+	HOST: process.env.MAIL_HOST || '',
+	USERNAME: process.env.MAIL_USERNAME || '',
+	PASSWORD: process.env.MAIL_PASSWORD || '',
 };
