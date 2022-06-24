@@ -1,6 +1,6 @@
 import { HeartIcon } from '@heroicons/react/solid';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { DEFAULT } from '../../constants/default';
 import { useFavoriteCommentMutation } from '../../graphql-client/generated/graphql';
@@ -28,10 +28,7 @@ export default function CommentItem(props: CommentItemProps): JSX.Element {
 	} = props;
 	const userAvt = avt ? avt : DEFAULT.USER_AVT;
 	const userInfo = useRecoilValue(userAtom);
-	const { _id, ip } = userInfo;
-	const [liked, setLiked] = useState(
-		favorites.findIndex(f => f === _id || f === ip) !== -1,
-	);
+	const [liked, setLiked] = useState(false);
 	const [totalFavorite, setTotalFavorite] = useState(favorites.length);
 	const [favoriteCommentMutation] = useFavoriteCommentMutation();
 	const router = useRouter();
@@ -56,10 +53,18 @@ export default function CommentItem(props: CommentItemProps): JSX.Element {
 		setLiked(!liked);
 	};
 
+	useEffect(() => {
+		const { _id, ip } = userInfo;
+		if (_id) {
+			const isLike = favorites.findIndex(f => f === _id || f === ip) !== -1;
+			isLike && setLiked(true);
+		}
+	}, [userInfo]);
+
 	return (
-		<div className='flex gap-3 shadow-md px-3 py-4 rounded-lg dark:shadow-none dark:bg-d_bg_hover'>
+		<div className='flex gap-3 rounded-lg px-3 py-4 shadow-md dark:bg-d_bg_hover dark:shadow-none'>
 			<img
-				className='w-8 h-8 rounded-full flex-shrink-0'
+				className='h-8 w-8 flex-shrink-0 rounded-full'
 				src={userAvt}
 				alt={username}
 				onError={e => (e.currentTarget.src = DEFAULT.USER_AVT)}
@@ -67,14 +72,14 @@ export default function CommentItem(props: CommentItemProps): JSX.Element {
 			<div>
 				<div className='flex flex-wrap items-center gap-1 md:gap-3'>
 					<strong>{username}</strong>
-					<span className='text-gray-400 dark:text-gray-600 text-sm'>
+					<span className='text-sm text-gray-400 dark:text-gray-600'>
 						{dateFormat(new Date(createdAt), true)}
 					</span>
 				</div>
-				<p className='text-gray-600 dark:text-d_text_primary py-2'>{content}</p>
-				<div className='flex gap-2 items-center text-gray-400 dark:text-gray-600'>
+				<p className='py-2 text-gray-600 dark:text-d_text_primary'>{content}</p>
+				<div className='flex items-center gap-2 text-gray-400 dark:text-gray-600'>
 					<HeartIcon
-						className={`h-7 cursor-pointer hover:opacity-70 duration-200 ${
+						className={`h-7 cursor-pointer duration-200 hover:opacity-70 ${
 							liked ? 'error-text' : ''
 						}`}
 						onClick={handleFavorite}

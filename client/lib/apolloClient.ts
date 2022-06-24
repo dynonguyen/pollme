@@ -1,12 +1,17 @@
 import {
 	ApolloClient,
+	ApolloLink,
 	from,
 	HttpLink,
 	InMemoryCache,
 	NormalizedCacheObject,
+	split,
 } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
+import { getMainDefinition } from '@apollo/client/utilities';
 import merge from 'deepmerge';
+import { createClient } from 'graphql-ws';
 import isEqual from 'lodash/isEqual';
 import {
 	GetServerSidePropsResult,
@@ -14,8 +19,7 @@ import {
 	GetStaticPropsResult,
 } from 'next';
 import { useMemo } from 'react';
-import { APOLLO_SERVER_URI } from './../constants/index';
-
+import { APOLLO_SERVER_URI, APOLLO_WS_URI } from './../constants/index';
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
 
 type ApolloStateProps = {
@@ -43,10 +47,10 @@ const httpLink = new HttpLink({
 	credentials: 'include',
 });
 
-function createApolloClient() {
+function createApolloClient(link: ApolloLink) {
 	return new ApolloClient({
 		ssrMode: typeof window === 'undefined',
-		link: from([errorLink, httpLink]),
+		link,
 		cache: new InMemoryCache(),
 	});
 }
@@ -54,7 +58,8 @@ function createApolloClient() {
 export function initializeApollo(
 	initialState: NormalizedCacheObject | null = null,
 ) {
-	const _apolloClient = apolloClient ?? createApolloClient();
+	const _apolloClient =
+		apolloClient ?? createApolloClient(from([errorLink, httpLink]));
 
 	// If your page has Next.js data fetching methods that use Apollo Client, the initial state
 	// gets hydrated here
@@ -76,10 +81,25 @@ export function initializeApollo(
 	}
 	// For SSG and SSR always create a new Apollo Client
 	if (typeof window === 'undefined') return _apolloClient;
-	// Create the Apollo Client once in the client
-	if (!apolloClient) apolloClient = _apolloClient;
 
-	return _apolloClient;
+	// Create the Apollo Client once in the client
+	if (!apolloClient) {
+		const wsLink = new GraphQLWsLink(createClient({ url: APOLLO_WS_URI }));
+		const splitLink = split(
+			({ query }) => {
+				const definition = getMainDefinition(query);
+				return (
+					definition.kind === 'OperationDefinition' &&
+					definition.operation === 'subscription'
+				);
+			},
+			wsLink,
+			httpLink,
+		);
+		apolloClient = createApolloClient(splitLink);
+	}
+
+	return apolloClient;
 }
 
 export function addApolloState(

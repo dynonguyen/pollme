@@ -56,6 +56,16 @@ export type Comment = {
   voteId: Scalars['String'];
 };
 
+export type CommentAddedPayload = {
+  __typename?: 'CommentAddedPayload';
+  _id: Scalars['String'];
+  content: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  userAvt?: Maybe<Scalars['String']>;
+  username: Scalars['String'];
+  voteId: Scalars['String'];
+};
+
 export type CommentPaginatedResponse = QueryResponse & {
   __typename?: 'CommentPaginatedResponse';
   code: Scalars['Int'];
@@ -287,6 +297,16 @@ export type RegisterInput = {
   email: Scalars['String'];
   name: Scalars['String'];
   password: Scalars['String'];
+};
+
+export type Subscription = {
+  __typename?: 'Subscription';
+  commentAdded: CommentAddedPayload;
+};
+
+
+export type SubscriptionCommentAddedArgs = {
+  voteId: Scalars['String'];
 };
 
 export type Tag = {
@@ -675,6 +695,13 @@ export type GetVoteListOfUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetVoteListOfUserQuery = { __typename?: 'Query', votesOfUser: { __typename?: 'VoteListQueryResponse', code: number, message?: string | null, votes: Array<{ __typename?: 'Vote', _id: string, ownerId: string, title: string, desc?: string | null, type: number, createdAt: any, updatedAt?: any | null, endDate?: any | null, isPrivate: boolean, allowAddOption: boolean, isIPDuplicationCheck: boolean, isLoginRequired: boolean, isReCaptcha: boolean, isShowResult: boolean, isShowResultBtn: boolean, maxScore?: number | null, maxVote?: number | null, totalComment: number, totalVote: number, privateLink?: string | null, tags: Array<{ __typename?: 'TagInVote', name: string, slug: string }>, answers: Array<{ __typename?: 'VoteAnswer', id: string, label: string, photo?: string | null, voteList: Array<{ __typename?: 'VoteOfUser', score?: number | null, userInfo: { __typename?: 'UserInfoInVote', ip?: string | null, name?: string | null, userId?: string | null } }> }>, owner?: { __typename?: 'User', avt?: string | null, name: string } | null }> } };
+
+export type CommentAddedSubscriptionVariables = Exact<{
+  voteId: Scalars['String'];
+}>;
+
+
+export type CommentAddedSubscription = { __typename?: 'Subscription', commentAdded: { __typename?: 'CommentAddedPayload', _id: string, content: string, createdAt: any, username: string, userAvt?: string | null } };
 
 export const MutationStatusFragmentDoc = gql`
     fragment mutationStatus on MutationResponse {
@@ -1751,3 +1778,37 @@ export function useGetVoteListOfUserLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type GetVoteListOfUserQueryHookResult = ReturnType<typeof useGetVoteListOfUserQuery>;
 export type GetVoteListOfUserLazyQueryHookResult = ReturnType<typeof useGetVoteListOfUserLazyQuery>;
 export type GetVoteListOfUserQueryResult = Apollo.QueryResult<GetVoteListOfUserQuery, GetVoteListOfUserQueryVariables>;
+export const CommentAddedDocument = gql`
+    subscription CommentAdded($voteId: String!) {
+  commentAdded(voteId: $voteId) {
+    _id
+    content
+    createdAt
+    username
+    userAvt
+  }
+}
+    `;
+
+/**
+ * __useCommentAddedSubscription__
+ *
+ * To run a query within a React component, call `useCommentAddedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useCommentAddedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCommentAddedSubscription({
+ *   variables: {
+ *      voteId: // value for 'voteId'
+ *   },
+ * });
+ */
+export function useCommentAddedSubscription(baseOptions: Apollo.SubscriptionHookOptions<CommentAddedSubscription, CommentAddedSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<CommentAddedSubscription, CommentAddedSubscriptionVariables>(CommentAddedDocument, options);
+      }
+export type CommentAddedSubscriptionHookResult = ReturnType<typeof useCommentAddedSubscription>;
+export type CommentAddedSubscriptionResult = Apollo.SubscriptionResult<CommentAddedSubscription>;

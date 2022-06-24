@@ -131,9 +131,9 @@ const Poll: NextPage<
 				<meta name='description' content={voteState.desc || voteState.title} />
 			</Head>
 
-			<div className='max-w-4xl px-3 md:px-6 mx-auto my-3 md:my-5'>
+			<div className='mx-auto my-3 max-w-4xl px-3 md:my-5 md:px-6'>
 				{/* Title */}
-				<h1 className='text-2xl md:text-3xl md:mb-2 font-normal'>
+				<h1 className='text-2xl font-normal md:mb-2 md:text-3xl'>
 					{voteState.title}
 					{isClosed && (
 						<span className='ml-2 brightness-90'>
@@ -141,7 +141,7 @@ const Poll: NextPage<
 						</span>
 					)}
 				</h1>
-				<div className='grid grid-cols-1 md:grid-cols-2 gap-2 py-3 border-b border-color'>
+				<div className='border-color grid grid-cols-1 gap-2 border-b py-3 md:grid-cols-2'>
 					<div className='flex items-center gap-2 md:gap-2'>
 						<img
 							src={voteState.owner?.avt || DEFAULT.USER_AVT}
@@ -149,13 +149,13 @@ const Poll: NextPage<
 							height={24}
 							className='rounded-full'
 						/>
-						<span className='text-gray-500 dark:text-gray-400 text-sm'>
+						<span className='text-sm text-gray-500 dark:text-gray-400'>
 							{voteState.owner?.name}
 						</span>
-						<span className='text-gray-500 dark:text-gray-400 text-sm'>
+						<span className='text-sm text-gray-500 dark:text-gray-400'>
 							{dateFormat(voteState.createdAt, true)}
 						</span>
-						<span className='text-gray-500 dark:text-gray-400 text-sm'>
+						<span className='text-sm text-gray-500 dark:text-gray-400'>
 							<b>{voteState.totalVote || 0}</b> voted
 						</span>
 					</div>
@@ -166,7 +166,7 @@ const Poll: NextPage<
 				</div>
 
 				{/* Tags */}
-				<ul className='flex gap-2 flex-wrap xl:justify-start my-3'>
+				<ul className='my-3 flex flex-wrap gap-2 xl:justify-start'>
 					{voteState.tags.map((tag, index) => (
 						<li className='tag-link' key={index}>
 							<Link href={`${linkOfTag}[${tag.name}]`}>{`#${tag.name}`}</Link>
@@ -175,13 +175,13 @@ const Poll: NextPage<
 				</ul>
 
 				{/* Description */}
-				<p className='md:text-lg text-gray-600 dark:text-d_text_primary'>
+				<p className='text-gray-600 dark:text-d_text_primary md:text-lg'>
 					{voteState.desc}
 				</p>
 
 				{/* Content Or Result */}
 				{pollResult ? (
-					<div className='max-w-lg mx-auto w-full my-5'>
+					<div className='mx-auto my-5 w-full max-w-lg'>
 						<Suspense fallback={<Loading />}>
 							<PollResultChart
 								data={pollResult.data}
@@ -192,7 +192,7 @@ const Poll: NextPage<
 				) : (
 					<>
 						{/* Type */}
-						<div className='flex items-center gap-2 mt-3'>
+						<div className='mt-3 flex items-center gap-2'>
 							<strong className='text-gradient text-xl capitalize'>
 								{pollTypeToString(voteState.type)}
 							</strong>
@@ -278,7 +278,7 @@ const Poll: NextPage<
 
 						{/* ReCAPTCHA */}
 						{voteState.isReCaptcha && !isClosed && (
-							<div className='flex justify-end mb-5'>
+							<div className='mb-5 flex justify-end'>
 								<ReCAPTCHA onChange={token => setReCaptchaToken(token)} />
 							</div>
 						)}
@@ -322,10 +322,7 @@ const Poll: NextPage<
 				</div>
 
 				{/* Comment list */}
-				<div className='h-[1px] bg-gray-200 dark:bg-gray-600 my-4 md:my-6'></div>
-				<h2 className='text-xl md:text-2xl font-normal'>
-					{`${voteState.totalComment} ${pollLang.comment}`}
-				</h2>
+				<div className='my-4 h-[1px] bg-gray-200 dark:bg-gray-600 md:my-6'></div>
 				<CommentArea initialComments={comment} voteId={voteState._id!} />
 			</div>
 		</>

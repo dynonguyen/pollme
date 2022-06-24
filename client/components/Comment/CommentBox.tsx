@@ -1,23 +1,16 @@
 import Link from 'next/link';
-import { ChangeEvent, useRef } from 'react';
+import { ChangeEvent, KeyboardEvent, useRef } from 'react';
 import { useRecoilValue } from 'recoil';
 import { MAX } from '../../constants/validation';
-import {
-	Comment,
-	useCreateCommentMutation,
-} from '../../graphql-client/generated/graphql';
+import { useCreateCommentMutation } from '../../graphql-client/generated/graphql';
 import useLanguage from '../../hooks/useLanguage';
 import userAtom from '../../recoil/atoms/user.atom';
 
 interface CommentBoxProps {
 	voteId: string;
-	onAddCommentSuccess: (comment: Comment) => void;
 }
 
-export default function CommentBox({
-	voteId,
-	onAddCommentSuccess,
-}: CommentBoxProps): JSX.Element {
+export default function CommentBox({ voteId }: CommentBoxProps): JSX.Element {
 	const lang = useLanguage();
 	const commentLang = lang.components.CommentBox;
 	const charLeftRef = useRef<HTMLSpanElement>(null);
@@ -49,25 +42,15 @@ export default function CommentBox({
 				},
 			});
 			if (response.data?.createComment.success) {
-				const newComment = response.data.createComment.comment;
-				onAddCommentSuccess({
-					content: inputRef.current!.value,
-					_id: newComment._id,
-					createdAt: newComment.createdAt,
-					favorites: [],
-					ownerId: userInfo._id,
-					voteId,
-					owner: {
-						_id: userInfo._id,
-						name: userInfo.name,
-						avt: userInfo.avt,
-						email: '',
-						createdAt: '',
-					},
-				});
 				inputRef.current!.value = '';
 				charLeftRef.current!.textContent = MAX.COMMENT_LEN.toString();
 			}
+		}
+	};
+
+	const handlePressEnter = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+		if (e.key === 'Enter' && !e.shiftKey) {
+			handleSubmitComment();
 		}
 	};
 
@@ -78,11 +61,12 @@ export default function CommentBox({
 			</h3>
 			<textarea
 				className='field min-h-[60px]'
-				rows={6}
+				rows={3}
 				ref={inputRef}
 				maxLength={MAX.COMMENT_LEN}
 				placeholder={commentLang.addCommentPlaceholder}
 				onChange={handleChange}
+				onKeyDown={handlePressEnter}
 			></textarea>
 			<p className='text-right text-sm text-gray-500'>
 				<span ref={charLeftRef}>{MAX.COMMENT_LEN}</span> {commentLang.charLeft}

@@ -2,6 +2,7 @@ import {
 	Arg,
 	Args,
 	Authorized,
+	Ctx,
 	FieldResolver,
 	Mutation,
 	Publisher,
@@ -16,6 +17,7 @@ import { MAX } from '../constants/validation';
 import CommentModel from '../models/comment.model';
 import UserModel from '../models/user.model';
 import VoteModel from '../models/vote.model';
+import { ExpressContext } from '../types/core/ExpressContext';
 import { paginatedResponseDefault } from '../types/core/QueryResponse';
 import { ROLES } from '../types/core/Role';
 import Comment from '../types/entities/Comment';
@@ -32,6 +34,7 @@ import {
 	CommentPaginatedResponse,
 	CreateCommentMutationResponse,
 } from './../types/response/CommentResponse';
+import { CommentAddedPayload } from './../types/subscription/Comment';
 
 @Resolver(_of => Comment)
 export class CommentResolver {
@@ -102,7 +105,8 @@ export class CommentResolver {
 	@Mutation(_return => CreateCommentMutationResponse)
 	async createComment(
 		@Arg('addCommentInput') { voteId, content, ownerId }: AddCommentInput,
-		@PubSub(SUB_TOPICS.COMMENT_ADDED) publish: Publisher<Comment>,
+		@PubSub(SUB_TOPICS.COMMENT_ADDED) publish: Publisher<CommentAddedPayload>,
+		@Ctx() { res }: ExpressContext,
 	): Promise<CreateCommentMutationResponse> {
 		try {
 			if (content.length > MAX.COMMENT_LEN) {
@@ -121,7 +125,15 @@ export class CommentResolver {
 					{ $inc: { totalComment: 1 } },
 				);
 
-				publish(newComment._doc!);
+				publish({
+					voteId,
+					_id: newComment._id,
+					content: newComment.content,
+					createdAt: newComment.createdAt,
+					username: res.locals.user.name,
+					userAvt: res.locals.user.avt,
+				});
+
 				return {
 					code: SUCCESS_CODE.CREATED,
 					success: true,

@@ -1,0 +1,9 @@
+subscription CommentAdded($voteId: String!) {
+	commentAdded(voteId: $voteId) {
+		_id
+		content
+		createdAt
+		username
+		userAvt
+	}
+}

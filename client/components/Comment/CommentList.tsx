@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import {
 	Comment,
 	CommentPaginatedResponse,
+	useCommentAddedSubscription,
 	useCommentsLazyQuery,
 } from '../../graphql-client/generated/graphql';
 import useLanguage from '../../hooks/useLanguage';
@@ -11,9 +12,9 @@ import CommentItem from './CommentItem';
 export default function CommentList(props: {
 	commentDocs: CommentPaginatedResponse;
 	voteId: string;
-	newComment?: Comment;
+	onAddComment: () => void;
 }): JSX.Element {
-	const { voteId, newComment } = props;
+	const { voteId, onAddComment } = props;
 	const { docs, page, pageSize, total } = props.commentDocs;
 	const totalPage = Math.ceil(total / pageSize);
 	const [comments, setComments] = useState<Comment[]>(docs);
@@ -21,6 +22,23 @@ export default function CommentList(props: {
 	const [commentQuery] = useCommentsLazyQuery();
 	const [loadMore, setLoadMore] = useState(false);
 	const lang = useLanguage();
+	const { data } = useCommentAddedSubscription({ variables: { voteId } });
+
+	useEffect(() => {
+		if (data) {
+			const { content, createdAt, username, userAvt, _id } = data.commentAdded;
+			const newComment: any = {
+				content,
+				createdAt,
+				owner: { name: username, avt: userAvt },
+				favorites: [],
+				voteId,
+				_id,
+			};
+			onAddComment();
+			setComments([newComment, ...comments]);
+		}
+	}, [data]);
 
 	const handleLoadMore = async () => {
 		if (currentPage.current <= totalPage) {
@@ -41,17 +59,11 @@ export default function CommentList(props: {
 		}
 	};
 
-	useEffect(() => {
-		if (newComment) {
-			setComments([newComment, ...comments]);
-		}
-	}, [newComment]);
-
 	return (
 		<>
 			{comments && comments.length > 0 && (
 				<>
-					<ul className='grid grid-cols-1 gap-5 md:gap-6 py-4'>
+					<ul className='grid grid-cols-1 gap-5 py-4 md:gap-6'>
 						{comments.map(comment => {
 							const { content, createdAt, owner, favorites, _id } = comment;
 							return (
@@ -71,7 +83,7 @@ export default function CommentList(props: {
 
 					{currentPage.current < totalPage && (
 						<div
-							className={`flex gap-2 text-gray-500 dark:text-gray-300 duration-300 hover:opacity-75 justify-center my-4 cursor-pointer ${
+							className={`my-4 flex cursor-pointer justify-center gap-2 text-gray-500 duration-300 hover:opacity-75 dark:text-gray-300 ${
 								loadMore ? 'disabled' : ''
 							}`}
 							onClick={handleLoadMore}
