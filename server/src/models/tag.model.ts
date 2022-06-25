@@ -34,6 +34,6 @@ const schema: Schema = new Schema({
 	},
 });
 
-const TagModel: Model<Tag> = model('Tag', schema, 'tags');
+const TagModel: Model<Tag> = model<Tag>('Tag', schema, 'tags');
 
 export default TagModel;

@@ -107,6 +107,6 @@ const schema: Schema = new Schema({
 	updatedAt: Date,
 });
 
-const VoteModel: Model<Vote> = model('Vote', schema, 'votes');
+const VoteModel: Model<Vote> = model<Vote>('Vote', schema, 'votes');
 
 export default VoteModel;

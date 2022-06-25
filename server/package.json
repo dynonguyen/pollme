@@ -2,21 +2,20 @@
 	"name": "pollme-server",
 	"version": "1.0.0",
 	"description": "Pollme server | Apollo server, GraphQL, Express, MongoDB",
-	"main": "index.js",
+	"main": "index.ts",
 	"author": "Dyno Nguyễn",
 	"publisher": "Dyno Nguyễn",
 	"license": "MIT",
 	"scripts": {
 		"start": "node ./dist/index.js",
 		"dev": "concurrently -p \"{time}\" -t \"HH:mm:ss\" \"tsc --w\" \"nodemon dist/index.js\"",
-		"build": "npx tsc"
+		"build": "tsc"
 	},
 	"devDependencies": {
 		"@types/bcrypt": "^5.0.0",
 		"@types/cookie-parser": "^1.4.3",
 		"@types/express-session": "^1.17.4",
 		"@types/jsonwebtoken": "^8.5.8",
-		"@types/mongodb": "^4.0.7",
 		"@types/morgan": "^1.9.3",
 		"@types/node": "^17.0.38",
 		"@types/nodemailer": "^6.4.4",

@@ -1,0 +1,11 @@
+node_modules
+.dist
+yarn-error.log
+yarn.lock
+.git
+.env.local
+.results
+.vscode
+Dockerfile
+.dockerignore
+npm-debug.log

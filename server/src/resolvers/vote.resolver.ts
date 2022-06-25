@@ -212,7 +212,7 @@ export class VoteResolver {
 			return {
 				code: SUCCESS_CODE.CREATED,
 				success: true,
-				vote: newVote,
+				vote: newVote._doc as Vote,
 			};
 		} catch (error) {
 			console.error('CREATE VOTE MUTATION ERROR: ', error);
@@ -317,11 +317,11 @@ export class VoteResolver {
 				code: SUCCESS_CODE.OK,
 				success: true,
 				vote: vote._doc
-					? {
+					? ({
 							...vote._doc,
 							answers: newAnswers,
 							totalVote: vote._doc.totalVote + numOfIncrease,
-					  }
+					  } as Vote)
 					: undefined,
 			};
 		} catch (error) {

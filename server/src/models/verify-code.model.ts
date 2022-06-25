@@ -22,7 +22,7 @@ const schema: Schema = new Schema({
 	},
 });
 
-const VerifyCodeModel: Model<VerifyCode> = model(
+const VerifyCodeModel: Model<VerifyCode> = model<VerifyCode>(
 	'VerifyCode',
 	schema,
 	'verifyCode',

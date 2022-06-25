@@ -24,6 +24,10 @@ const schema: Schema = new Schema({
 	favorites: [String],
 });
 
-const CommentModel: Model<Comment> = model('Comment', schema, 'comments');
+const CommentModel: Model<Comment> = model<Comment>(
+	'Comment',
+	schema,
+	'comments',
+);
 
 export default CommentModel;
