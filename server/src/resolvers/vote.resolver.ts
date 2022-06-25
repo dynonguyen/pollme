@@ -5,6 +5,8 @@ import {
 	Ctx,
 	FieldResolver,
 	Mutation,
+	Publisher,
+	PubSub,
 	Query,
 	Resolver,
 	Root,
@@ -27,6 +29,7 @@ import {
 	VoteListQueryResponse,
 	VotePaginatedResponse,
 } from '../types/response/VoteResponse';
+import { VotingPayload } from '../types/subscription/Vote';
 import mongoosePaginate from '../utils/mongoose-paginate';
 import {
 	voteFilterToQuery,
@@ -35,6 +38,7 @@ import {
 import { DEFAULT } from './../constants/default';
 import { VoteFilterOptions } from './../constants/enum';
 import { ERROR_CODE, SUCCESS_CODE } from './../constants/status';
+import { SUB_TOPICS } from './../constants/subscription';
 import { VoteAnswer } from './../types/entities/Vote';
 import { AddAnswerInput } from './../types/input/VoteInput';
 import {
@@ -223,6 +227,7 @@ export class VoteResolver {
 	@Mutation(_return => VoteMutationResponse)
 	async voting(
 		@Arg('votingInput') votingInput: VotingInput,
+		@PubSub(SUB_TOPICS.VOTING) publish: Publisher<VotingPayload>,
 	): Promise<VoteMutationResponse> {
 		const { pollId, votes = [], unVoteIds = [], userInfo } = votingInput;
 		const { userId, userIp, username } = userInfo;
@@ -301,6 +306,12 @@ export class VoteResolver {
 				{ _id: pollId },
 				{ $set: { answers: newAnswers }, $inc: { totalVote: numOfIncrease } },
 			);
+
+			publish({
+				voteId: pollId,
+				answers: newAnswers,
+				totalVote: vote.totalVote + numOfIncrease,
+			});
 
 			return {
 				code: SUCCESS_CODE.OK,

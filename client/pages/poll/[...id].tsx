@@ -7,7 +7,7 @@ import {
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { Suspense, useRef, useState } from 'react';
+import React, { Suspense, useEffect, useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import CommentArea from '../../components/Comment/CommentArea';
 import InfoTooltip from '../../components/InfoTooltip';
@@ -33,8 +33,10 @@ import {
 	GetPublicVoteByIdDocument,
 	GetPublicVoteByIdQuery,
 	GetPublicVoteByIdQueryVariables,
+	useUserVotedSubscription,
 	useVotingMutation,
 	Vote,
+	VoteAnswer,
 	VotingInput,
 } from '../../graphql-client/generated/graphql';
 import useLanguage from '../../hooks/useLanguage';
@@ -50,6 +52,18 @@ import {
 const PollResultChart = React.lazy(
 	() => import('../../components/PollResultChart'),
 );
+
+function calculateResult(
+	answers: VoteAnswer[],
+	voteType: number,
+): { data: number[]; labels: string[] } {
+	const rankingList = pollRanking(answers, voteType === VOTE_TYPE.SCORE);
+	const data: number[] = rankingList.map(r => r.score);
+	const labels: string[] = rankingList.map(
+		rankItem => answers.find(ans => ans.id === rankItem.id)?.label || 'Other',
+	);
+	return { data, labels };
+}
 
 const Poll: NextPage<
 	InferGetServerSidePropsType<typeof getServerSideProps>
@@ -68,6 +82,22 @@ const Poll: NextPage<
 		data: number[];
 		labels: string[];
 	} | null>(null);
+	const { data } = useUserVotedSubscription({
+		variables: { voteId: vote._id },
+	});
+
+	// Realtime refetch user's vote
+	useEffect(() => {
+		if (data) {
+			const { answers, totalVote } = data.voted;
+			const newVoteState: Vote = { ...voteState, answers, totalVote };
+			setVote({ ...newVoteState });
+			if (pollResult) {
+				const { data: pollData, labels } = calculateResult(answers, vote.type);
+				setPollResult({ data: pollData, labels });
+			}
+		}
+	}, [data]);
 
 	const isClosed = isPollClosed(
 		voteState.endDate,
@@ -97,7 +127,6 @@ const Poll: NextPage<
 		if (votingRes.data?.voting.success) {
 			toast.show({ message: pollLang.votingSuccess, type: 'success' });
 			choices.current = { unVoteIds: [], votes: [] };
-			setVote(votingRes.data.voting.vote as Vote);
 		} else {
 			toast.show({ message: pollLang.votingFailed, type: 'error' });
 		}
@@ -110,16 +139,8 @@ const Poll: NextPage<
 	};
 
 	const handleShowResult = () => {
-		const rankingList = pollRanking(
-			voteState.answers,
-			voteState.type === VOTE_TYPE.SCORE,
-		);
-		const pollData: number[] = rankingList.map(r => r.score);
-		const pollLabels: string[] = rankingList.map(
-			rankItem =>
-				voteState.answers.find(ans => ans.id === rankItem.id)?.label || 'Other',
-		);
-		setPollResult({ data: pollData, labels: pollLabels });
+		const { data, labels } = calculateResult(voteState.answers, voteState.type);
+		setPollResult({ data, labels });
 	};
 
 	return (

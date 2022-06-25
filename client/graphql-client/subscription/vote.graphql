@@ -1,0 +1,8 @@
+subscription UserVoted($voteId: String!) {
+	voted(voteId: $voteId) {
+		answers {
+			...answerItem
+		}
+		totalVote
+	}
+}

@@ -17,6 +17,7 @@
 - Quản lý bài vote cá nhân
 - Bài vote yêu thích
 - Khám phá các bài vote hay, nhiều người thích.
+- Vote và bình luận theo thời gian thực (Realtime)
 
 # Công nghệ sử dụng
 
@@ -28,6 +29,7 @@
 - Internationalization (i18n)
 - TailwindCSS
 - React Recoil
+- Chartjs
 
 ## Back-end
 
@@ -35,6 +37,12 @@
 - TypeScript
 - Apollo Server - GraphQL
 - MongoDB - Mongoose
+- Nodemailer
+- TypeGraphQL
+
+# Deployment
+
+- Docker
 
 # Tài liệu
 

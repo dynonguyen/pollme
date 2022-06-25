@@ -302,10 +302,16 @@ export type RegisterInput = {
 export type Subscription = {
   __typename?: 'Subscription';
   commentAdded: CommentAddedPayload;
+  voted: VotingPayload;
 };
 
 
 export type SubscriptionCommentAddedArgs = {
+  voteId: Scalars['String'];
+};
+
+
+export type SubscriptionVotedArgs = {
   voteId: Scalars['String'];
 };
 
@@ -477,6 +483,12 @@ export type VotingInput = {
   votes?: InputMaybe<Array<VoteInput>>;
 };
 
+export type VotingPayload = {
+  __typename?: 'VotingPayload';
+  answers: Array<VoteAnswer>;
+  totalVote: Scalars['Int'];
+};
+
 type MutationStatus_CreateCommentMutationResponse_Fragment = { __typename?: 'CreateCommentMutationResponse', code: number, success: boolean, message?: string | null };
 
 type MutationStatus_MutationResponseImpl_Fragment = { __typename?: 'MutationResponseImpl', code: number, success: boolean, message?: string | null };
@@ -502,6 +514,8 @@ type QueryStatus_VoteQueryResponse_Fragment = { __typename?: 'VoteQueryResponse'
 export type QueryStatusFragment = QueryStatus_CommentPaginatedResponse_Fragment | QueryStatus_CountingAggregation_Fragment | QueryStatus_TagPaginatedResponse_Fragment | QueryStatus_VoteListQueryResponse_Fragment | QueryStatus_VotePaginatedResponse_Fragment | QueryStatus_VoteQueryResponse_Fragment;
 
 export type UserInfoFragment = { __typename?: 'User', _id: string, email: string, name: string, avt?: string | null, createdAt: any };
+
+export type AnswerItemFragment = { __typename?: 'VoteAnswer', id: string, label: string, photo?: string | null, voteList: Array<{ __typename?: 'VoteOfUser', score?: number | null, userInfo: { __typename?: 'UserInfoInVote', ip?: string | null, name?: string | null, userId?: string | null } }> };
 
 export type VoteFullInfoFragment = { __typename?: 'Vote', _id: string, ownerId: string, title: string, desc?: string | null, type: number, createdAt: any, updatedAt?: any | null, endDate?: any | null, isPrivate: boolean, allowAddOption: boolean, isIPDuplicationCheck: boolean, isLoginRequired: boolean, isReCaptcha: boolean, isShowResult: boolean, isShowResultBtn: boolean, maxScore?: number | null, maxVote?: number | null, totalComment: number, totalVote: number, privateLink?: string | null, tags: Array<{ __typename?: 'TagInVote', name: string, slug: string }>, answers: Array<{ __typename?: 'VoteAnswer', id: string, label: string, photo?: string | null, voteList: Array<{ __typename?: 'VoteOfUser', score?: number | null, userInfo: { __typename?: 'UserInfoInVote', ip?: string | null, name?: string | null, userId?: string | null } }> }>, owner?: { __typename?: 'User', avt?: string | null, name: string } | null };
 
@@ -703,6 +717,13 @@ export type CommentAddedSubscriptionVariables = Exact<{
 
 export type CommentAddedSubscription = { __typename?: 'Subscription', commentAdded: { __typename?: 'CommentAddedPayload', _id: string, content: string, createdAt: any, username: string, userAvt?: string | null } };
 
+export type UserVotedSubscriptionVariables = Exact<{
+  voteId: Scalars['String'];
+}>;
+
+
+export type UserVotedSubscription = { __typename?: 'Subscription', voted: { __typename?: 'VotingPayload', totalVote: number, answers: Array<{ __typename?: 'VoteAnswer', id: string, label: string, photo?: string | null, voteList: Array<{ __typename?: 'VoteOfUser', score?: number | null, userInfo: { __typename?: 'UserInfoInVote', ip?: string | null, name?: string | null, userId?: string | null } }> }> } };
+
 export const MutationStatusFragmentDoc = gql`
     fragment mutationStatus on MutationResponse {
   code
@@ -723,6 +744,21 @@ export const UserInfoFragmentDoc = gql`
   name
   avt
   createdAt
+}
+    `;
+export const AnswerItemFragmentDoc = gql`
+    fragment answerItem on VoteAnswer {
+  id
+  label
+  photo
+  voteList {
+    score
+    userInfo {
+      ip
+      name
+      userId
+    }
+  }
 }
     `;
 export const VoteFullInfoFragmentDoc = gql`
@@ -752,24 +788,14 @@ export const VoteFullInfoFragmentDoc = gql`
     slug
   }
   answers {
-    id
-    label
-    photo
-    voteList {
-      score
-      userInfo {
-        ip
-        name
-        userId
-      }
-    }
+    ...answerItem
   }
   owner {
     avt
     name
   }
 }
-    `;
+    ${AnswerItemFragmentDoc}`;
 export const VoteSummaryInfoFragmentDoc = gql`
     fragment voteSummaryInfo on Vote {
   _id
@@ -1812,3 +1838,36 @@ export function useCommentAddedSubscription(baseOptions: Apollo.SubscriptionHook
       }
 export type CommentAddedSubscriptionHookResult = ReturnType<typeof useCommentAddedSubscription>;
 export type CommentAddedSubscriptionResult = Apollo.SubscriptionResult<CommentAddedSubscription>;
+export const UserVotedDocument = gql`
+    subscription UserVoted($voteId: String!) {
+  voted(voteId: $voteId) {
+    answers {
+      ...answerItem
+    }
+    totalVote
+  }
+}
+    ${AnswerItemFragmentDoc}`;
+
+/**
+ * __useUserVotedSubscription__
+ *
+ * To run a query within a React component, call `useUserVotedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useUserVotedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserVotedSubscription({
+ *   variables: {
+ *      voteId: // value for 'voteId'
+ *   },
+ * });
+ */
+export function useUserVotedSubscription(baseOptions: Apollo.SubscriptionHookOptions<UserVotedSubscription, UserVotedSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<UserVotedSubscription, UserVotedSubscriptionVariables>(UserVotedDocument, options);
+      }
+export type UserVotedSubscriptionHookResult = ReturnType<typeof useUserVotedSubscription>;
+export type UserVotedSubscriptionResult = Apollo.SubscriptionResult<UserVotedSubscription>;
