@@ -43,7 +43,7 @@ import useLanguage from '../../hooks/useLanguage';
 import useToast from '../../hooks/useToast';
 import { addApolloState, initializeApollo } from '../../lib/apolloClient';
 import userAtom from '../../recoil/atoms/user.atom';
-import { dateFormat } from '../../utils/format';
+import { dateFormat, toStaticUri } from '../../utils/format';
 import {
 	isPollClosed,
 	pollRanking,
@@ -165,7 +165,9 @@ const Poll: NextPage<
 				<div className='border-color grid grid-cols-1 gap-2 border-b py-3 md:grid-cols-2'>
 					<div className='flex items-center gap-2 md:gap-2'>
 						<img
-							src={voteState.owner?.avt || DEFAULT.USER_AVT}
+							src={
+								toStaticUri(voteState.owner?.avt as string) || DEFAULT.USER_AVT
+							}
 							width={24}
 							height={24}
 							className='rounded-full'

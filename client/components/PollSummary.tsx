@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { DEFAULT } from '../constants/default';
 import { PRIVATE_POLL_PARAM, QUERY_KEY } from '../constants/key';
 import useLanguage from '../hooks/useLanguage';
-import { dateFormat } from '../utils/format';
+import { dateFormat, toStaticUri } from '../utils/format';
 import { isPollClosed } from '../utils/helper';
 
 interface PollSummaryProps {
@@ -45,7 +45,7 @@ export default function PollSummary(props: PollSummaryProps): JSX.Element {
 		privateLink = '',
 	} = props;
 
-	const userAvt = user.avt || DEFAULT.USER_AVT;
+	const userAvt = user.avt ? toStaticUri(user.avt) : DEFAULT.USER_AVT;
 	const isClosed = isPollClosed(endDate, maxVote, totalVote);
 	const lang = useLanguage();
 	const linkOfTag = `${lang.pages.discover.link}?${QUERY_KEY.SEARCH}=`;
@@ -68,21 +68,21 @@ export default function PollSummary(props: PollSummaryProps): JSX.Element {
 						</a>
 					</Link>
 				</h3>
-				<p className='line-clamp-2 my-1 text-gray-600 dark:text-gray-400'>
+				<p className='my-1 text-gray-600 line-clamp-2 dark:text-gray-400'>
 					{content}
 				</p>
 			</div>
 
 			<div className='mt-auto'>
-				<ul className='flex gap-2 flex-wrap xl:justify-start mb-3'>
+				<ul className='mb-3 flex flex-wrap gap-2 xl:justify-start'>
 					{tags.map((tag, index) => (
 						<li className='tag-link' key={index}>
 							<Link href={`${linkOfTag}[${tag.name}]`}>{`#${tag.name}`}</Link>
 						</li>
 					))}
 				</ul>
-				<div className='flex items-center justify-between gap-2 flex-wrap'>
-					<div className='flex justify-end items-center gap-1 md:gap-2 xl:col-span-2'>
+				<div className='flex flex-wrap items-center justify-between gap-2'>
+					<div className='flex items-center justify-end gap-1 md:gap-2 xl:col-span-2'>
 						{!hideOwner && (
 							<>
 								<img
@@ -95,13 +95,13 @@ export default function PollSummary(props: PollSummaryProps): JSX.Element {
 							</>
 						)}
 						<span
-							className='text-gray-500 text-sm'
+							className='text-sm text-gray-500'
 							title={dateFormat(createdAt, true)}
 						>
 							{dateFormat(createdAt, false)}
 						</span>
 					</div>
-					<div className='font-medium text-gray-500 dark:text-gray-400 text-base md:text-md ml-auto text-right'>
+					<div className='md:text-md ml-auto text-right text-base font-medium text-gray-500 dark:text-gray-400'>
 						<span className='mr-3'>{totalComment} Comments</span>
 						<span>{totalVote} Votes</span>
 					</div>

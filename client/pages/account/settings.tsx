@@ -11,7 +11,7 @@ import useCheckUserLogin from '../../hooks/useCheckUserLogin';
 import useLanguage from '../../hooks/useLanguage';
 import useToast from '../../hooks/useToast';
 import userAtom from '../../recoil/atoms/user.atom';
-import { dateFormat } from '../../utils/format';
+import { dateFormat, toStaticUri } from '../../utils/format';
 import { uploadUserAvt } from '../../utils/private-api-caller';
 
 function UserName({
@@ -84,12 +84,14 @@ function UserAvatar({
 	const lang = useLanguage();
 	const settingLang = lang.pages.accountSettings;
 	const { avt } = useRecoilValue(userAtom);
-	const [userAvt, setUserAvt] = useState(avt ? avt : DEFAULT.USER_AVT);
+	const [userAvt, setUserAvt] = useState(
+		avt ? toStaticUri(avt) : DEFAULT.USER_AVT,
+	);
 	const photoRef = useRef<HTMLInputElement>(null);
 	const toast = useToast();
 
 	useEffect(() => {
-		setUserAvt(avt ? avt : DEFAULT.USER_AVT);
+		setUserAvt(avt ? toStaticUri(avt) : DEFAULT.USER_AVT);
 	}, [avt]);
 
 	const handleAvtChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -166,7 +168,6 @@ const AccountSettings: NextPage = () => {
 			setUserInfo({
 				...userInfo,
 				name: newName ? newName : name,
-				avt: newAvt ? `/upload/user-${userId}/avt.jpeg` : avt,
 			});
 			updateFields.current.avt = '';
 		} else {

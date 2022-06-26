@@ -44,7 +44,7 @@ function QRCode({
 			<img className={className} src={src} alt='QR Code' />{' '}
 			{allowDownload && (
 				<div
-					className='flex-center mt-4 gap-2 text-accent dark:text-d_accent cursor-pointer hover:brightness-75 duration-200'
+					className='flex-center mt-4 cursor-pointer gap-2 text-accent duration-200 hover:brightness-75 dark:text-d_accent'
 					onClick={handleDownload}
 				>
 					<DownloadIcon className='w-5' />
@@ -64,13 +64,15 @@ function CopyURL({ url }: { url: string }): JSX.Element {
 	}`;
 
 	const handleCopyUrl = () => {
-		navigator.clipboard.writeText(url);
-		setIsCopied(true);
+		if (navigator.clipboard?.writeText) {
+			navigator.clipboard.writeText(url);
+			setIsCopied(true);
+		}
 	};
 
 	return (
 		<div className='flex'>
-			<div className='flex-1 border dark:border-gray-600 py-1 md:py-2 px-2 md:px-3 rounded-md rounded-r-none border-r-0 overflow-hidden whitespace-nowrap text-gray-500 dark:text-gray-400'>
+			<div className='flex-1 overflow-hidden whitespace-nowrap rounded-md rounded-r-none border border-r-0 py-1 px-2 text-gray-500 dark:border-gray-600 dark:text-gray-400 md:py-2 md:px-3'>
 				{url}
 			</div>
 			<button className={copiedClass} onClick={handleCopyUrl}>
@@ -97,9 +99,9 @@ export default function LinkShare({
 
 	return (
 		<div
-			className={`py-5 px-6 rounded-lg shadow-md dark:shadow-none dark:border dark:border-slate-600 max-w-xl mx-auto ${className}`}
+			className={`mx-auto max-w-xl rounded-lg py-5 px-6 shadow-md dark:border dark:border-slate-600 dark:shadow-none ${className}`}
 		>
-			<div className='text-center mb-2'>
+			<div className='mb-2 text-center'>
 				<strong className='text-lg font-normal text-gray-700 dark:text-d_text_title'>
 					{shareLang.title}
 				</strong>
@@ -107,13 +109,13 @@ export default function LinkShare({
 			<CopyURL url={url} />
 			<div className='my-6'>
 				<div className='relative h-[1px] bg-gray-300 dark:bg-gray-700'>
-					<span className='absolute text-gray-400 text-sm md:text-base top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-d_bg px-3'>
+					<span className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-3 text-sm text-gray-400 dark:bg-d_bg md:text-base'>
 						{shareLang.or}
 					</span>
 				</div>
 			</div>
-			<QRCode className='w-40 h-40 max-w-full mx-auto' data={url} />
-			<SocialShare shareLink={url} className='justify-center mt-5 gap-4' />
+			<QRCode className='mx-auto h-40 w-40 max-w-full' data={url} />
+			<SocialShare shareLink={url} className='mt-5 justify-center gap-4' />
 		</div>
 	);
 }

@@ -1,3 +1,4 @@
+import { STATIC_URI } from './../constants/index';
 export function numberFormat(num: number = 0): string {
 	return new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(
 		num,
@@ -20,4 +21,9 @@ export function dateFormat(
 
 	if (withTime) return `${h}:${m}:${s} ${d}-${month}-${y}`;
 	return `${d}-${month}-${y}`;
+}
+
+export function toStaticUri(src: string): string {
+	if (/^(\/upload).+/i.test(src)) return STATIC_URI + src;
+	return src;
 }

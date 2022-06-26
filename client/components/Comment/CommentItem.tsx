@@ -6,7 +6,7 @@ import { DEFAULT } from '../../constants/default';
 import { useFavoriteCommentMutation } from '../../graphql-client/generated/graphql';
 import useLanguage from '../../hooks/useLanguage';
 import userAtom from '../../recoil/atoms/user.atom';
-import { dateFormat } from '../../utils/format';
+import { dateFormat, toStaticUri } from '../../utils/format';
 
 interface CommentItemProps {
 	commentId: string;
@@ -26,7 +26,7 @@ export default function CommentItem(props: CommentItemProps): JSX.Element {
 		createdAt,
 		favorites = [],
 	} = props;
-	const userAvt = avt ? avt : DEFAULT.USER_AVT;
+	const userAvt = avt ? toStaticUri(avt) : DEFAULT.USER_AVT;
 	const userInfo = useRecoilValue(userAtom);
 	const [liked, setLiked] = useState(false);
 	const [totalFavorite, setTotalFavorite] = useState(favorites.length);

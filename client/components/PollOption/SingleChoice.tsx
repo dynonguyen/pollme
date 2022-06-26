@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import userAtom, { UserAtom } from '../../recoil/atoms/user.atom';
 import { AnswerOption } from '../../types/common';
+import { toStaticUri } from '../../utils/format';
 import { pollRanking, toThumbnailSrc } from '../../utils/helper';
 import PollOptionCheckbox from './PollOptionCheckbox';
 
@@ -83,10 +84,12 @@ export default function SingleChoice(props: SingleChoiceProps): JSX.Element {
 				const { label, id, photo } = option;
 				const pollRank = pollRanks.find(p => p.id === id);
 				const photoSrc = photo
-					? `/upload/user-${ownerId}/${pollId}/${photo}`
+					? toStaticUri(`/upload/user-${ownerId}/${pollId}/${photo}`)
 					: null;
 				const photoThumbSrc = photo
-					? `/upload/user-${ownerId}/${pollId}/${toThumbnailSrc(photo)}`
+					? toStaticUri(
+							`/upload/user-${ownerId}/${pollId}/${toThumbnailSrc(photo)}`,
+					  )
 					: null;
 
 				return (
