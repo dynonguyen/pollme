@@ -43,7 +43,24 @@
 # Deployment
 
 - Docker
+- VPS
 
 # Tài liệu
 
 - [Database Diagram](https://drive.google.com/file/d/1kEzxs0mTkGiLF9zthhjl3XdHnBhvAmcU/view?usp=sharing)
+
+# Cài đặt
+
+> Chạy bằng nodejs trên máy host hoặc dùng docker
+
+## Client:
+
+- Tạo file .env.local từ file .env, thay đổi các thông tin thích hợp
+- `yarn install`
+- `yarn dev`
+
+## Backend:
+
+- Tạo file .env từ file .env.local, thay đổi các thông tin thích hợp
+- `yarn install`
+- `yarn dev`
