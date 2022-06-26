@@ -290,6 +290,7 @@ export default {
 		},
 		accountPolls: {
 			title: 'My Polls',
+			confirmDel: 'Are you sure you want to delete this poll?',
 		},
 		accountSettings: {
 			changePwd: 'Change password',

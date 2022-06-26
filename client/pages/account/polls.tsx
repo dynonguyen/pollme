@@ -46,13 +46,19 @@ const AccountPolls: NextPage = () => {
 	});
 
 	const handleDeleteVote = async (voteId: string, ownerId: string) => {
-		const { data } = await deleteVoteMutation({ variables: { voteId } });
-		if (data?.deleteVote.success) {
-			toast.show({ type: 'success', message: lang.messages.deleteVoteSuccess });
-			setVotes([...votes.filter(v => v._id !== voteId)]);
-			await deletePhotoFolder(voteId, ownerId);
-		} else {
-			toast.show({ type: 'error', message: lang.messages.deleteVoteFailed });
+		const isConfirmDel = confirm(pollLang.confirmDel);
+		if (isConfirmDel) {
+			const { data } = await deleteVoteMutation({ variables: { voteId } });
+			if (data?.deleteVote.success) {
+				toast.show({
+					type: 'success',
+					message: lang.messages.deleteVoteSuccess,
+				});
+				setVotes([...votes.filter(v => v._id !== voteId)]);
+				await deletePhotoFolder(voteId, ownerId);
+			} else {
+				toast.show({ type: 'error', message: lang.messages.deleteVoteFailed });
+			}
 		}
 	};
 
@@ -71,7 +77,7 @@ const AccountPolls: NextPage = () => {
 	return (
 		<div className='container my-6'>
 			<h1 className='font-normal md:col-span-4'>{pollLang.title}</h1>
-			<h3 className='text-xl py-3 border-b border-color'>
+			<h3 className='border-color border-b py-3 text-xl'>
 				<strong className='text-accent dark:text-d_accent'>
 					{votes?.length}
 				</strong>
@@ -84,9 +90,9 @@ const AccountPolls: NextPage = () => {
 			{loading ? (
 				<Loading className='mt-5 w-24' />
 			) : votes.length > 0 ? (
-				<ul className='grid grid-cols-1 md:grid-cols-2 mt-5 gap-8'>
+				<ul className='mt-5 grid grid-cols-1 gap-8 md:grid-cols-2'>
 					{votes?.map(vote => (
-						<li className='h-full relative group' key={vote._id}>
+						<li className='group relative h-full' key={vote._id}>
 							<PollSummary
 								className='h-full'
 								hideOwner={true}
@@ -108,17 +114,17 @@ const AccountPolls: NextPage = () => {
 								privateLink={vote.privateLink!}
 							/>
 
-							<div className='hidden group-hover:flex gap-2 absolute right-4 top-4'>
+							<div className='absolute right-4 top-4 hidden space-x-2 group-hover:flex'>
 								<CogIcon
-									className='w-5 cursor-pointer text-color-normal hover:brightness-75 duration-200'
+									className='text-color-normal w-5 cursor-pointer duration-200 hover:brightness-75'
 									onClick={() => setEditingVote(vote)}
 								/>
 								<TrashIcon
-									className='w-5 cursor-pointer error-text hover:brightness-75 duration-200'
+									className='error-text w-5 cursor-pointer duration-200 hover:brightness-75'
 									onClick={() => handleDeleteVote(vote._id, vote.owner?._id!)}
 								/>
 								<ShareIcon
-									className='w-5 cursor-pointer text-primary	dark:text-d_primary hover:brightness-75 duration-200'
+									className='w-5 cursor-pointer text-primary	duration-200 hover:brightness-75 dark:text-d_primary'
 									onClick={() =>
 										setLinkSharing(
 											createShareUrl(
@@ -151,7 +157,7 @@ const AccountPolls: NextPage = () => {
 					>
 						<Suspense fallback={<Loading />}>
 							<LinkShare
-								className='bg-white dark:bg-d_bg dark:!border-none'
+								className='bg-white dark:!border-none dark:bg-d_bg'
 								url={linkSharing}
 							/>
 						</Suspense>

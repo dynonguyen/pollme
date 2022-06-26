@@ -286,6 +286,7 @@ export default {
 		},
 		accountPolls: {
 			title: 'Khảo sát của tôi',
+			confirmDel: 'Bạn có chắc muốn xoá bài khảo sát này ?',
 		},
 		accountSettings: {
 			changePwd: 'Thay đổi mật khẩu',

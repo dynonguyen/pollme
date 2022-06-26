@@ -1,9 +1,9 @@
+console.log();
+
 export const __PROD__ = process.env.NODE_ENV === 'production';
 export const APP_NAME = process.env.APP_NAME || 'Pollme';
-export const CORS_ORIGINS: string[] = [
-	process.env.CLIENT_WEB_ORIGIN || '',
-	'https://studio.apollographql.com',
-];
+export const CORS_ORIGINS: string[] =
+	JSON.parse(process.env.CLIENT_WEB_ORIGINS!) || [];
 export const MONGODB_URI = process.env.MONGODB_URI || '';
 export const MONGOOSE_CONNECT_TIMEOUT = 5000; // 5s
 export const SALT_PASSWORD = process.env.SALT_PASSWORD
