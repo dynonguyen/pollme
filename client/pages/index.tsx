@@ -129,7 +129,7 @@ const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
 						{homeLang.subTitles[1]} <br />
 						{homeLang.subTitles[2]}
 					</p>
-					<Link href={lang.navbarItems[1].link}>
+					<Link href={lang.pageSEO.newPoll.pathname}>
 						<button className='btn-primary md:btn-lg mt-5 flex items-center py-2 font-medium md:mt-10'>
 							<PlusIcon className='mr-2 w-5' />
 							<span className='capitalize'>{homeLang.buttons.createPoll}</span>

@@ -81,7 +81,7 @@ export const createShareUrl = (
 	privateSlug: string = '',
 	publicSlug: string = '',
 ): string => {
-	const { origin } = location;
+	const origin = process.env.NEXT_PUBLIC_HOST_URI || location.origin;
 	if (isPrivate) return `${origin}/poll/${PRIVATE_POLL_PARAM}/${privateSlug}`;
 
 	return `${origin}/poll/${publicSlug}`;
