@@ -69,7 +69,7 @@ const ChangePassword: NextPage = () => {
 	return (
 		<div className={`container ${updating ? 'disabled' : ''}`}>
 			<div className='mx-auto my-8 grid max-w-md grid-cols-1 gap-3 rounded-lg py-6 px-5 shadow-lg dark:bg-d_bg_hover md:py-8 md:px-8'>
-				<h1 className='flex-center mb-3 gap-2 text-xl md:text-3xl'>
+				<h1 className='flex-center mb-3 space-x-2 text-xl md:text-3xl'>
 					<LockClosedIcon className='w-8' />
 					<span>{changePwdLang.title}</span>
 				</h1>

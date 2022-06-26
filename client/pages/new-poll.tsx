@@ -45,7 +45,7 @@ const defaultAdvanceSettings: AdvanceVoteSettings = {
 };
 
 const classes = {
-	box: 'p-4 h-max shadow-md border-t border-gray-100 dark:border-none dark:bg-d_bg_hover rounded-md',
+	box: 'px-6 py-4 h-max shadow-md border-t border-gray-100 dark:border-none dark:bg-d_bg_hover rounded-md',
 	h2: 'text-xl text-primary dark:text-d_primary mb-4',
 	advanceInput: 'max-w-[200px] ml-auto',
 };
@@ -102,7 +102,7 @@ function BasicSettings({
 			</div>
 			{/* Tag */}
 			<div>
-				<label htmlFor='tags' className='new-poll-label inline-block mb-1'>
+				<label htmlFor='tags' className='new-poll-label mb-1 inline-block'>
 					{newPollLang.fieldLabels.tags}
 				</label>
 				<TagInput
@@ -112,7 +112,7 @@ function BasicSettings({
 			</div>
 			{/* Answers */}
 			<div>
-				<label className='new-poll-label inline-block mb-1'>
+				<label className='new-poll-label mb-1 inline-block'>
 					{newPollLang.fieldLabels.answers}
 				</label>
 				<AnswerOptions
@@ -140,7 +140,7 @@ function AdvanceSettings({
 	return (
 		<div className='grid grid-cols-1 gap-4'>
 			{/* Poll type */}
-			<div className='flex items-center gap-3'>
+			<div className='flex items-center justify-between space-x-3'>
 				<label htmlFor='poll-type' className='new-poll-label w-32 shrink-0'>
 					{newPollLang.fieldLabels.type}
 				</label>
@@ -159,7 +159,7 @@ function AdvanceSettings({
 
 			{/* Max choice with VOTE_TYPE.SCORE */}
 			{pollType === VOTE_TYPE.SCORE && (
-				<div className='flex items-center gap-3'>
+				<div className='flex items-center justify-between space-x-3'>
 					<label htmlFor='max-score' className={`new-poll-label w-32 shrink-0`}>
 						{newPollLang.fieldLabels.maxScore}
 					</label>
@@ -229,8 +229,8 @@ function AdvanceSettings({
 				onChecked={checked => (fields.current.allowAddOption = checked)}
 			/>
 			{/* Max vote */}
-			<div className='flex items-center gap-3'>
-				<div className='flex items-center gap-1'>
+			<div className='flex items-center justify-between space-x-3'>
+				<div className='flex items-center space-x-1'>
 					<label className={`new-poll-label w-max shrink-0`}>
 						{newPollLang.fieldLabels.maxVote}
 					</label>
@@ -244,8 +244,8 @@ function AdvanceSettings({
 				/>
 			</div>
 			{/* End date */}
-			<div className='flex items-center gap-3'>
-				<div className='flex items-center gap-1'>
+			<div className='flex items-center justify-between space-x-3'>
+				<div className='flex items-center space-x-1'>
 					<label className={`new-poll-label w-max shrink-0`}>
 						{newPollLang.fieldLabels.endDate}
 					</label>
@@ -348,13 +348,13 @@ const NewVote: NextPage = () => {
 				</Suspense>
 			) : (
 				<div className='container mb-5'>
-					<div className='py-5 md:py-0 lg:bg-[url("/images/create-poll-bg.svg")] lg:dark:bg-[url("/images/create-poll-bg-dark.svg")] bg-no-repeat bg-right-top lg:h-32'>
-						<h1 className='font-normal lg:leading-[128px] capitalize'>
+					<div className='bg-right-top bg-no-repeat py-5 md:py-0 lg:h-32 lg:bg-[url("/images/create-poll-bg.svg")] lg:dark:bg-[url("/images/create-poll-bg-dark.svg")]'>
+						<h1 className='font-normal capitalize lg:leading-[128px]'>
 							{newPollLang.title}
 						</h1>
 					</div>
 
-					<div className='grid grid-cols-1 lg:grid-cols-7 gap-5'>
+					<div className='grid grid-cols-1 gap-5 lg:grid-cols-7'>
 						<div className={`lg:col-span-4 ${classes.box}`}>
 							<h2 className={classes.h2}>{newPollLang.basic}</h2>
 							{isCollectData ? (
@@ -375,7 +375,7 @@ const NewVote: NextPage = () => {
 									(fields.current = { ...fields.current, ...data })
 								}
 							/>
-							<div className='text-right mt-3'>
+							<div className='mt-3 text-right'>
 								<button
 									className={`${
 										isCollectData ? 'disabled' : ''

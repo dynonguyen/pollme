@@ -42,20 +42,20 @@ function FilterButton(): JSX.Element {
 	};
 
 	return (
-		<div className='flex-grow group relative'>
-			<button className='md:hidden w-full btn-outline flex items-center justify-center gap-2'>
+		<div className='group relative flex-grow'>
+			<button className='btn-outline flex w-full items-center justify-center space-x-2 md:hidden'>
 				<span>Filter</span>
 				<FilterIcon className='w-5' />
 			</button>
 
 			{/* desktop menu */}
-			<ul className='hidden md:flex justify-end gap-2'>
+			<ul className='hidden justify-end space-x-2 md:flex'>
 				{filterOptions.map((option, index) => (
 					<li
 						key={index}
 						className={`filter-item ${
 							option.key === currentFilter
-								? 'text-gray-800 dark:text-d_text_title bg-gray-100 dark:bg-d_bg_hover'
+								? 'bg-gray-100 text-gray-800 dark:bg-d_bg_hover dark:text-d_text_title'
 								: ''
 						}`}
 						onClick={() => handleFilterOptionChange(option.key)}
@@ -67,7 +67,7 @@ function FilterButton(): JSX.Element {
 
 			{/* mobile menu */}
 			<div className='md:hidden'>
-				<div className='menu w-full z-50'>
+				<div className='menu z-50 w-full'>
 					<ul>
 						{filterOptions.map((option, index) => (
 							<li
@@ -77,7 +77,7 @@ function FilterButton(): JSX.Element {
 							>
 								{option.title}
 								{option.key === currentFilter && (
-									<CheckIcon className='w-5 success-text' />
+									<CheckIcon className='success-text w-5' />
 								)}
 							</li>
 						))}
@@ -105,12 +105,12 @@ function SortButton(): JSX.Element {
 	};
 
 	return (
-		<div className='relative group w-1/2 md:w-[120px]'>
-			<button className='btn-outline w-full flex-center gap-2'>
+		<div className='group relative w-1/2 md:w-[120px]'>
+			<button className='btn-outline flex-center w-full space-x-2'>
 				<span>{lang.others.sort}</span>
 				<SortIcon className='w-5' />
 			</button>
-			<div className='menu z-50 w-56 right-0'>
+			<div className='menu right-0 z-50 w-56'>
 				<ul>
 					{sortOptions.map((option, index) => (
 						<li
@@ -120,7 +120,7 @@ function SortButton(): JSX.Element {
 						>
 							{option.title}
 							{option.key === currentSort && (
-								<CheckIcon className='w-5 success-text' />
+								<CheckIcon className='success-text w-5' />
 							)}
 						</li>
 					))}
@@ -156,9 +156,9 @@ const Discover: NextPage<
 	return (
 		<div className='container'>
 			{/* introduction */}
-			<div className='grid grid-cols-1 gap-3 md:grid-cols-4 flex-wrap mt-6 pb-3 border-b border-color'>
+			<div className='border-color mt-6 grid grid-cols-1 gap-3 border-b pb-3 md:grid-cols-4'>
 				<h1 className='font-normal md:col-span-4'>{discoverLang.title}</h1>
-				<div className='flex flex-grow gap-2 items-center md:col-span-3 md:col-start-2'>
+				<div className='flex flex-grow items-center space-x-2 md:col-span-3 md:col-start-2'>
 					<FilterButton />
 					<SortButton />
 				</div>
@@ -176,7 +176,7 @@ const Discover: NextPage<
 			{/* poll list */}
 			{voteDocs.length > 0 ? (
 				<>
-					<div className='grid grid-cols-1 lg:grid-cols-2 mt-6 gap-8'>
+					<div className='mt-6 grid grid-cols-1 gap-8 lg:grid-cols-2'>
 						{voteDocs.map(vote => (
 							<PollSummary
 								key={vote._id}

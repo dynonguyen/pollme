@@ -54,8 +54,8 @@ function TagSearch(): JSX.Element {
 	};
 
 	return (
-		<div className='max-w-xs relative'>
-			<SearchIcon className='w-5 h-5 absolute top-1/2 left-3 text-gray-400 dark:text-gray-500 font-normal -translate-y-1/2' />
+		<div className='relative max-w-xs'>
+			<SearchIcon className='absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 font-normal text-gray-400 dark:text-gray-500' />
 			<input
 				type='text'
 				className='field pl-9'
@@ -83,16 +83,16 @@ function SortButtonGroup(): JSX.Element {
 		}
 	};
 	return (
-		<div className='flex gap-1 md:gap-3 flex-wrap'>
+		<div className='flex flex-wrap space-x-1 md:space-x-3'>
 			{sortOptions.map((option, index) => (
 				<div
 					key={index}
-					className='filter-item border py-1 border-color flex'
+					className='filter-item border-color flex border py-1'
 					onClick={() => handleSortOptionChange(option.key)}
 				>
 					{option.title}
 					{currentSort === option.key && (
-						<CheckIcon className='w-4 ml-2 success-text' />
+						<CheckIcon className='success-text ml-2 w-4' />
 					)}
 				</div>
 			))}
@@ -126,16 +126,20 @@ const Tags: NextPage<
 	return (
 		<div className='container mt-6'>
 			<h1 className='font-normal md:col-span-4'>Tags</h1>
-			<p className='max-w-2xl mt-3'>{lang.pageSEO.tags.desc}</p>
+			<p className='mt-3 max-w-2xl'>{lang.pageSEO.tags.desc}</p>
 
-			<div className='flex justify-start md:justify-between items-center flex-wrap gap-3 mt-6 mb-5'>
-				<TagSearch />
-				<SortButtonGroup />
+			<div className='mt-6 mb-5 grid grid-cols-1 gap-2 lg:grid-cols-3'>
+				<div className='col-span-1 self-center justify-self-start'>
+					<TagSearch />
+				</div>
+				<div className='col-span-2 self-center lg:justify-self-end'>
+					<SortButtonGroup />
+				</div>
 			</div>
 
 			{tags.docs.length > 0 ? (
 				<>
-					<ul className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5'>
+					<ul className='grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
 						{tags.docs?.map(tag => {
 							const descTag = tag as any;
 							return (

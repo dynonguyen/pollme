@@ -44,7 +44,7 @@ function QRCode({
 			<img className={className} src={src} alt='QR Code' />{' '}
 			{allowDownload && (
 				<div
-					className='flex-center mt-4 cursor-pointer gap-2 text-accent duration-200 hover:brightness-75 dark:text-d_accent'
+					className='flex-center mt-4 cursor-pointer space-x-2 text-accent duration-200 hover:brightness-75 dark:text-d_accent'
 					onClick={handleDownload}
 				>
 					<DownloadIcon className='w-5' />
@@ -59,7 +59,7 @@ function CopyURL({ url }: { url: string }): JSX.Element {
 	const lang = useLanguage();
 	const shareLang = lang.components.LinkShare;
 	const [isCopied, setIsCopied] = useState(false);
-	const copiedClass = `btn-primary flex items-center gap-1 py-1 md:py-2 px-2 md:px-3 rounded-md rounded-l-none w-max flex-shrink-0 ${
+	const copiedClass = `btn-primary flex items-center space-x-1 py-1 md:py-2 px-2 md:px-3 rounded-md rounded-l-none w-max flex-shrink-0 ${
 		isCopied ? '!bg-green-700 dark:!bg-green-600' : ''
 	}`;
 
@@ -115,7 +115,7 @@ export default function LinkShare({
 				</div>
 			</div>
 			<QRCode className='mx-auto h-40 w-40 max-w-full' data={url} />
-			<SocialShare shareLink={url} className='mt-5 justify-center gap-4' />
+			<SocialShare shareLink={url} className='mt-5 justify-center space-x-3' />
 		</div>
 	);
 }

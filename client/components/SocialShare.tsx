@@ -42,11 +42,11 @@ export default function SocialShare({
 	const { isDark } = useRecoilValue(themeAtom);
 
 	return (
-		<div className={`flex gap-2 ${className}`}>
+		<div className={`flex space-x-2 ${className}`}>
 			{iconUrls.map((icon, index) => (
 				<a key={index} href={icon.createLink(shareLink)} target='_blank'>
 					<img
-						className={`w-6 h-6 cursor-pointer hover:opacity-75 duration-300 ${iconClassName}`}
+						className={`h-6 w-6 cursor-pointer duration-300 hover:opacity-75 ${iconClassName}`}
 						src={isDark ? icon.darkSrc : icon.src}
 						alt={icon.alt}
 					/>

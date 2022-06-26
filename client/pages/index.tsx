@@ -54,10 +54,10 @@ function Heading(): JSX.Element {
 	}, [lang]);
 
 	return (
-		<h1 className='text-4xl md:text-7xl max-w-5xl font-bold text-gradient capitalize mb-4 md:mb-6 !leading-snug'>
+		<h1 className='text-gradient mb-4 max-w-5xl text-4xl font-bold capitalize !leading-snug md:mb-6 md:text-7xl'>
 			{homeLang.titles[0]}&nbsp;
 			<span
-				className={`text-accent dark:text-d_accent inline-block ${aniClass}`}
+				className={`inline-block text-accent dark:text-d_accent ${aniClass}`}
 			>
 				{roleTitle}&nbsp;
 			</span>
@@ -96,15 +96,15 @@ function Analysis(props: HomeAnalysisQuery): JSX.Element {
 	];
 
 	return (
-		<div className='bg-[url("/images/home-page/bg.jpg")] my-14'>
-			<div className='container py-24 gap-5 grid grid-cols-2 md:grid-cols-4'>
+		<div className='my-14 bg-[url("/images/home-page/bg.jpg")]'>
+			<div className='container grid grid-cols-2 gap-5 py-24 md:grid-cols-4'>
 				{items.map((item, index) => (
 					<div key={index} className='flex flex-col items-center text-white'>
-						<item.Icon className='w-16 h-16' />
-						<div className='text-3xl md:text-4xl font-bold my-4'>
+						<item.Icon className='h-16 w-16' />
+						<div className='my-4 text-3xl font-bold md:text-4xl'>
 							{numberFormat(item.quantity)}
 						</div>
-						<h4 className='text-xl md:text-2xl text-white'>{item.title}</h4>
+						<h4 className='text-xl text-white md:text-2xl'>{item.title}</h4>
 					</div>
 				))}
 			</div>
@@ -121,17 +121,17 @@ const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
 	return (
 		<>
 			{/* Heading */}
-			<section className='min-w-full h-[calc(100vh-67px)]	flex-center'>
+			<section className='flex-center h-[calc(100vh-67px)]	min-w-full'>
 				<div className='container px-3'>
 					<Heading />
-					<p className='text-lg md:text-xl text-text_title dark:text-d_text_title !leading-loose'>
+					<p className='text-lg !leading-loose text-text_title dark:text-d_text_title md:text-xl'>
 						<strong>{homeLang.subTitles[0]}</strong>
 						{homeLang.subTitles[1]} <br />
 						{homeLang.subTitles[2]}
 					</p>
 					<Link href={lang.navbarItems[1].link}>
-						<button className='btn-primary py-2 md:btn-lg flex items-center mt-5 md:mt-10 font-medium'>
-							<PlusIcon className='w-5 mr-2' />
+						<button className='btn-primary md:btn-lg mt-5 flex items-center py-2 font-medium md:mt-10'>
+							<PlusIcon className='mr-2 w-5' />
 							<span className='capitalize'>{homeLang.buttons.createPoll}</span>
 						</button>
 					</Link>
@@ -140,17 +140,17 @@ const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
 
 			{/* Introduction */}
 			<section className='container'>
-				<div className='grid gap-4 grid-cols-1 md:grid-cols-2 items-center mb-28'>
+				<div className='mb-28 grid grid-cols-1 items-center gap-4 md:grid-cols-2'>
 					<div className='col-span-1'>
-						<h2 className='text-2xl md:text-3xl capitalize max-w-xl text-text_title dark:text-d_text_title font-medium'>
+						<h2 className='max-w-xl text-2xl font-medium capitalize text-text_title dark:text-d_text_title md:text-3xl'>
 							{homeLang.introduction[0].title}
 						</h2>
-						<p className='text-base md:text-lg font-light tracking-wider mt-5 max-w-xl'>
+						<p className='mt-5 max-w-xl text-base font-light tracking-wider md:text-lg'>
 							{homeLang.introduction[0].content}
 						</p>
 					</div>
-					<div className='col-span-1 row-start-1 mb-4 md:mb-0 md:col-start-2'>
-						<div className='max-w-96 h-80 relative'>
+					<div className='col-span-1 row-start-1 mb-4 md:col-start-2 md:mb-0'>
+						<div className='max-w-96 relative h-80'>
 							<Image
 								src='/images/home-page/intro-1.svg'
 								alt='Landing Page 1'
@@ -161,9 +161,9 @@ const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
 					</div>
 				</div>
 
-				<div className='grid gap-6 grid-cols-1 md:grid-cols-2 items-center mb-28'>
+				<div className='mb-28 grid grid-cols-1 items-center gap-6 md:grid-cols-2'>
 					<div className='col-span-1'>
-						<div className='max-w-96 h-80 relative'>
+						<div className='max-w-96 relative h-80'>
 							<Image
 								src='/images/home-page/intro-2.png'
 								alt='Landing Page 2'
@@ -173,26 +173,26 @@ const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
 						</div>
 					</div>
 					<div className='col-span-1'>
-						<h2 className='text-2xl md:text-3xl capitalize max-w-xl text-text_title dark:text-d_text_title font-medium'>
+						<h2 className='max-w-xl text-2xl font-medium capitalize text-text_title dark:text-d_text_title md:text-3xl'>
 							{homeLang.introduction[1].title}
 						</h2>
-						<p className='text-base md:text-lg font-light tracking-wider mt-5 max-w-xl'>
+						<p className='mt-5 max-w-xl text-base font-light tracking-wider md:text-lg'>
 							{homeLang.introduction[1].content}
 						</p>
 					</div>
 				</div>
 
-				<div className='grid gap-4 grid-cols-1 md:grid-cols-2 items-center'>
+				<div className='grid grid-cols-1 items-center gap-4 md:grid-cols-2'>
 					<div className='col-span-1'>
-						<h2 className='text-2xl md:text-3xl capitalize max-w-xl text-text_title dark:text-d_text_title font-medium'>
+						<h2 className='max-w-xl text-2xl font-medium capitalize text-text_title dark:text-d_text_title md:text-3xl'>
 							{homeLang.introduction[2].title}
 						</h2>
-						<p className='text-base md:text-lg font-light tracking-wider mt-5 max-w-xl'>
+						<p className='mt-5 max-w-xl text-base font-light tracking-wider md:text-lg'>
 							{homeLang.introduction[2].content}
 						</p>
 					</div>
-					<div className='col-span-1 row-start-1 mb-4 md:mb-0 md:col-start-2'>
-						<div className='max-w-96 h-80 relative'>
+					<div className='col-span-1 row-start-1 mb-4 md:col-start-2 md:mb-0'>
+						<div className='max-w-96 relative h-80'>
 							<Image
 								src='/images/home-page/intro-3.png'
 								alt='Landing Page 3'
@@ -209,22 +209,22 @@ const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
 
 			{/* Best features */}
 			<section className='mb-12'>
-				<h2 className='text-center text-3xl md:text-4xl mb-12 capitalize'>
+				<h2 className='mb-12 text-center text-3xl capitalize md:text-4xl'>
 					{homeLang.featureTitle}
 				</h2>
-				<div className='container flex justify-center gap-7 flex-wrap'>
+				<div className='container grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3'>
 					{homeLang.features.map((f, index) => {
 						const Icon = featureIcons[index];
 						return (
 							<div
 								key={index}
-								className='flex flex-col items-center p-8 shadow-lg md:shadow-xl rounded-xl max-w-sm'
+								className='mx-auto flex max-w-sm flex-col items-center rounded-xl p-8 shadow-lg md:shadow-xl'
 							>
-								<Icon className='w-16 h-16 mb-6 text-color-title' />
-								<h5 className='text-xl md:text-2xl mb-3 text-center capitalize'>
+								<Icon className='text-color-title mb-6 h-16 w-16' />
+								<h5 className='mb-3 text-center text-xl capitalize md:text-2xl'>
 									{f.title}
 								</h5>
-								<p className='text-sm md:text-lg font-light text-center'>
+								<p className='text-center text-sm font-light md:text-lg'>
 									{f.content}
 								</p>
 							</div>

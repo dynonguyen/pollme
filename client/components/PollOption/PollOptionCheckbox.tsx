@@ -53,12 +53,12 @@ export default function PollOptionCheckbox(
 				checked={checked}
 				onChange={() => {}}
 			/>
-			<div className='flex items-center gap-2 mb-1'>
+			<div className='mb-1 flex items-center space-x-2'>
 				<div
-					className={`w-4 h-4 md:w-5 md:h-5 flex-shrink-0 cursor-pointer ${checkedClass} ${checkboxType}`}
+					className={`h-4 w-4 flex-shrink-0 cursor-pointer md:h-5 md:w-5 ${checkedClass} ${checkboxType}`}
 					onClick={handleChecked}
 				></div>
-				<strong className='text-base md:text-xl text-slate-500 dark:text-slate-300 font-normal'>
+				<strong className='text-base font-normal text-slate-500 dark:text-slate-300 md:text-xl'>
 					{title}
 				</strong>
 				{photoUrl && <ImagePreview src={photoUrl} thumbnail={photoThumbnail} />}

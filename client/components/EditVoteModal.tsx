@@ -117,19 +117,19 @@ export default function EditVoteModal({
 
 	return (
 		<div className='bg-overlay flex-center'>
-			<div className='bg-white dark:bg-d_bg w-[370px] md:w-[540px] max-w-full rounded-xl'>
+			<div className='w-[370px] max-w-full rounded-xl bg-white dark:bg-d_bg md:w-[540px]'>
 				<div className={updating ? 'disabled' : ''}>
-					<div className='flex justify-between px-5 py-3 border-b border-color'>
-						<h3 className='text-lg md:text-xl capitalize'>
+					<div className='border-color flex justify-between border-b px-5 py-3'>
+						<h3 className='text-lg capitalize md:text-xl'>
 							{editLang.modalTitle}
 						</h3>
 						<XCircleIcon
-							className='w-6 text-color-normal hover:error-text cursor-pointer'
+							className='text-color-normal hover:error-text w-6 cursor-pointer'
 							onClick={onClose}
 						/>
 					</div>
 
-					<div className='p-5 grid grid-cols-1 gap-3'>
+					<div className='grid grid-cols-1 gap-3 p-5'>
 						{/* private */}
 						<CheckboxSwitch
 							labelClassName='new-poll-label'
@@ -204,27 +204,27 @@ export default function EditVoteModal({
 						{/* End date & max vote */}
 						{showEndDate && (
 							<>
-								<div className='flex items-center gap-3'>
+								<div className='flex items-center justify-between space-x-3'>
 									<label className={`new-poll-label w-max shrink-0`}>
 										{newPollLang.fieldLabels.endDate}
 									</label>
 									<input
 										type='datetime-local'
-										className='field max-w-[200px] md:max-w-[250px] ml-auto'
+										className='field ml-auto max-w-[200px] md:max-w-[250px]'
 										defaultValue={defaultEndDateValue}
 										onChange={e =>
 											(fields.current.endDate = new Date(e.target.value))
 										}
 									/>
 								</div>
-								<div className='flex items-center gap-3'>
+								<div className='flex items-center justify-between space-x-3'>
 									<label className={`new-poll-label w-max shrink-0`}>
 										{newPollLang.fieldLabels.maxVote}
 									</label>
 									<input
 										type='number'
 										defaultValue={maxVote!}
-										className='field max-w-[200px] md:max-w-[250px] ml-auto'
+										className='field ml-auto max-w-[200px] md:max-w-[250px]'
 										onChange={e =>
 											(fields.current.maxVote = Number(e.target.value))
 										}
@@ -234,7 +234,7 @@ export default function EditVoteModal({
 						)}
 					</div>
 
-					<div className='flex justify-end px-5 py-2 gap-2 border-t border-color'>
+					<div className='border-color flex justify-end space-x-2 border-t px-5 py-2'>
 						<button className='btn-outline' onClick={onClose}>
 							{lang.button.close}
 						</button>

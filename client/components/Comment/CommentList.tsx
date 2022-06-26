@@ -83,7 +83,7 @@ export default function CommentList(props: {
 
 					{currentPage.current < totalPage && (
 						<div
-							className={`my-4 flex cursor-pointer justify-center gap-2 text-gray-500 duration-300 hover:opacity-75 dark:text-gray-300 ${
+							className={`my-4 flex cursor-pointer justify-center space-x-2 text-gray-500 duration-300 hover:opacity-75 dark:text-gray-300 ${
 								loadMore ? 'disabled' : ''
 							}`}
 							onClick={handleLoadMore}

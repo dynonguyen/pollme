@@ -71,10 +71,10 @@ function MenuSlider(): JSX.Element {
 						className={`ml-auto ${ICON_STYLES}`}
 						onClick={() => setShowMenu(false)}
 					/>
-					<div className='mt-5 mb-8 flex gap-3'>
+					<div className='mt-5 mb-8 flex space-x-3'>
 						<NavbarAction />
 					</div>
-					<nav className='flex flex-col gap-6 pl-1'>
+					<nav className='flex flex-col space-y-6 pl-1'>
 						<Navbar />
 					</nav>
 				</div>
@@ -139,11 +139,11 @@ function MobileSearch(): JSX.Element {
 export default function Header(): JSX.Element {
 	return (
 		<header className='border-color sticky top-0 z-50 border-b bg-white dark:bg-d_bg'>
-			<div className='flex items-center justify-between gap-2 px-3 py-4 md:px-5 xxl:container'>
-				<div className='flex items-center gap-3'>
+			<div className='flex items-center justify-between space-x-4 px-3 py-4 md:px-5 xxl:container'>
+				<div className='flex items-center space-x-3 lg:space-x-0'>
 					<MenuSlider />
 					<Link href='/'>
-						<a className='flex cursor-pointer gap-2'>
+						<a className='flex cursor-pointer space-x-2'>
 							<img src='/images/logo.svg' alt='Logo' className='h-6 w-6' />
 							<strong className='text-lg tracking-wide text-primary dark:text-d_primary'>
 								{APP_NAME}
@@ -152,11 +152,11 @@ export default function Header(): JSX.Element {
 					</Link>
 				</div>
 
-				<nav className='ml-2 hidden flex-grow gap-5 lg:ml-5 lg:flex lg:gap-8'>
+				<nav className='ml-2 hidden flex-grow space-x-5 lg:ml-5 lg:flex lg:space-x-8'>
 					<Navbar />
 				</nav>
 
-				<div className='hidden md:items-center md:gap-2 lg:flex'>
+				<div className='hidden md:items-center md:space-x-2 lg:flex'>
 					<div className='relative hidden w-44 lg:w-64 xl:block'>
 						<SearchBar />
 					</div>
@@ -164,7 +164,7 @@ export default function Header(): JSX.Element {
 					<div className='mx-2 h-8 w-[1px] bg-gray-200 dark:bg-gray-600'></div>
 				</div>
 
-				<div className='flex items-center gap-3'>
+				<div className='flex items-center space-x-3'>
 					<MobileSearch />
 					<div className='flex-shrink-0'>
 						<ThemeModeButton />

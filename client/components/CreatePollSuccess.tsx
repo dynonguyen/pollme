@@ -11,7 +11,7 @@ export default function CreatePollSuccess({
 
 	return (
 		<div className='container my-6 md:my-12'>
-			<div className='flex-center mb-5 flex-col gap-2 md:gap-3'>
+			<div className='flex-center mb-5 flex-col space-y-2 md:space-y-3'>
 				<h1 className='text-2xl tracking-wide md:text-3xl lg:text-4xl'>
 					{lang.components.CreatePollSuccess.title}
 				</h1>

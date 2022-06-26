@@ -20,14 +20,14 @@ export default function PollResultBar({
 		: '#219ebc';
 
 	return (
-		<div className='flex gap-2 items-center'>
-			<div className='w-full h-2 md:h-3 bg-slate-300 dark:bg-slate-600 rounded-full overflow-hidden relative'>
+		<div className='flex items-center space-x-2'>
+			<div className='relative h-2 w-full overflow-hidden rounded-full bg-slate-300 dark:bg-slate-600 md:h-3'>
 				<div
 					className='absolute left-0 top-0 h-full rounded-full'
 					style={{ width: `${percent}%`, backgroundColor: percentBarColor }}
 				></div>
 			</div>
-			<span className='w-10 flex-shrink-0 text-slate-500 dark:text-slate-300 text-right'>
+			<span className='w-10 flex-shrink-0 text-right text-slate-500 dark:text-slate-300'>
 				{percent}%
 			</span>
 		</div>

@@ -49,7 +49,7 @@ function UserName({
 	return (
 		<>
 			{showEditName ? (
-				<div className='flex gap-2'>
+				<div className='flex space-x-2'>
 					<input
 						type='text'
 						className='field'
@@ -64,7 +64,7 @@ function UserName({
 					/>
 				</div>
 			) : (
-				<h1 className='flex-center gap-2 text-lg md:text-2xl'>
+				<h1 className='flex-center space-x-2 text-lg md:text-2xl'>
 					<span>{username}</span>
 					<PencilIcon
 						className='w-5 flex-shrink-0 cursor-pointer'
@@ -180,7 +180,7 @@ const AccountSettings: NextPage = () => {
 		<div className={`container ${updating ? 'disabled' : ''}`}>
 			<div className='mx-auto my-8 max-w-md rounded-lg py-6 px-5 shadow-lg dark:bg-d_bg_hover md:py-8 md:px-8'>
 				<UserAvatar onChange={photo => (updateFields.current.avt = photo)} />
-				<div className='my-6 flex flex-col items-center gap-2 md:gap-3'>
+				<div className='my-6 flex flex-col items-center space-y-2 md:space-y-3'>
 					<UserName onChange={value => (updateFields.current.name = value)} />
 					<div className='text-color-normal md:text-lg'>{email}</div>
 					<div className='text-color-normal md:text-lg'>

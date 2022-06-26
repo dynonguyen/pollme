@@ -16,10 +16,10 @@ interface TagInputProps {
 
 function TagItem({ label, onDelete }: TagItemProps): JSX.Element {
 	return (
-		<span className='tag-link rounded-sm cursor-pointer text-base group'>
+		<span className='tag-link group cursor-pointer rounded-sm text-base'>
 			<span>{label}</span>
 			<span
-				className='hidden group-hover:inline hover:text-red-600 dark:hover:text-red-400'
+				className='hidden hover:text-red-600 group-hover:inline dark:hover:text-red-400'
 				onClick={() => onDelete(label)}
 			>
 				&nbsp; x
@@ -91,7 +91,7 @@ export default function TagInput({
 
 	return (
 		<div
-			className={`field flex flex-wrap gap-2 px-2 ${
+			className={`field flex flex-wrap space-x-2 px-2 ${
 				inputFocus ? 'border-2 border-primary dark:border-d_primary' : ''
 			} relative`}
 		>
@@ -103,7 +103,7 @@ export default function TagInput({
 				<input
 					type='text'
 					ref={inputRef}
-					className='flex-1 px-1 outline-none bg-transparent'
+					className='flex-1 bg-transparent px-1 outline-none'
 					placeholder={lang.components.TagInput.inputPlaceholder}
 					onFocus={() => setInputFocus(true)}
 					onBlur={() => setInputFocus(false)}
@@ -113,7 +113,7 @@ export default function TagInput({
 			)}
 
 			{isSuggestion && suggestions.length > 0 && (
-				<div className='menu !block absolute top-full left-0 w-full'>
+				<div className='menu absolute top-full left-0 !block w-full'>
 					<ul>
 						{suggestions.map((s, index) => (
 							<li

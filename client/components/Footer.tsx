@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import React from 'react';
 import { APP_NAME } from '../constants';
 
 interface Contact {
@@ -35,15 +34,15 @@ export default function Footer(): JSX.Element {
 		<footer className='bg-d_bg py-4 dark:border-t dark:border-gray-600'>
 			<div className='container'>
 				<div className='text-center'>
-					<strong className='uppercase text-xl md:text-3xl text-slate-300 tracking-[1px]'>
+					<strong className='text-xl uppercase tracking-[1px] text-slate-300 md:text-3xl'>
 						{APP_NAME}
 					</strong>
 				</div>
-				<ul className='flex justify-center gap-3 md:gap-6 mt-3 mb-8'>
+				<ul className='mt-3 mb-6 flex justify-center space-x-3 md:space-x-6'>
 					{contacts.map((contact, index) => (
-						<li key={index} className='rounded-full p-2 border cursor-pointer'>
+						<li key={index} className='cursor-pointer rounded-full border p-2'>
 							<a href={contact.link} target='_blank'>
-								<div className='w-3 h-3 md:w-5 md:h-5 relative'>
+								<div className='relative h-3 w-3 md:h-5 md:w-5'>
 									<Image
 										src={contact.iconSrc}
 										layout='fill'
@@ -54,7 +53,7 @@ export default function Footer(): JSX.Element {
 						</li>
 					))}
 				</ul>
-				<p className='text-slate-300 text-center text-sm md:text-lg'>
+				<p className='text-center text-sm text-slate-300 md:text-lg'>
 					Copyright© {new Date().getFullYear()} {APP_NAME}. All Rights Reserved.
 				</p>
 			</div>

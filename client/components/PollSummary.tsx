@@ -54,7 +54,7 @@ export default function PollSummary(props: PollSummaryProps): JSX.Element {
 		: `/poll/${pollId}/${pollSlug}`;
 
 	return (
-		<div className={`poll-summary__bg flex flex-col gap-2 ${className}`}>
+		<div className={`poll-summary__bg flex flex-col space-y-2 ${className}`}>
 			<div>
 				<h3 className='poll-summary__title'>
 					<Link href={pollUrl}>
@@ -74,15 +74,15 @@ export default function PollSummary(props: PollSummaryProps): JSX.Element {
 			</div>
 
 			<div className='mt-auto'>
-				<ul className='mb-3 flex flex-wrap gap-2 xl:justify-start'>
+				<ul className='mb-3 flex flex-wrap space-x-2 xl:justify-start'>
 					{tags.map((tag, index) => (
 						<li className='tag-link' key={index}>
 							<Link href={`${linkOfTag}[${tag.name}]`}>{`#${tag.name}`}</Link>
 						</li>
 					))}
 				</ul>
-				<div className='flex flex-wrap items-center justify-between gap-2'>
-					<div className='flex items-center justify-end gap-1 md:gap-2 xl:col-span-2'>
+				<div className='flex flex-wrap items-center justify-between space-y-2'>
+					<div className='flex items-center justify-end space-x-1 md:space-x-2 xl:col-span-2'>
 						{!hideOwner && (
 							<>
 								<img

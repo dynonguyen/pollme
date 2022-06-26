@@ -108,7 +108,7 @@ const ForgotPassword: NextPage = () => {
 	return (
 		<div className={`container ${updating ? 'disabled' : ''}`}>
 			<div className='mx-auto my-8 grid max-w-md grid-cols-1 gap-3 rounded-lg py-6 px-5 shadow-lg dark:bg-d_bg_hover md:py-8 md:px-8'>
-				<h1 className='flex-center mb-3 gap-2 text-xl md:text-3xl'>
+				<h1 className='flex-center mb-3 space-x-2 text-xl md:text-3xl'>
 					<LockClosedIcon className='w-8' />
 					<span>{forgotPwdLang.title}</span>
 				</h1>
@@ -119,7 +119,7 @@ const ForgotPassword: NextPage = () => {
 					onChange={e => (fields.current.email = e.target.value.trim())}
 					autoFocus
 				/>
-				<div className='flex gap-1'>
+				<div className='flex space-x-1'>
 					<input
 						className='field'
 						placeholder={forgotPwdLang.verifyCode}
@@ -130,7 +130,7 @@ const ForgotPassword: NextPage = () => {
 						onClick={handleSendVerifyCode}
 					>
 						{isSentMail === 1 ? (
-							<div className='flex gap-1'>
+							<div className='flex space-x-1'>
 								{forgotPwdLang.sentCode} <CheckCircleIcon className='w-5' />
 							</div>
 						) : (

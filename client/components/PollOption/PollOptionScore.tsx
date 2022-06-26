@@ -49,16 +49,16 @@ export default function PollOptionScore(
 
 	return (
 		<div>
-			<div className='flex items-center gap-2 mb-1'>
+			<div className='mb-1 flex items-center space-x-2'>
 				<input
-					className='field w-20 py-1 px-2 flex-shrink-0'
+					className='field w-20 flex-shrink-0 py-1 px-2'
 					type='number'
 					placeholder='score'
 					defaultValue={defaultScore}
 					max={maxScore}
 					onChange={handleScoreChange}
 				/>
-				<strong className='text-base md:text-xl text-slate-500 dark:text-slate-300 font-normal'>
+				<strong className='text-base font-normal text-slate-500 dark:text-slate-300 md:text-xl'>
 					{title}
 				</strong>
 				{photoUrl && <ImagePreview src={photoUrl} thumbnail={photoThumbnail} />}

@@ -74,7 +74,7 @@ export function AnswerOptionItem({
 	};
 
 	return (
-		<div className='flex justify-between items-center gap-1'>
+		<div className='flex items-center justify-between space-x-2'>
 			<input
 				ref={inputRef}
 				type='text'
@@ -90,13 +90,13 @@ export function AnswerOptionItem({
 				onChange={handlePhotoChange}
 			/>
 			{photoReview ? (
-				<div className='w-8 h-8 shrink-0 relative group'>
+				<div className='group relative h-8 w-8 shrink-0'>
 					<img
-						className='w-full h-full group-hover:opacity-60'
+						className='h-full w-full group-hover:opacity-60'
 						src={photoReview as string}
 					/>
 					<XCircleIcon
-						className='hidden absolute w-5 transform-center cursor-pointer error-text group-hover:block'
+						className='transform-center error-text absolute hidden w-5 cursor-pointer group-hover:block'
 						onClick={handleDeletePhoto}
 					/>
 				</div>
@@ -172,11 +172,11 @@ export default function AnswerOptions({
 			))}
 			{answers.length < MAX.ANSWER_OPTIONS && (
 				<button
-					className='btn-outline mt-1 w-max flex items-center'
+					className='btn-outline mt-1 flex w-max items-center'
 					type='button'
 					onClick={handleAddOption}
 				>
-					<PlusIcon className='w-5 mr-2' />
+					<PlusIcon className='mr-2 w-5' />
 					{newPollLang.addOptionBtn}
 				</button>
 			)}

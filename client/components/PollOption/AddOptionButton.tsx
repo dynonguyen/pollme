@@ -65,16 +65,16 @@ export default function AddOptionButton({
 	return (
 		<>
 			<button
-				className='btn-outline w-max flex items-center'
+				className='btn-outline flex w-max items-center'
 				type='button'
 				onClick={() => setShowInput(true)}
 			>
-				<PlusIcon className='w-5 mr-2' />
+				<PlusIcon className='mr-2 w-5' />
 				{lang.pages.newPoll.addOptionBtn}
 			</button>
 
 			{showInput && (
-				<div className='flex gap-2 items-center'>
+				<div className='flex items-center space-x-2'>
 					<div className='flex-grow'>
 						<AnswerOptionItem
 							id='add-option'
@@ -87,7 +87,7 @@ export default function AddOptionButton({
 						/>
 					</div>
 					<button
-						className='btn bg-gray-400 dark:bg-gray-600 text-white font-medium h-max'
+						className='btn h-max bg-gray-400 font-medium text-white dark:bg-gray-600'
 						onClick={handleAddOption}
 					>
 						{lang.button.add}

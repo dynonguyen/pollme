@@ -57,7 +57,7 @@
 	}
 
 	.filter-item {
-		@apply cursor-pointer rounded-lg p-3 text-gray-500 duration-300 hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-d_bg_hover dark:hover:text-d_text_title;
+		@apply cursor-pointer rounded-lg px-3 py-2 text-gray-500 duration-300 hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-d_bg_hover dark:hover:text-d_text_title;
 	}
 
 	.flex-center {

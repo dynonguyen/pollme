@@ -62,7 +62,7 @@ export default function CommentItem(props: CommentItemProps): JSX.Element {
 	}, [userInfo]);
 
 	return (
-		<div className='flex gap-3 rounded-lg px-3 py-4 shadow-md dark:bg-d_bg_hover dark:shadow-none'>
+		<div className='flex space-x-4 rounded-lg px-3 py-4 shadow-md dark:bg-d_bg_hover dark:shadow-none'>
 			<img
 				className='h-8 w-8 flex-shrink-0 rounded-full'
 				src={userAvt}
@@ -70,14 +70,14 @@ export default function CommentItem(props: CommentItemProps): JSX.Element {
 				onError={e => (e.currentTarget.src = DEFAULT.USER_AVT)}
 			/>
 			<div>
-				<div className='flex flex-wrap items-center gap-1 md:gap-3'>
+				<div className='flex flex-wrap items-center space-x-1 md:space-x-3'>
 					<strong>{username}</strong>
 					<span className='text-sm text-gray-400 dark:text-gray-600'>
 						{dateFormat(new Date(createdAt), true)}
 					</span>
 				</div>
 				<p className='py-2 text-gray-600 dark:text-d_text_primary'>{content}</p>
-				<div className='flex items-center gap-2 text-gray-400 dark:text-gray-600'>
+				<div className='flex items-center space-x-2 text-gray-400 dark:text-gray-600'>
 					<HeartIcon
 						className={`h-7 cursor-pointer duration-200 hover:opacity-70 ${
 							liked ? 'error-text' : ''

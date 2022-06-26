@@ -41,10 +41,10 @@ export default function CheckboxSwitch(
 
 	return (
 		<div
-			className={`flex flex-wrap gap-2 items-center justify-between ${rootClassName}`}
+			className={`flex flex-wrap items-center justify-between space-x-2 ${rootClassName}`}
 		>
 			{label && (
-				<div className={helper ? 'flex items-center gap-1' : ''}>
+				<div className={helper ? 'flex items-center space-x-1' : ''}>
 					<label className={labelClassName} onClick={handleChecked}>
 						{label}
 					</label>
@@ -58,9 +58,9 @@ export default function CheckboxSwitch(
 				checked={checked}
 				{...inputProps}
 			/>
-			<div className={`${switchSize} ${switchBg} rounded-full relative`}>
+			<div className={`${switchSize} ${switchBg} relative rounded-full`}>
 				<div
-					className={`absolute bg-white top-[2px] rounded-full cursor-pointer ${switchBtnSize} ${switchPosition}`}
+					className={`absolute top-[2px] cursor-pointer rounded-full bg-white ${switchBtnSize} ${switchPosition}`}
 					onClick={handleChecked}
 				></div>
 			</div>
