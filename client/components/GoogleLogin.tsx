@@ -75,7 +75,6 @@ export default function GoogleLogin(): JSX.Element {
 						type='button'
 						className='btn-outline btn-lg w-full'
 						onClick={renderProps.onClick}
-						disabled={renderProps.disabled}
 					>
 						Google
 					</button>

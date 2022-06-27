@@ -2,7 +2,7 @@
 
 > Pollme là ứng dụng cho phép người dùng dễ dàng tạo các cuộc thăm dò ý kiến online một cách nhanh chóng, đa tính năng, tuỳ chỉnh theo yêu cầu.
 
-> Truy cập tại [Pollme](http://13.215.248.179/)
+> Truy cập tại [https://poll-me.vercel.app](https://poll-me.vercel.app/)
 
 # Tính năng
 

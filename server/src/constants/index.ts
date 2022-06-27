@@ -1,5 +1,3 @@
-console.log();
-
 export const __PROD__ = process.env.NODE_ENV === 'production';
 export const APP_NAME = process.env.APP_NAME || 'Pollme';
 export const CORS_ORIGINS: string[] =
@@ -9,7 +7,7 @@ export const MONGOOSE_CONNECT_TIMEOUT = 5000; // 5s
 export const SALT_PASSWORD = process.env.SALT_PASSWORD
 	? Number(process.env.SALT_PASSWORD)
 	: 10;
-export const SERVER_PORT = Number(process.env.SERVER_PORT) || 3000;
+export const SERVER_PORT = Number(process.env.PORT) || 3000;
 export const SESSION_SECRET = process.env.SESSION_SECRET || 'Secret';
 export const VOTE_TYPE = {
 	SINGLE_CHOICE: 0,
