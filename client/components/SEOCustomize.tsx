@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import React from 'react';
 import { APP_NAME } from '../constants';
 import useLanguage from '../hooks/useLanguage';
 
@@ -43,6 +42,10 @@ export default function SEOCustomize() {
 			<meta property='og:image:width' content='1200' />
 			<meta property='og:image:height' content='630' />
 			<meta property='og:image:alt' content={pageTitle} />
+			<meta
+				httpEquiv='Content-Security-Policy'
+				content='upgrade-insecure-requests'
+			/>
 		</Head>
 	);
 }
