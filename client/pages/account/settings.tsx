@@ -4,6 +4,7 @@ import { NextPage } from 'next';
 import Link from 'next/link';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
+import { USER_AVT_HEIGHT, USER_AVT_WIDTH } from '../../constants';
 import { DEFAULT } from '../../constants/default';
 import { MAX } from '../../constants/validation';
 import { useUpdateUserInfoMutation } from '../../graphql-client/generated/graphql';
@@ -11,7 +12,7 @@ import useCheckUserLogin from '../../hooks/useCheckUserLogin';
 import useLanguage from '../../hooks/useLanguage';
 import useToast from '../../hooks/useToast';
 import userAtom from '../../recoil/atoms/user.atom';
-import { dateFormat, toStaticUri } from '../../utils/format';
+import { dateFormat, optimizeCloudinarySrc } from '../../utils/format';
 import { uploadUserAvt } from '../../utils/private-api-caller';
 
 function UserName({
@@ -84,14 +85,16 @@ function UserAvatar({
 	const lang = useLanguage();
 	const settingLang = lang.pages.accountSettings;
 	const { avt } = useRecoilValue(userAtom);
-	const [userAvt, setUserAvt] = useState(
-		avt ? toStaticUri(avt) : DEFAULT.USER_AVT,
-	);
+	const [userAvt, setUserAvt] = useState('');
 	const photoRef = useRef<HTMLInputElement>(null);
 	const toast = useToast();
 
 	useEffect(() => {
-		setUserAvt(avt ? toStaticUri(avt) : DEFAULT.USER_AVT);
+		setUserAvt(
+			avt
+				? optimizeCloudinarySrc(avt, USER_AVT_WIDTH, USER_AVT_HEIGHT)
+				: DEFAULT.USER_AVT,
+		);
 	}, [avt]);
 
 	const handleAvtChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -152,15 +155,14 @@ const AccountSettings: NextPage = () => {
 		if (newName === name && !newAvt) return;
 
 		setUpdating(true);
+		let newAvtSrc = '';
 		if (newAvt) {
-			await uploadUserAvt(userId, newAvt);
+			const uploadRes = await uploadUserAvt(userId, newAvt);
+			newAvtSrc = uploadRes?.photoUrl || avt;
 		}
 		const updateRes = await updateUserInfoMutation({
 			variables: {
-				updateInput: {
-					avt: newAvt ? `/upload/user-${userId}/avt.jpeg` : '',
-					name: newName,
-				},
+				updateInput: { avt: newAvtSrc, name: newName },
 			},
 		});
 		if (updateRes.data?.updateUserInfo.success) {
@@ -168,6 +170,7 @@ const AccountSettings: NextPage = () => {
 			setUserInfo({
 				...userInfo,
 				name: newName ? newName : name,
+				avt: newAvtSrc ? newAvtSrc : avt,
 			});
 			updateFields.current.avt = '';
 		} else {

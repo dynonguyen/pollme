@@ -1,4 +1,3 @@
-import { STATIC_URI } from './../constants/index';
 export function numberFormat(num: number = 0): string {
 	return new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(
 		num,
@@ -23,7 +22,35 @@ export function dateFormat(
 	return `${d}-${month}-${y}`;
 }
 
-export function toStaticUri(src: string): string {
-	if (/^(\/upload).+/i.test(src)) return STATIC_URI + src;
-	return src;
+export function optimizeCloudinarySrc(
+	originSrc: string,
+	width: number,
+	height: number,
+	fAuto: boolean = true,
+	qAuto: boolean = true,
+	others: string = '',
+) {
+	if (!originSrc) return '';
+
+	const cloudinaryBaseURL = 'https://res.cloudinary.com/dynonary/image/upload';
+	const index = originSrc.indexOf(cloudinaryBaseURL);
+
+	// Not cloudinary source
+	if (index === -1) {
+		return originSrc;
+	}
+
+	let optimize = `${width > 0 ? `w_${width},` : ''}${
+		height > 0 ? `h_${height},` : ''
+	}${fAuto ? 'f_auto,' : ''}${qAuto ? 'q_auto,' : ''}${
+		others && others !== '' ? others : ''
+	}`;
+
+	if (optimize[optimize.length - 1] === ',')
+		optimize = optimize.slice(0, optimize.length - 1);
+
+	return originSrc.replace(
+		cloudinaryBaseURL,
+		`${cloudinaryBaseURL}/${optimize}`,
+	);
 }

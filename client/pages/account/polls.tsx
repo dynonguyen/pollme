@@ -121,7 +121,7 @@ const AccountPolls: NextPage = () => {
 								/>
 								<TrashIcon
 									className='error-text w-5 cursor-pointer duration-200 hover:brightness-75'
-									onClick={() => handleDeleteVote(vote._id, vote.owner?._id!)}
+									onClick={() => handleDeleteVote(vote._id, vote.ownerId)}
 								/>
 								<ShareIcon
 									className='w-5 cursor-pointer text-primary	duration-200 hover:brightness-75 dark:text-d_primary'

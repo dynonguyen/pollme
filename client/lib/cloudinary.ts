@@ -29,4 +29,11 @@ export async function uploadImageToCloudinary(
 	}
 }
 
+export async function deleteFolderFromCloudinary(folder: string) {
+	if (folder) {
+		await cloudinary.api.delete_resources_by_prefix(`pollme/upload/${folder}`);
+		cloudinary.api.delete_folder(`pollme/upload/${folder}`);
+	}
+}
+
 export default cloudinary;

@@ -1,5 +1,5 @@
-import fs from 'fs';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { uploadImageToCloudinary } from '../../lib/cloudinary';
 
 export default async function handler(
 	req: NextApiRequest,
@@ -14,21 +14,18 @@ export default async function handler(
 		if (!userId || !photo) {
 			return res.status(400).json({ message: 'missing parameters !' });
 		}
-		let photoFile = photo.replace(/^data:image\/\w+;base64,/, '');
-		const buff = Buffer.from(photoFile, 'base64');
-
-		const savedPath = `${process.cwd()}/public/upload/user-${userId}`;
-		fs.mkdirSync(savedPath, { recursive: true });
-
-		const avtPath = `${savedPath}/avt.jpeg`;
-		if (fs.existsSync(avtPath)) {
-			fs.rmSync(avtPath);
-		}
-		fs.writeFileSync(avtPath, buff);
-
-		return res.status(200).json({ message: 'Success' });
+		const uploadResponse = await uploadImageToCloudinary(
+			photo,
+			`user-${userId}`,
+			{
+				use_filename: true,
+				unique_filename: false,
+				filename_override: 'avt.jpeg',
+			},
+		);
+		return res.status(200).json({ photoUrl: uploadResponse?.secure_url });
 	} catch (error) {
 		console.error('UPLOAD API ERROR: ', error);
-		return res.status(500).json({ message: 'Server error' });
+		return res.status(500).json({ photoUrl: null });
 	}
 }

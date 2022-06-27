@@ -2,7 +2,6 @@ export const APP_NAME = 'Pollme';
 export const APOLLO_SERVER_URI =
 	process.env.NEXT_PUBLIC_APOLLO_SERVER_URI || '';
 export const APOLLO_WS_URI = process.env.NEXT_PUBLIC_APOLLO_WS_URI || '';
-export const STATIC_URI = process.env.NEXT_PUBLIC_STATIC_URI || '';
 export const STATIC_PROPS_REVALIDATE = {
 	HOME_PAGE: 60,
 };

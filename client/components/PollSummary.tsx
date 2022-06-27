@@ -1,8 +1,12 @@
 import Link from 'next/link';
+import {
+	USER_AVT_THUMBNAIL_HEIGHT,
+	USER_AVT_THUMBNAIL_WIDTH,
+} from '../constants';
 import { DEFAULT } from '../constants/default';
 import { PRIVATE_POLL_PARAM, QUERY_KEY } from '../constants/key';
 import useLanguage from '../hooks/useLanguage';
-import { dateFormat, toStaticUri } from '../utils/format';
+import { dateFormat, optimizeCloudinarySrc } from '../utils/format';
 import { isPollClosed } from '../utils/helper';
 
 interface PollSummaryProps {
@@ -45,7 +49,13 @@ export default function PollSummary(props: PollSummaryProps): JSX.Element {
 		privateLink = '',
 	} = props;
 
-	const userAvt = user.avt ? toStaticUri(user.avt) : DEFAULT.USER_AVT;
+	const userAvt = user.avt
+		? optimizeCloudinarySrc(
+				user.avt,
+				USER_AVT_THUMBNAIL_WIDTH,
+				USER_AVT_THUMBNAIL_HEIGHT,
+		  )
+		: DEFAULT.USER_AVT;
 	const isClosed = isPollClosed(endDate, maxVote, totalVote);
 	const lang = useLanguage();
 	const linkOfTag = `${lang.pages.discover.link}?${QUERY_KEY.SEARCH}=`;

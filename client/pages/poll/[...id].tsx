@@ -18,7 +18,13 @@ import ScoreChoice from '../../components/PollOption/ScoreChoice';
 import SingleChoice from '../../components/PollOption/SingleChoice';
 import ReCAPTCHA from '../../components/ReCAPTCHA';
 import SocialShare from '../../components/SocialShare';
-import { APP_NAME, HOST_URI, VOTE_TYPE } from '../../constants';
+import {
+	APP_NAME,
+	HOST_URI,
+	USER_AVT_THUMBNAIL_HEIGHT,
+	USER_AVT_THUMBNAIL_WIDTH,
+	VOTE_TYPE,
+} from '../../constants';
 import { DEFAULT } from '../../constants/default';
 import { PRIVATE_POLL_PARAM, QUERY_KEY } from '../../constants/key';
 import {
@@ -43,7 +49,7 @@ import useLanguage from '../../hooks/useLanguage';
 import useToast from '../../hooks/useToast';
 import { addApolloState, initializeApollo } from '../../lib/apolloClient';
 import userAtom from '../../recoil/atoms/user.atom';
-import { dateFormat, toStaticUri } from '../../utils/format';
+import { dateFormat, optimizeCloudinarySrc } from '../../utils/format';
 import {
 	isPollClosed,
 	pollRanking,
@@ -166,7 +172,11 @@ const Poll: NextPage<
 					<div className='flex items-center gap-2 md:gap-2'>
 						<img
 							src={
-								toStaticUri(voteState.owner?.avt as string) || DEFAULT.USER_AVT
+								optimizeCloudinarySrc(
+									voteState.owner?.avt as string,
+									USER_AVT_THUMBNAIL_WIDTH,
+									USER_AVT_THUMBNAIL_HEIGHT,
+								) || DEFAULT.USER_AVT
 							}
 							width={24}
 							height={24}

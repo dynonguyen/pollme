@@ -2,11 +2,15 @@ import { HeartIcon } from '@heroicons/react/solid';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
+import {
+	USER_AVT_THUMBNAIL_HEIGHT,
+	USER_AVT_THUMBNAIL_WIDTH,
+} from '../../constants';
 import { DEFAULT } from '../../constants/default';
 import { useFavoriteCommentMutation } from '../../graphql-client/generated/graphql';
 import useLanguage from '../../hooks/useLanguage';
 import userAtom from '../../recoil/atoms/user.atom';
-import { dateFormat, toStaticUri } from '../../utils/format';
+import { dateFormat, optimizeCloudinarySrc } from '../../utils/format';
 
 interface CommentItemProps {
 	commentId: string;
@@ -26,7 +30,13 @@ export default function CommentItem(props: CommentItemProps): JSX.Element {
 		createdAt,
 		favorites = [],
 	} = props;
-	const userAvt = avt ? toStaticUri(avt) : DEFAULT.USER_AVT;
+	const userAvt = avt
+		? optimizeCloudinarySrc(
+				avt,
+				USER_AVT_THUMBNAIL_WIDTH,
+				USER_AVT_THUMBNAIL_HEIGHT,
+		  )
+		: DEFAULT.USER_AVT;
 	const userInfo = useRecoilValue(userAtom);
 	const [liked, setLiked] = useState(false);
 	const [totalFavorite, setTotalFavorite] = useState(favorites.length);

@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
+import {
+	POLL_PHOTO_THUMBNAIL_HEIGHT,
+	POLL_PHOTO_THUMBNAIL_WIDTH,
+} from '../../constants';
 import userAtom, { UserAtom } from '../../recoil/atoms/user.atom';
 import { AnswerOption } from '../../types/common';
-import { toStaticUri } from '../../utils/format';
-import { pollRanking, toThumbnailSrc } from '../../utils/helper';
+import { optimizeCloudinarySrc } from '../../utils/format';
+import { pollRanking } from '../../utils/helper';
 import PollOptionCheckbox from './PollOptionCheckbox';
 
 interface SingleChoiceProps {
@@ -83,14 +87,12 @@ export default function SingleChoice(props: SingleChoiceProps): JSX.Element {
 			{options.map((option, index) => {
 				const { label, id, photo } = option;
 				const pollRank = pollRanks.find(p => p.id === id);
-				const photoSrc = photo
-					? toStaticUri(`/upload/user-${ownerId}/${pollId}/${photo}`)
-					: null;
-				const photoThumbSrc = photo
-					? toStaticUri(
-							`/upload/user-${ownerId}/${pollId}/${toThumbnailSrc(photo)}`,
-					  )
-					: null;
+				const photoSrc = photo;
+				const photoThumbSrc = optimizeCloudinarySrc(
+					photo || '',
+					POLL_PHOTO_THUMBNAIL_WIDTH,
+					POLL_PHOTO_THUMBNAIL_HEIGHT,
+				);
 
 				return (
 					<PollOptionCheckbox

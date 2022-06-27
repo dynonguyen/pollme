@@ -1,5 +1,5 @@
-import fs from 'fs';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { deleteFolderFromCloudinary } from '../../lib/cloudinary';
 
 export default async function handler(
 	req: NextApiRequest,
@@ -14,12 +14,7 @@ export default async function handler(
 		if (!userId || !pollId) {
 			return res.status(400).json({ message: 'Invalid params' });
 		}
-
-		const folderPath = `${process.cwd()}/public/upload/user-${userId}/${pollId}`;
-		if (fs.existsSync(folderPath)) {
-			fs.rmdirSync(folderPath, { recursive: true });
-		}
-
+		await deleteFolderFromCloudinary(`user-${userId}/${pollId}`);
 		return res.status(200).json({ message: 'Success' });
 	} catch (error) {
 		console.error('UPLOAD API ERROR: ', error);

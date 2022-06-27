@@ -15,7 +15,6 @@ export default async function handler(
 			photo,
 			`user-${userId}/${pollId}`,
 		);
-
 		return res.status(200).json({ photoUrl: uploadResponse?.secure_url });
 	} catch (error) {
 		console.error('UPLOAD API ERROR: ', error);
