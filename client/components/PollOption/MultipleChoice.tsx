@@ -44,8 +44,6 @@ export default function MultipleChoice(
 	const {
 		options = [],
 		showResult = true,
-		ownerId,
-		pollId,
 		isIPDuplicationCheck,
 		onChecked,
 		onUnChecked,

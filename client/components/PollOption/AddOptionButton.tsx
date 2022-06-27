@@ -39,11 +39,13 @@ export default function AddOptionButton({
 		const { label, id, photo } = answer.current;
 		if (!label.trim()) return;
 
-		const newAnswer: AnswerItem = {
-			id,
-			label,
-			photo: photo ? `${id}.jpeg` : null,
-		};
+		let photoSrc = '';
+		if (photo) {
+			const uploadRes = await uploadOptionPhoto(photo, ownerId, pollId);
+			photoSrc = uploadRes.photoUrl || '';
+		}
+
+		const newAnswer: AnswerItem = { id, label, photo: photoSrc };
 
 		const response = await addAnswerMutation({
 			variables: {
@@ -53,9 +55,6 @@ export default function AddOptionButton({
 		if (response.data?.addAnswerOption.success) {
 			toast.show({ type: 'success', message: lang.messages.addOptionSuccess });
 			handleCloseOption();
-			if (photo) {
-				await uploadOptionPhoto(photo, ownerId, pollId, id);
-			}
 			onAddOptionSuccess && onAddOptionSuccess(newAnswer);
 		} else {
 			toast.show({ type: 'error', message: lang.messages.addOptionFailed });

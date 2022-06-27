@@ -43,8 +43,6 @@ export default function ScoreChoice(props: ScoreChoiceProps): JSX.Element {
 	const {
 		options = [],
 		showResult = true,
-		ownerId,
-		pollId,
 		maxScore,
 		isIPDuplicationCheck,
 		onScoreChange,

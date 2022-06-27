@@ -41,8 +41,6 @@ export default function SingleChoice(props: SingleChoiceProps): JSX.Element {
 	const {
 		options = [],
 		showResult = true,
-		ownerId,
-		pollId,
 		isIPDuplicationCheck,
 		onChecked,
 		onUncheck,
