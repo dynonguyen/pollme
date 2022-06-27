@@ -11,7 +11,11 @@ import { VOTE_TYPE } from '../constants';
 import { DEFAULT } from '../constants/default';
 import { SUCCESS_CODE } from '../constants/status';
 import { MAX } from '../constants/validation';
-import { useCreateVoteMutation } from '../graphql-client/generated/graphql';
+import {
+	AnswerPhotoUpdateInput,
+	useCreateVoteMutation,
+	useUpdateAnswerPhotoMutation,
+} from '../graphql-client/generated/graphql';
 import useCheckUserLogin from '../hooks/useCheckUserLogin';
 import useLanguage from '../hooks/useLanguage';
 import useToast from '../hooks/useToast';
@@ -274,6 +278,7 @@ const NewVote: NextPage = () => {
 	});
 	const toast = useToast();
 	const [createVoteMutation] = useCreateVoteMutation();
+	const [updateAnswerPhotoMutation] = useUpdateAnswerPhotoMutation();
 
 	const createNewPoll = async () => {
 		const { answers, ...restInput } = fields.current;
@@ -285,7 +290,7 @@ const NewVote: NextPage = () => {
 						answers: answers.map(answer => ({
 							id: answer.id.toString(),
 							label: answer.label,
-							photo: answer.photo ? `${answer.id}.jpeg` : null,
+							photo: null,
 						})),
 						...restInput,
 					},
@@ -293,9 +298,10 @@ const NewVote: NextPage = () => {
 			});
 			if (response.data?.createVote.code === SUCCESS_CODE.CREATED) {
 				const newVote = response.data.createVote.vote;
-				const pollId = newVote?._id;
+				const pollId = newVote!._id;
 
-				// Upload image to public folder
+				// Upload option's photo to cloudinary
+				let uploaded: AnswerPhotoUpdateInput[] = [];
 				const promises: Promise<any>[] = [];
 				answers.forEach(answer => {
 					if (answer.photo) {
@@ -303,13 +309,20 @@ const NewVote: NextPage = () => {
 							uploadOptionPhoto(
 								answer.photo as string,
 								userInfo._id,
-								pollId!,
-								answer.id.toString(),
+								pollId,
+							).then(response =>
+								uploaded.push({ id: answer.id, photoSrc: response.photoUrl }),
 							),
 						);
 					}
 				});
 				await Promise.all(promises);
+
+				if (uploaded.length) {
+					await updateAnswerPhotoMutation({
+						variables: { updateInput: { answers: uploaded, voteId: pollId } },
+					});
+				}
 
 				const newPollUrl = createShareUrl(
 					newVote?.isPrivate,

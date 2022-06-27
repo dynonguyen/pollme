@@ -81,3 +81,21 @@ export class UpdateVoteInput {
 	@Field(_type => Int, { nullable: true })
 	maxVote: number;
 }
+
+@InputType()
+class AnswerPhotoUpdateInput {
+	@Field(_type => String)
+	id: string;
+
+	@Field(_type => String)
+	photoSrc: string;
+}
+
+@InputType()
+export class UpdateAnswerPhotoInput {
+	@Field(_type => String)
+	voteId: string;
+
+	@Field(_type => [AnswerPhotoUpdateInput])
+	answers: AnswerPhotoUpdateInput[];
+}

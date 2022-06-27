@@ -13,7 +13,6 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
   DateTime: any;
 };
 
@@ -32,6 +31,11 @@ export type AnswerItem = {
   id: Scalars['ID'];
   label: Scalars['String'];
   photo?: InputMaybe<Scalars['String']>;
+};
+
+export type AnswerPhotoUpdateInput = {
+  id: Scalars['String'];
+  photoSrc: Scalars['String'];
 };
 
 export type ChangePasswordInput = {
@@ -123,6 +127,7 @@ export type Mutation = {
   loginWithOAuth: UserMutationResponse;
   logout: Scalars['Boolean'];
   register: UserMutationResponse;
+  updateAnswerPhoto: MutationResponseImpl;
   updateUserInfo: MutationResponseImpl;
   updateVote: MutationResponseImpl;
   voting: VoteMutationResponse;
@@ -181,6 +186,11 @@ export type MutationLoginWithOAuthArgs = {
 
 export type MutationRegisterArgs = {
   registerInput: RegisterInput;
+};
+
+
+export type MutationUpdateAnswerPhotoArgs = {
+  updateInput: UpdateAnswerPhotoInput;
 };
 
 
@@ -342,6 +352,11 @@ export type TagPaginatedResponse = QueryResponse & {
   search?: Maybe<Scalars['String']>;
   sort?: Maybe<Scalars['String']>;
   total: Scalars['Int'];
+};
+
+export type UpdateAnswerPhotoInput = {
+  answers: Array<AnswerPhotoUpdateInput>;
+  voteId: Scalars['String'];
 };
 
 export type UpdateUserInfoInput = {
@@ -623,6 +638,13 @@ export type UpdateVoteMutationVariables = Exact<{
 
 
 export type UpdateVoteMutation = { __typename?: 'Mutation', updateVote: { __typename?: 'MutationResponseImpl', code: number, success: boolean, message?: string | null } };
+
+export type UpdateAnswerPhotoMutationVariables = Exact<{
+  updateInput: UpdateAnswerPhotoInput;
+}>;
+
+
+export type UpdateAnswerPhotoMutation = { __typename?: 'Mutation', updateAnswerPhoto: { __typename?: 'MutationResponseImpl', code: number, success: boolean, message?: string | null } };
 
 export type HomeAnalysisQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1336,6 +1358,39 @@ export function useUpdateVoteMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdateVoteMutationHookResult = ReturnType<typeof useUpdateVoteMutation>;
 export type UpdateVoteMutationResult = Apollo.MutationResult<UpdateVoteMutation>;
 export type UpdateVoteMutationOptions = Apollo.BaseMutationOptions<UpdateVoteMutation, UpdateVoteMutationVariables>;
+export const UpdateAnswerPhotoDocument = gql`
+    mutation UpdateAnswerPhoto($updateInput: UpdateAnswerPhotoInput!) {
+  updateAnswerPhoto(updateInput: $updateInput) {
+    ...mutationStatus
+  }
+}
+    ${MutationStatusFragmentDoc}`;
+export type UpdateAnswerPhotoMutationFn = Apollo.MutationFunction<UpdateAnswerPhotoMutation, UpdateAnswerPhotoMutationVariables>;
+
+/**
+ * __useUpdateAnswerPhotoMutation__
+ *
+ * To run a mutation, you first call `useUpdateAnswerPhotoMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateAnswerPhotoMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateAnswerPhotoMutation, { data, loading, error }] = useUpdateAnswerPhotoMutation({
+ *   variables: {
+ *      updateInput: // value for 'updateInput'
+ *   },
+ * });
+ */
+export function useUpdateAnswerPhotoMutation(baseOptions?: Apollo.MutationHookOptions<UpdateAnswerPhotoMutation, UpdateAnswerPhotoMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateAnswerPhotoMutation, UpdateAnswerPhotoMutationVariables>(UpdateAnswerPhotoDocument, options);
+      }
+export type UpdateAnswerPhotoMutationHookResult = ReturnType<typeof useUpdateAnswerPhotoMutation>;
+export type UpdateAnswerPhotoMutationResult = Apollo.MutationResult<UpdateAnswerPhotoMutation>;
+export type UpdateAnswerPhotoMutationOptions = Apollo.BaseMutationOptions<UpdateAnswerPhotoMutation, UpdateAnswerPhotoMutationVariables>;
 export const HomeAnalysisDocument = gql`
     query HomeAnalysis {
   count {

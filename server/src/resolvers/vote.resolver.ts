@@ -40,7 +40,10 @@ import { VoteFilterOptions } from './../constants/enum';
 import { ERROR_CODE, SUCCESS_CODE } from './../constants/status';
 import { SUB_TOPICS } from './../constants/subscription';
 import { VoteAnswer } from './../types/entities/Vote';
-import { AddAnswerInput } from './../types/input/VoteInput';
+import {
+	AddAnswerInput,
+	UpdateAnswerPhotoInput,
+} from './../types/input/VoteInput';
 import {
 	VoteMutationResponse,
 	VoteQueryResponse,
@@ -431,6 +434,33 @@ export class VoteResolver {
 			return { code: SUCCESS_CODE.OK, success: true };
 		} catch (error) {
 			console.error('VOTE UPDATE ERROR: ', error);
+			return { code: ERROR_CODE.INTERNAL_ERROR, success: false };
+		}
+	}
+
+	@Authorized(ROLES.USER)
+	@Mutation(_return => MutationResponseImpl)
+	async updateAnswerPhoto(
+		@Arg('updateInput') updateInput: UpdateAnswerPhotoInput,
+	): Promise<MutationResponseImpl> {
+		try {
+			const { voteId, answers } = updateInput;
+			const vote = await VoteModel.findOne({ _id: voteId });
+			if (!vote) throw new Error('Vote not found');
+
+			let newAnswers = vote.answers.map(answer => {
+				const ansIndex = answers.findIndex(a => a.id === answer.id);
+				if (ansIndex !== -1) answer.photo = answers[ansIndex].photoSrc;
+				return answer;
+			});
+
+			await VoteModel.updateOne(
+				{ _id: voteId },
+				{ $set: { answers: newAnswers } },
+			);
+			return { code: SUCCESS_CODE.OK, success: true };
+		} catch (error) {
+			console.error('UPDATE VOTE PHOTO ERROR: ', error);
 			return { code: ERROR_CODE.INTERNAL_ERROR, success: false };
 		}
 	}

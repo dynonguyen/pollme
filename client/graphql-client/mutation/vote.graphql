@@ -36,3 +36,9 @@ mutation UpdateVote($updateInput: UpdateVoteInput!) {
 		...mutationStatus
 	}
 }
+
+mutation UpdateAnswerPhoto($updateInput: UpdateAnswerPhotoInput!) {
+	updateAnswerPhoto(updateInput: $updateInput) {
+		...mutationStatus
+	}
+}

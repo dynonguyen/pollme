@@ -6,8 +6,8 @@ networks:
 
 services:
   mongodb:
-    container_name: mongodb
-    hostname: mongodb
+    container_name: poll_mongodb
+    hostname: poll_mongodb
     image: mongo:5.0.6
     networks:
       - pollme-network
