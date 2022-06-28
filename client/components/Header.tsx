@@ -161,7 +161,6 @@ export default function Header(): JSX.Element {
 						<SearchBar />
 					</div>
 					<NavbarAction />
-					<div className='mx-2 h-8 w-[1px] bg-gray-200 dark:bg-gray-600'></div>
 				</div>
 
 				<div className='flex items-center space-x-3'>

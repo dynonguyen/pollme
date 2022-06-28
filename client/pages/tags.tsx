@@ -9,7 +9,7 @@ import { useRef } from 'react';
 import Pagination from '../components/core/Pagination';
 import TagCard from '../components/TagCard';
 import { DEFAULT } from '../constants/default';
-import { QUERY_KEY } from '../constants/key';
+import { QUERY_KEY, REDIS_KEY, REDIS_KEY_TTL } from '../constants/key';
 import {
 	EnTagsDocument,
 	EnTagsQuery,
@@ -19,6 +19,7 @@ import {
 } from '../graphql-client/generated/graphql';
 import useLanguage from '../hooks/useLanguage';
 import { addApolloState, initializeApollo } from '../lib/apolloClient';
+import Redis from '../lib/redis';
 import { debounce, getPageQuery } from '../utils/helper';
 
 function TagSearch(): JSX.Element {
@@ -182,18 +183,35 @@ export const getServerSideProps: GetServerSideProps<
 	const sort: string = (query[QUERY_KEY.SORT] as string) || '';
 	const search: string = (query[QUERY_KEY.SEARCH] as string) || '';
 
-	const response = await apolloClient.query<
-		ViTagsQuery | EnTagsQuery,
-		QueryTagsArgs
-	>({
-		query: queryDocument,
-		variables: { page, pageSize, search, sort },
+	const cachedKey = Redis.createPaginatedKey({
+		key: REDIS_KEY.TAGS,
+		page,
+		pageSize,
+		sort,
+		search,
 	});
-	addApolloState(apolloClient, { props: {} });
 
-	return {
-		props: response.data,
-	};
+	let props: ViTagsQuery | EnTagsQuery;
+	const cachedData: ViTagsQuery | EnTagsQuery | null = await Redis.get(
+		cachedKey,
+	);
+	if (cachedData) {
+		props = cachedData;
+	} else {
+		const response = await apolloClient.query<
+			ViTagsQuery | EnTagsQuery,
+			QueryTagsArgs
+		>({
+			query: queryDocument,
+			variables: { page, pageSize, search, sort },
+		});
+
+		props = response.data;
+		await Redis.set(cachedKey, props, { EX: REDIS_KEY_TTL.TAGS });
+		addApolloState(apolloClient, { props: {} });
+	}
+
+	return { props };
 };
 
 export default Tags;

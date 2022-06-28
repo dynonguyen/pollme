@@ -13,7 +13,7 @@ import Pagination from '../components/core/Pagination';
 import PollSummary from '../components/PollSummary';
 import { DEFAULT } from '../constants/default';
 import { VoteFilterOptions } from '../constants/enum';
-import { QUERY_KEY } from '../constants/key';
+import { QUERY_KEY, REDIS_KEY, REDIS_KEY_TTL } from '../constants/key';
 import {
 	DiscoverDocument,
 	DiscoverQuery,
@@ -21,6 +21,7 @@ import {
 } from '../graphql-client/generated/graphql';
 import useLanguage from '../hooks/useLanguage';
 import { addApolloState, initializeApollo } from '../lib/apolloClient';
+import Redis from '../lib/redis';
 import { numberFormat } from '../utils/format';
 import { getPageQuery } from '../utils/helper';
 
@@ -221,29 +222,43 @@ export const getServerSideProps: GetServerSideProps<{
 	const search = (query[QUERY_KEY.SEARCH] as string) || '';
 	const filter = (query[QUERY_KEY.FILTER] as string) || VoteFilterOptions.ALL;
 
-	const apolloClient = initializeApollo();
-
-	const response = await apolloClient.query<
-		DiscoverQuery,
-		DiscoverQueryVariables
-	>({
-		query: DiscoverDocument,
-		variables: {
-			page,
-			pageSize,
-			sort,
-			filter,
-			search,
-		},
+	const cachedKey = Redis.createPaginatedKey({
+		key: REDIS_KEY.DISCOVER,
+		page,
+		pageSize,
+		sort,
+		filter,
+		search,
 	});
-	const votes: DiscoverQuery = response.data;
-	addApolloState(apolloClient, { props: {} });
 
-	return {
-		props: {
-			votes,
-		},
-	};
+	let votes: DiscoverQuery;
+	const cachedData: DiscoverQuery | null = await Redis.get(cachedKey);
+
+	if (cachedData) {
+		votes = cachedData;
+	} else {
+		const apolloClient = initializeApollo();
+
+		const response = await apolloClient.query<
+			DiscoverQuery,
+			DiscoverQueryVariables
+		>({
+			query: DiscoverDocument,
+			variables: {
+				page,
+				pageSize,
+				sort,
+				filter,
+				search,
+			},
+		});
+
+		votes = response.data;
+		await Redis.set(cachedKey, votes, { EX: REDIS_KEY_TTL.DISCOVER });
+		addApolloState(apolloClient, { props: {} });
+	}
+
+	return { props: { votes } };
 };
 
 export default Discover;

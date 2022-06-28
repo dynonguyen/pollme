@@ -44,11 +44,13 @@
 - MongoDB - Mongoose
 - Nodemailer
 - TypeGraphQL
+- Redis caching
 
 # Deployment
 
 - Docker
-- AWS EC2 VPS
+- AWS EC2 VPS, Vercel, Heroku
+- Cloudinary
 - MongoDB Atlas
 
 # Cài đặt
@@ -57,7 +59,7 @@
 
 ## Client:
 
-- Tạo file .env.local từ file .env, thay đổi các thông tin thích hợp
+- Tạo file .env.local từ file .env.dev, thay đổi các thông tin thích hợp
 - `yarn install`
 - `yarn dev`
 

@@ -16,3 +16,13 @@ export const QUERY_KEY = {
 };
 
 export const PRIVATE_POLL_PARAM = 'p';
+
+export const REDIS_KEY = {
+	DISCOVER: 'discover',
+	TAGS: 'tags',
+};
+
+export const REDIS_KEY_TTL = {
+	DISCOVER: 3600,
+	TAGS: 3600,
+};
