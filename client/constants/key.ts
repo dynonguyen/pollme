@@ -1,5 +1,6 @@
 export const LS_KEY = {
 	THEME: 'theme_mode',
+	USER_IP: 'ip_address',
 };
 
 export const GOOGLE_API_ID = process.env.NEXT_PUBLIC_GOOGLE_API_ID || '';

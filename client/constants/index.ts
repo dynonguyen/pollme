@@ -19,5 +19,4 @@ export const USER_AVT_WIDTH = 100;
 export const USER_AVT_HEIGHT = 100;
 export const USER_AVT_THUMBNAIL_WIDTH = 24;
 export const USER_AVT_THUMBNAIL_HEIGHT = 24;
-export const IP_ADDRESS_API_URI = 'http://ip-api.com/json/?fields=query';
 export const HOST_URI = process.env.NEXT_PUBLIC_HOST_URI;

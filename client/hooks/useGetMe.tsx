@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
-import { IP_ADDRESS_API_URI } from '../constants';
 import { useGetMeLazyQuery } from '../graphql-client/generated/graphql';
 import userAtom, { UserAtom, userAtomDefault } from '../recoil/atoms/user.atom';
+import getUserIp from '../utils/user-ip';
 
 export default function useGetMe(): boolean {
 	const setUserInfoState = useSetRecoilState(userAtom);
@@ -13,9 +13,9 @@ export default function useGetMe(): boolean {
 		(async function () {
 			let user: UserAtom = { ...userAtomDefault };
 
-			const ipAPI = await fetch(IP_ADDRESS_API_URI);
-			const ip = (await ipAPI.json())?.query || '';
+			const ip = await getUserIp();
 			const meRes = await getMeQuery();
+
 			if (meRes.data?.me) {
 				const me = meRes.data.me;
 				user._id = me._id;
