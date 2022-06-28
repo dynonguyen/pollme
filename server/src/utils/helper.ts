@@ -16,6 +16,8 @@ export const onLoginSuccess = ({ res }: ExpressContext, user: User) => {
 	res.cookie(COOKIE.ACCESS_KEY, accessToken, {
 		maxAge: COOKIE.ACCESS_MAX_AGE,
 		httpOnly: true,
+		sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+		secure: process.env.NODE_ENV === 'production',
 	});
 };
 

@@ -91,12 +91,14 @@ export default function TagInput({
 
 	return (
 		<div
-			className={`field flex flex-wrap space-x-2 px-2 ${
+			className={`field flex flex-wrap px-2 ${
 				inputFocus ? 'border-2 border-primary dark:border-d_primary' : ''
 			} relative`}
 		>
 			{tags.map(tag => (
-				<TagItem key={tag} label={tag} onDelete={() => handleDeleteTag(tag)} />
+				<div className='m-1' key={tag}>
+					<TagItem label={tag} onDelete={() => handleDeleteTag(tag)} />
+				</div>
 			))}
 
 			{maxTags !== -1 && tags.length < maxTags && (

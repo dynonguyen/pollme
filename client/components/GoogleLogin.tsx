@@ -22,6 +22,10 @@ export default function GoogleLogin(): JSX.Element {
 	const [oauthLoginMutation] = useLoginOAuthMutation();
 	const [userInfo, setUserInfoAtom] = useRecoilState(userAtom);
 
+	const handleLoginFailure = (message: string) => {
+		toast.show({ type: 'error', message: message });
+	};
+
 	const onLoginSuccess = async (
 		response: GoogleLoginResponse | GoogleLoginResponseOffline,
 	) => {
@@ -48,14 +52,12 @@ export default function GoogleLogin(): JSX.Element {
 				});
 				router.push('/');
 			} else {
-				toast.show({
-					type: 'error',
-					message:
-						response.data?.loginWithOAuth.message || loginLang.message.failed,
-				});
+				handleLoginFailure(
+					response.data?.loginWithOAuth.message || loginLang.message.failed,
+				);
 			}
 		} catch (error) {
-			toast.show({ message: lang.pages.login.message.failed, type: 'error' });
+			handleLoginFailure(loginLang.message.failed);
 		}
 	};
 

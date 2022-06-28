@@ -83,10 +83,10 @@ export default function PollSummary(props: PollSummaryProps): JSX.Element {
 				</p>
 			</div>
 
-			<div className='mt-auto'>
-				<ul className='mb-3 flex flex-wrap space-x-2 xl:justify-start'>
+			<div className='mt-auto flex flex-grow flex-col justify-end'>
+				<ul className='-mx-1 mb-3 flex flex-wrap xl:justify-start'>
 					{tags.map((tag, index) => (
-						<li className='tag-link' key={index}>
+						<li className='tag-link m-1' key={index}>
 							<Link href={`${linkOfTag}[${tag.name}]`}>{`#${tag.name}`}</Link>
 						</li>
 					))}
@@ -111,7 +111,7 @@ export default function PollSummary(props: PollSummaryProps): JSX.Element {
 							{dateFormat(createdAt, false)}
 						</span>
 					</div>
-					<div className='md:text-md ml-auto text-right text-base font-medium text-gray-500 dark:text-gray-400'>
+					<div className='md:text-md text-right text-base font-medium text-gray-500 dark:text-gray-400'>
 						<span className='mr-3'>{totalComment} Comments</span>
 						<span>{totalVote} Votes</span>
 					</div>

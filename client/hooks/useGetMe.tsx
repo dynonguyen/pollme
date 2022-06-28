@@ -14,7 +14,7 @@ export default function useGetMe(): boolean {
 			let user: UserAtom = { ...userAtomDefault };
 
 			const ipAPI = await fetch(IP_ADDRESS_API_URI);
-			const ip = (await ipAPI.json())?.ip || '';
+			const ip = (await ipAPI.json())?.query || '';
 			const meRes = await getMeQuery();
 			if (meRes.data?.me) {
 				const me = meRes.data.me;

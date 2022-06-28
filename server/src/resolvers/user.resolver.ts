@@ -94,7 +94,11 @@ export class UserResolver {
 
 	@Mutation(_return => Boolean)
 	logout(@Ctx() { res }: ExpressContext): boolean {
-		res.clearCookie(COOKIE.ACCESS_KEY);
+		res.clearCookie(COOKIE.ACCESS_KEY, {
+			sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+			secure: process.env.NODE_ENV === 'production',
+			httpOnly: true,
+		});
 		return true;
 	}
 

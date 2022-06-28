@@ -1,9 +1,5 @@
 import Link from 'next/link';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import {
-	USER_AVT_THUMBNAIL_HEIGHT,
-	USER_AVT_THUMBNAIL_WIDTH,
-} from '../constants';
 import { DEFAULT } from '../constants/default';
 import { useLogoutMutation } from '../graphql-client/generated/graphql';
 import useLanguage from '../hooks/useLanguage';
@@ -14,11 +10,7 @@ import { optimizeCloudinarySrc } from '../utils/format';
 export default function NavbarAccountAvatar(): JSX.Element {
 	const userInfo = useRecoilValue(userAtom);
 	const userAvt = userInfo.avt
-		? optimizeCloudinarySrc(
-				userInfo.avt,
-				USER_AVT_THUMBNAIL_WIDTH,
-				USER_AVT_THUMBNAIL_HEIGHT,
-		  )
+		? optimizeCloudinarySrc(userInfo.avt, 40, 40)
 		: DEFAULT.USER_AVT;
 	const lang = useLanguage();
 	const { accountMenu } = lang;
