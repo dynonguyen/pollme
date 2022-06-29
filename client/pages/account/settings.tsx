@@ -6,6 +6,7 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { USER_AVT_HEIGHT, USER_AVT_WIDTH } from '../../constants';
 import { DEFAULT } from '../../constants/default';
+import { REDIS_KEY } from '../../constants/key';
 import { MAX } from '../../constants/validation';
 import { useUpdateUserInfoMutation } from '../../graphql-client/generated/graphql';
 import useCheckUserLogin from '../../hooks/useCheckUserLogin';
@@ -13,7 +14,7 @@ import useLanguage from '../../hooks/useLanguage';
 import useToast from '../../hooks/useToast';
 import userAtom from '../../recoil/atoms/user.atom';
 import { dateFormat, optimizeCloudinarySrc } from '../../utils/format';
-import { uploadUserAvt } from '../../utils/private-api-caller';
+import { redisDelete, uploadUserAvt } from '../../utils/private-api-caller';
 
 function UserName({
 	onChange,
@@ -144,13 +145,17 @@ const AccountSettings: NextPage = () => {
 	const settingLang = lang.pages.accountSettings;
 	const [userInfo, setUserInfo] = useRecoilState(userAtom);
 	const { _id: userId, name, avt, email, createdAt } = userInfo;
-	const updateFields = useRef<{ name?: string; avt?: string }>({ name, avt });
+	const updateFields = useRef<{ name?: string; avt?: string }>({
+		name: '',
+		avt: '',
+	});
 	const [updating, setUpdating] = useState(false);
 	const [updateUserInfoMutation] = useUpdateUserInfoMutation();
 	const toast = useToast();
 
 	const handleUpdateInfo = async () => {
 		const { name: newName, avt: newAvt } = updateFields.current;
+
 		if (!newName && !newAvt) return;
 		if (newName === name && !newAvt) return;
 
@@ -172,6 +177,7 @@ const AccountSettings: NextPage = () => {
 				name: newName ? newName : name,
 				avt: newAvtSrc ? newAvtSrc : avt,
 			});
+			redisDelete(`${REDIS_KEY.DISCOVER}:*`, true);
 			updateFields.current.avt = '';
 		} else {
 			toast.show({ type: 'error', message: settingLang.updateFailed });

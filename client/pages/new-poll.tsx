@@ -7,8 +7,10 @@ import Select from '../components/core/Select';
 import TagInput from '../components/core/TagInput';
 import InfoTooltip from '../components/InfoTooltip';
 import Loading from '../components/Loading';
+import SmallLoading from '../components/SmallLoading';
 import { VOTE_TYPE } from '../constants';
 import { DEFAULT } from '../constants/default';
+import { REDIS_KEY } from '../constants/key';
 import { SUCCESS_CODE } from '../constants/status';
 import { MAX } from '../constants/validation';
 import {
@@ -22,7 +24,7 @@ import useToast from '../hooks/useToast';
 import userAtom from '../recoil/atoms/user.atom';
 import { AdvanceVoteSettings, BasicVoteSettings } from '../types/vote-setting';
 import { createShareUrl } from '../utils/helper';
-import { uploadOptionPhoto } from '../utils/private-api-caller';
+import { redisDelete, uploadOptionPhoto } from '../utils/private-api-caller';
 import { newPollValidate } from '../utils/validation';
 const VOTE_DEFAULT = DEFAULT.VOTE;
 const CreatePollSuccess = React.lazy(
@@ -324,6 +326,9 @@ const NewVote: NextPage = () => {
 					});
 				}
 
+				redisDelete(`${REDIS_KEY.DISCOVER}:*`, true);
+				redisDelete(`${REDIS_KEY.TAGS}:*`, true);
+
 				const newPollUrl = createShareUrl(
 					newVote?.isPrivate,
 					`${newVote?.privateLink}/${pollId}`,
@@ -360,7 +365,7 @@ const NewVote: NextPage = () => {
 					<CreatePollSuccess url={createdPollLink} />
 				</Suspense>
 			) : (
-				<div className='container mb-5'>
+				<div className={`container mb-5 ${isCollectData ? 'disabled' : ''}`}>
 					<div className='bg-right-top bg-no-repeat py-5 md:py-0 lg:h-32 lg:bg-[url("/images/create-poll-bg.svg")] lg:dark:bg-[url("/images/create-poll-bg-dark.svg")]'>
 						<h1 className='font-normal capitalize lg:leading-[128px]'>
 							{newPollLang.title}
@@ -390,12 +395,11 @@ const NewVote: NextPage = () => {
 							/>
 							<div className='mt-3 text-right'>
 								<button
-									className={`${
-										isCollectData ? 'disabled' : ''
-									} btn-primary btn-lg w-full`}
+									className='btn-primary btn-lg flex-center w-full'
 									onClick={() => setIsCollectData(true)}
 								>
-									{newPollLang.submitBtn}
+									<span>{newPollLang.submitBtn}</span>
+									{isCollectData && <SmallLoading className='ml-2' />}
 								</button>
 							</div>
 						</div>

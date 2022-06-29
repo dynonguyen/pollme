@@ -1,3 +1,4 @@
+// Only use on server side
 import { createClient, RedisClientType } from 'redis';
 
 interface PaginatedKey {
@@ -9,14 +10,14 @@ interface PaginatedKey {
 	search?: string;
 }
 
+const REDIS_URI = process.env.REDIS_SERVER_URI || '';
+
 class Redis {
 	private static _redisClient: RedisClientType<any> | null = null;
 
 	static async getConnect() {
 		if (!this._redisClient) {
-			this._redisClient = createClient({
-				url: 'redis://localhost:6379',
-			});
+			this._redisClient = createClient({ url: REDIS_URI });
 			this._redisClient.on('error', err => {
 				console.log('Redis Client Error', err);
 				this._redisClient = null;
@@ -56,6 +57,22 @@ class Redis {
 				await this.getConnect();
 			}
 			await this._redisClient?.set(key, JSON.stringify(value), options);
+		} catch (error) {}
+	}
+
+	static async delete(key: string, isPattern: boolean = false) {
+		try {
+			if (!this._redisClient) {
+				await this.getConnect();
+			}
+			if (isPattern) {
+				const keys = await this._redisClient!.keys(key);
+				const promises: Promise<any>[] = [];
+				keys.forEach(k => promises.push(this._redisClient!.del(k)));
+				await Promise.all(promises);
+			} else {
+				await this._redisClient?.del(key);
+			}
 		} catch (error) {}
 	}
 

@@ -1,6 +1,3 @@
-import { USER_AVT_HEIGHT, USER_AVT_WIDTH } from '../constants';
-import { resizeImage } from './helper';
-
 export const uploadOptionPhoto = async (
 	photo: string,
 	userId: string,
@@ -24,17 +21,19 @@ export const deletePhotoFolder = async (pollId: string, userId: string) => {
 };
 
 export const uploadUserAvt = async (userId: string, photo: string) => {
-	const resizedPhoto = await resizeImage(
-		photo,
-		USER_AVT_WIDTH,
-		USER_AVT_HEIGHT,
-	);
-
 	const uploadResponse = await fetch('/api/upload-avt', {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify({ photo: resizedPhoto, userId }),
+		body: JSON.stringify({ photo, userId }),
 	});
 	if (uploadResponse.status === 200) return await uploadResponse.json();
 	return null;
+};
+
+export const redisDelete = async (key: string, isPattern: boolean = false) => {
+	await fetch('/api/redis-clean', {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ key, isPattern }),
+	});
 };
