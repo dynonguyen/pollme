@@ -18,15 +18,19 @@ export default function ImagePreview({
 		<>
 			{showPreview && (
 				<div className='bg-overlay'>
-					<img src={src} className='transform-center' alt='Image' />
+					<img
+						src={src}
+						className='transform-center max-h-full max-w-full'
+						alt='Image'
+					/>
 					<XIcon
-						className='w-10 h-10 top-5 right-10 absolute text-white cursor-pointer hover:opacity-75'
+						className='absolute top-5 right-10 h-10 w-10 cursor-pointer text-white hover:opacity-75'
 						onClick={() => setShowPreview(false)}
 					/>
 				</div>
 			)}
 			<img
-				className={`w-8 h-8 cursor-pointer duration-300 hover:opacity-60 ${className}`}
+				className={`h-8 w-8 cursor-pointer duration-300 hover:opacity-60 ${className}`}
 				src={thumbnail}
 				onClick={() => setShowPreview(true)}
 				onError={e => e.currentTarget.remove()}
