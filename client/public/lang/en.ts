@@ -389,6 +389,8 @@ export default {
 		loading: 'Loading ...',
 		scoreMaximum: 'The maximum score is',
 		sort: 'Sort',
+		commonDesc:
+			'Pollme is an application that allows users to easily create online polls quickly, multi-feature, customized on demand.',
 	},
 	components: {
 		TagInput: {

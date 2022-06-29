@@ -16,6 +16,15 @@ services:
     ports:
       - 27017:27017
 
+  redis_cache:
+    container_name: redis_cache
+    hostname: redis_cache
+    image: redis:7.0.2
+    networks:
+      - pollme-network
+    ports:
+      - 6379:6379
+
   pollme_api:
     container_name: pollme_api
     hostname: pollme_api
@@ -43,3 +52,4 @@ services:
       - 8080:8080
     depends_on:
       - pollme_api
+      - redis_cache

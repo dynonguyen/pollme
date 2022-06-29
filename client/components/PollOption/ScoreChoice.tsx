@@ -29,7 +29,7 @@ function findDefaultScore(
 	const { _id, ip } = userInfo;
 
 	answers.forEach(answer => {
-		answer.voteList.forEach(v => {
+		answer.voteList?.forEach(v => {
 			if (v.userInfo.ip === ip || v.userInfo.userId === _id) {
 				scores.push({ id: answer.id, score: v.score || 0 });
 			}

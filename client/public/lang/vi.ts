@@ -384,6 +384,8 @@ export default {
 		loading: 'Đang tải dữ liệu ...',
 		scoreMaximum: 'Số điểm tối đa là ',
 		sort: 'Sắp xếp',
+		commonDesc:
+			'Pollme là ứng dụng cho phép người dùng dễ dàng tạo các cuộc thăm dò ý kiến online một cách nhanh chóng, đa tính năng, tuỳ chỉnh theo yêu cầu.',
 	},
 	components: {
 		TagInput: {

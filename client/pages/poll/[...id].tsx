@@ -156,6 +156,14 @@ const Poll: NextPage<
 					{voteState.title} | {APP_NAME}
 				</title>
 				<meta name='description' content={voteState.desc || voteState.title} />
+				<meta
+					property='og:title'
+					content={`${voteState.title} | ${APP_NAME}`}
+				/>
+				<meta
+					property='og:description'
+					content={voteState.desc || voteState.title}
+				/>
 			</Head>
 
 			<div className='mx-auto my-3 max-w-4xl px-3 md:my-5 md:px-6'>

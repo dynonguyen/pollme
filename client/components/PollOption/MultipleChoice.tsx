@@ -28,7 +28,7 @@ function findInitUserChecked(
 	const { _id, ip } = userInfo;
 
 	answers.forEach(answer => {
-		answer.voteList.forEach(v => {
+		answer.voteList?.forEach(v => {
 			if (v.userInfo.ip === ip || v.userInfo.userId === _id) {
 				checkedList.push(answer.id);
 			}

@@ -23,6 +23,6 @@ export const REDIS_KEY = {
 };
 
 export const REDIS_KEY_TTL = {
-	DISCOVER: 3600,
-	TAGS: 3600,
+	DISCOVER: 600,
+	TAGS: 86400,
 };

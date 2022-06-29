@@ -50,6 +50,10 @@ export default function CommentItem(props: CommentItemProps): JSX.Element {
 			return;
 		}
 
+		if (liked) setTotalFavorite(totalFavorite - 1);
+		else setTotalFavorite(totalFavorite + 1);
+		setLiked(!liked);
+
 		await favoriteCommentMutation({
 			variables: {
 				favoriteCommentInput: {
@@ -58,9 +62,6 @@ export default function CommentItem(props: CommentItemProps): JSX.Element {
 				},
 			},
 		});
-		if (liked) setTotalFavorite(totalFavorite - 1);
-		else setTotalFavorite(totalFavorite + 1);
-		setLiked(!liked);
 	};
 
 	useEffect(() => {
