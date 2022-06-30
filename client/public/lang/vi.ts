@@ -230,7 +230,7 @@ export default {
 				tags: `Gắn thẻ (Tối đa ${MAX.VOTE_TAG} tags)`,
 				answers: `Tuỳ chọn câu trả lời (tối đa ${MAX.ANSWER_OPTIONS} tuỳ chọn)`,
 				type: 'Loại khảo sát',
-				isPrivate: 'Riêng tư (chỉ truy cập qua link)',
+				isPrivate: 'Riêng tư (truy cập qua link)',
 				reCaptcha: 'reCAPTCHA',
 				ipCheck: 'Kiểm tra bỏ phiếu trùng lặp',
 				loginRequired: 'Yêu cầu đăng nhập',
@@ -238,7 +238,7 @@ export default {
 				showResultBtn: 'Hiển thị nút xem kết quả',
 				allowAddOption: 'Cho phép thêm lựa chọn',
 				maxVote: 'Lượng bỏ phiếu tối đa',
-				endDate: 'Ngày kết thúc khảo sát',
+				endDate: 'Ngày kết thúc',
 				maxScore: 'Điểm tối đa',
 			},
 			labelHelp: {
@@ -269,6 +269,7 @@ export default {
 				desc: `Mô tả tối đa ${MAX.VOTE_DESC} ký tự !`,
 				tags: `Vui lòng nhập ít nhất 1 tag, tối đa ${MAX.VOTE_TAG} tag !`,
 				answers: `Ít nhất 2 lựa chọn (không trùng lặp và không bỏ trống), nhiều nhất ${MAX.ANSWER_OPTIONS} lựa chọn ! Mỗi lựa chọn tối đa ${MAX.OPTION_LABEL} ký tự.`,
+				tagName: `Chiều dài tối đa của tag là ${MAX.TAG_NAME} ký tự !`,
 			},
 		},
 		poll: {

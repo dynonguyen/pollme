@@ -14,7 +14,7 @@ const schema: Schema = new Schema({
 	content: {
 		type: String,
 		required: true,
-		maxlength: MAX.COMMENT_LENGTH,
+		maxlength: MAX.COMMENT_LEN,
 	},
 	createdAt: {
 		type: Date,

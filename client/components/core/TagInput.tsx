@@ -1,6 +1,8 @@
 import { KeyboardEvent, useRef, useState } from 'react';
+import { MAX } from '../../constants/validation';
 import { useOnlyTagNameLazyQuery } from '../../graphql-client/generated/graphql';
 import useLanguage from '../../hooks/useLanguage';
+import useToast from '../../hooks/useToast';
 import { debounce } from '../../utils/helper';
 
 interface TagItemProps {
@@ -40,8 +42,15 @@ export default function TagInput({
 	const inputRef = useRef<HTMLInputElement>(null);
 	const timer = useRef(0);
 	const lang = useLanguage();
+	const toast = useToast();
 
 	const addTag = (tag: string) => {
+		if (tag.length > MAX.TAG_NAME) {
+			return toast.show({
+				message: lang.pages.newPoll.fieldError.tagName,
+				type: 'error',
+			});
+		}
 		if (tag) {
 			const index = tags.findIndex(t => t === tag);
 			if (index === -1) {

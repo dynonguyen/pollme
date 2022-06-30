@@ -84,16 +84,16 @@ function SortButtonGroup(): JSX.Element {
 		}
 	};
 	return (
-		<div className='flex flex-wrap space-x-1 md:space-x-3'>
+		<div className='grid grid-cols-2 gap-2 md:grid-cols-4'>
 			{sortOptions.map((option, index) => (
 				<div
 					key={index}
-					className='filter-item border-color flex border py-1'
+					className='filter-item border-color flex items-center border py-1'
 					onClick={() => handleSortOptionChange(option.key)}
 				>
-					{option.title}
+					<span>{option.title}</span>
 					{currentSort === option.key && (
-						<CheckIcon className='success-text ml-2 w-4' />
+						<CheckIcon className='success-text ml-1 w-4' />
 					)}
 				</div>
 			))}

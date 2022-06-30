@@ -59,11 +59,11 @@ export const pollTypeToString = (
 
 	for (let key in VOTE_TYPE) {
 		if (VOTE_TYPE[key as T] === type) {
-			return key.replaceAll('_', ' ').toLowerCase();
+			return key.replace(/\_/g, ' ').toLowerCase();
 		}
 	}
 
-	return '';
+	return 'Single Choice';
 };
 
 export const pollRanking = (

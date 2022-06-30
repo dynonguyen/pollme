@@ -34,7 +34,7 @@ export default function NavbarAccountAvatar(): JSX.Element {
 				alt='Username'
 				onError={e => (e.currentTarget.src = DEFAULT.USER_AVT)}
 			/>
-			<div className='menu left-0 z-[999] w-56 md:right-0 md:left-auto'>
+			<div className='menu left-0 z-[999] w-56 lg:right-0 lg:left-auto'>
 				<ul>
 					{accountMenu.map((item, index) => (
 						<Link href={item.to} key={index}>

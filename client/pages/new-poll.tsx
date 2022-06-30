@@ -58,7 +58,7 @@ const classes = {
 
 const pollTypes: any = VOTE_TYPE;
 const pollTypeOptions = Object.keys(pollTypes).map(key => ({
-	label: key.replaceAll('_', ' ').toLowerCase(),
+	label: key?.replace(/\_/gi, ' ').toLowerCase() || '',
 	value: pollTypes[key],
 }));
 
@@ -367,7 +367,7 @@ const NewVote: NextPage = () => {
 			) : (
 				<div className={`container mb-5 ${isCollectData ? 'disabled' : ''}`}>
 					<div className='bg-right-top bg-no-repeat py-5 md:py-0 lg:h-32 lg:bg-[url("/images/create-poll-bg.svg")] lg:dark:bg-[url("/images/create-poll-bg-dark.svg")]'>
-						<h1 className='font-normal capitalize lg:leading-[128px]'>
+						<h1 className='font-normal capitalize leading-[32px] md:leading-[64px] lg:leading-[128px]'>
 							{newPollLang.title}
 						</h1>
 					</div>

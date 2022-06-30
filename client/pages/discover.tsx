@@ -73,12 +73,12 @@ function FilterButton(): JSX.Element {
 						{filterOptions.map((option, index) => (
 							<li
 								key={index}
-								className='menu-item flex justify-between'
+								className='menu-item flex items-center'
 								onClick={() => handleFilterOptionChange(option.key)}
 							>
-								{option.title}
+								<span>{option.title}</span>
 								{option.key === currentFilter && (
-									<CheckIcon className='success-text w-5' />
+									<CheckIcon className='success-text ml-1 w-5' />
 								)}
 							</li>
 						))}
@@ -116,12 +116,12 @@ function SortButton(): JSX.Element {
 					{sortOptions.map((option, index) => (
 						<li
 							key={index}
-							className='menu-item flex justify-between'
+							className='menu-item flex items-center'
 							onClick={() => handleSortOptionChange(option.key)}
 						>
-							{option.title}
+							<span>{option.title}</span>
 							{option.key === currentSort && (
-								<CheckIcon className='success-text w-5' />
+								<CheckIcon className='success-text ml-1 w-5' />
 							)}
 						</li>
 					))}

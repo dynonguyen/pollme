@@ -273,6 +273,7 @@ export default {
 				desc: `Max length of description is ${MAX.VOTE_DESC} characters!`,
 				tags: `Please enter at least 1 tag, max ${MAX.VOTE_TAG} tag!`,
 				answers: `At least 2 options (no duplication and no vacancy), the most ${MAX.ANSWER_OPTIONS} option! Each option is max ${MAX.OPTION_LABEL} characters.`,
+				tagName: `The maximum length of the tag is ${MAX.TAG_NAME} characters!`,
 			},
 		},
 		poll: {

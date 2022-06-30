@@ -177,7 +177,7 @@ const Poll: NextPage<
 					)}
 				</h1>
 				<div className='border-color grid grid-cols-1 gap-2 border-b py-3 md:grid-cols-2'>
-					<div className='flex items-center gap-2 md:gap-2'>
+					<div className='flex items-center space-x-2'>
 						<img
 							src={
 								optimizeCloudinarySrc(
@@ -207,9 +207,9 @@ const Poll: NextPage<
 				</div>
 
 				{/* Tags */}
-				<ul className='my-3 flex flex-wrap gap-2 xl:justify-start'>
+				<ul className='my-3 -mx-2 flex flex-wrap'>
 					{voteState.tags.map((tag, index) => (
-						<li className='tag-link' key={index}>
+						<li className='tag-link mx-2 my-1 break-words' key={index}>
 							<Link href={`${linkOfTag}[${tag.name}]`}>{`#${tag.name}`}</Link>
 						</li>
 					))}

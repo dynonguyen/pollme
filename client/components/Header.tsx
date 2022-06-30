@@ -37,13 +37,16 @@ function LoginRegister(): JSX.Element {
 	);
 }
 
-function Navbar(): JSX.Element {
+function Navbar({ onLinkCLick }: { onLinkCLick?: () => void }): JSX.Element {
 	const lang = useLanguage();
 	return (
 		<>
 			{lang.navbarItems.map((item, index) => (
 				<Link href={item.link} key={index}>
-					<a className='font-medium capitalize text-gray-500 duration-300 hover:text-gray-800 dark:text-d_text_title'>
+					<a
+						onClick={() => onLinkCLick && onLinkCLick()}
+						className='font-medium capitalize text-gray-500 duration-300 hover:text-gray-800 dark:text-d_text_title'
+					>
 						{item.label}
 					</a>
 				</Link>
@@ -75,7 +78,7 @@ function MenuSlider(): JSX.Element {
 						<NavbarAction />
 					</div>
 					<nav className='flex flex-col space-y-6 pl-1'>
-						<Navbar />
+						<Navbar onLinkCLick={() => setShowMenu(false)} />
 					</nav>
 				</div>
 			</div>
