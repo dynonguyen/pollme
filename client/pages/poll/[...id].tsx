@@ -235,7 +235,7 @@ const Poll: NextPage<
 				) : (
 					<>
 						{/* Type */}
-						<div className='mt-3 flex items-center gap-2'>
+						<div className='mt-3 flex items-center space-x-2'>
 							<strong className='text-gradient text-xl capitalize'>
 								{pollTypeToString(voteState.type)}
 							</strong>

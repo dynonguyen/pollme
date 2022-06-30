@@ -1,6 +1,7 @@
 import { ApolloProvider } from '@apollo/client';
 import type { AppProps } from 'next/app';
 import { RecoilRoot } from 'recoil';
+import ErrorBoundary from '../components/core/ErrorBoundary';
 import InitialWrapper from '../components/InitialWrapper';
 import Layout from '../components/Layout';
 import { useApollo } from '../lib/apolloClient';
@@ -14,7 +15,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 			<RecoilRoot>
 				<InitialWrapper>
 					<Layout>
-						<Component {...pageProps} />
+						<ErrorBoundary>
+							<Component {...pageProps} />
+						</ErrorBoundary>
 					</Layout>
 				</InitialWrapper>
 			</RecoilRoot>
