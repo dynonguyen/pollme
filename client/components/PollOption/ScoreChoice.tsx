@@ -24,14 +24,15 @@ interface ScoreChoiceProps {
 function findDefaultScore(
 	userInfo: UserAtom,
 	answers: AnswerOption[],
-): { id: string; score: number }[] {
-	let scores: { id: string; score: number }[] = [];
+): { id: string; score: number | undefined }[] {
+	let scores: { id: string; score: number | undefined }[] = [];
 	const { _id, ip } = userInfo;
 
 	answers.forEach(answer => {
 		answer.voteList?.forEach(v => {
-			if (v.userInfo.ip === ip || v.userInfo.userId === _id) {
-				scores.push({ id: answer.id, score: v.score || 0 });
+			const { ip: ansIp, userId: ansId } = v.userInfo;
+			if ((ansIp && ansIp === ip) || (ansId && ansId === _id)) {
+				scores.push({ id: answer.id, score: v.score ?? undefined });
 			}
 		});
 	});

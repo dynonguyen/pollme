@@ -28,7 +28,8 @@ function findUserChecked(
 	for (let option of options) {
 		const { voteList = [] } = option;
 		for (let vote of voteList) {
-			if (vote.userInfo.ip === ip || vote.userInfo.userId === _id) {
+			const { ip: ansIp, userId: ansId } = vote.userInfo;
+			if ((ansIp && ansIp === ip) || (ansId && ansId === _id)) {
 				return option.id;
 			}
 		}

@@ -130,8 +130,9 @@ const ForgotPassword: NextPage = () => {
 						onClick={handleSendVerifyCode}
 					>
 						{isSentMail === 1 ? (
-							<div className='flex space-x-1'>
-								{forgotPwdLang.sentCode} <CheckCircleIcon className='w-5' />
+							<div className='flex'>
+								<span>{forgotPwdLang.sentCode}</span>
+								<CheckCircleIcon className='ml-1 w-5' />
 							</div>
 						) : (
 							forgotPwdLang.getVerifyCode

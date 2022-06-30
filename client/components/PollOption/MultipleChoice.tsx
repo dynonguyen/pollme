@@ -29,7 +29,8 @@ function findInitUserChecked(
 
 	answers.forEach(answer => {
 		answer.voteList?.forEach(v => {
-			if (v.userInfo.ip === ip || v.userInfo.userId === _id) {
+			const { ip: ansIp, userId: ansId } = v.userInfo;
+			if ((ansIp && ansIp === ip) || (ansId && ansId === _id)) {
 				checkedList.push(answer.id);
 			}
 		});
