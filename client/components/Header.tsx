@@ -2,10 +2,11 @@ import { MenuIcon, SearchIcon, XIcon } from '@heroicons/react/outline';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useRef, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { APP_NAME } from '../constants';
 import { QUERY_KEY } from '../constants/key';
 import useLanguage from '../hooks/useLanguage';
+import { MenuSliderAtom } from '../recoil/atoms/menu-slider.atom';
 import userAtom from '../recoil/atoms/user.atom';
 import LanguageSelect from './LanguageSelect';
 import NavbarAccountAvatar from './NavbarAccountAvatar';
@@ -16,19 +17,26 @@ const ICON_STYLES =
 
 function LoginRegister(): JSX.Element {
 	const lang = useLanguage();
+	const [showMenu, setShowMenu] = useRecoilState(MenuSliderAtom);
 
 	return (
 		<>
 			<Link href={lang.pages.login.link}>
 				<a>
-					<button className='btn-outline rounded-full font-medium text-gray-600'>
+					<button
+						className='btn-outline rounded-full font-medium text-gray-600'
+						onClick={() => showMenu && setShowMenu(false)}
+					>
 						{lang.button.login}
 					</button>
 				</a>
 			</Link>
 			<Link href={lang.pages.register.link}>
 				<a>
-					<button className='btn-primary rounded-full font-medium'>
+					<button
+						className='btn-primary rounded-full font-medium'
+						onClick={() => showMenu && setShowMenu(false)}
+					>
 						{lang.button.register}
 					</button>
 				</a>
@@ -37,14 +45,16 @@ function LoginRegister(): JSX.Element {
 	);
 }
 
-function Navbar({ onLinkCLick }: { onLinkCLick?: () => void }): JSX.Element {
+function Navbar(): JSX.Element {
 	const lang = useLanguage();
+	const [showMenu, setShowMenu] = useRecoilState(MenuSliderAtom);
+
 	return (
 		<>
 			{lang.navbarItems.map((item, index) => (
 				<Link href={item.link} key={index}>
 					<a
-						onClick={() => onLinkCLick && onLinkCLick()}
+						onClick={() => showMenu && setShowMenu(false)}
 						className='font-medium capitalize text-gray-500 duration-300 hover:text-gray-800 dark:text-d_text_title'
 					>
 						{item.label}
@@ -63,7 +73,7 @@ function NavbarAction(): JSX.Element {
 }
 
 function MenuSlider(): JSX.Element {
-	const [showMenu, setShowMenu] = useState(false);
+	const [showMenu, setShowMenu] = useRecoilState(MenuSliderAtom);
 
 	return (
 		<div className='lg:hidden'>
@@ -78,7 +88,7 @@ function MenuSlider(): JSX.Element {
 						<NavbarAction />
 					</div>
 					<nav className='flex flex-col space-y-6 pl-1'>
-						<Navbar onLinkCLick={() => setShowMenu(false)} />
+						<Navbar />
 					</nav>
 				</div>
 			</div>

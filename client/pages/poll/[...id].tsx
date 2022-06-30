@@ -4,10 +4,11 @@ import {
 	InferGetServerSidePropsType,
 	NextPage,
 } from 'next';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { Suspense, useEffect, useRef, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import CommentArea from '../../components/Comment/CommentArea';
 import InfoTooltip from '../../components/InfoTooltip';
@@ -55,8 +56,9 @@ import {
 	pollRanking,
 	pollTypeToString,
 } from '../../utils/helper';
-const PollResultChart = React.lazy(
+const PollResultChart = dynamic(
 	() => import('../../components/PollResultChart'),
+	{ ssr: false, suspense: true },
 );
 
 function calculateResult(
@@ -327,7 +329,7 @@ const Poll: NextPage<
 				)}
 
 				{/* button group */}
-				<div className='flex justify-end gap-3 pt-3'>
+				<div className='flex justify-end space-x-3 pt-3'>
 					{voteState.isShowResultBtn && (
 						<button
 							className='btn-outline md:btn-lg rounded-full font-medium'

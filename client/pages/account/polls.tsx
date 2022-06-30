@@ -1,7 +1,8 @@
 import { CogIcon, ShareIcon, TrashIcon } from '@heroicons/react/solid';
 import { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import React, { Suspense, useEffect, useRef, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import Loading from '../../components/Loading';
 import PollSummary from '../../components/PollSummary';
 import {
@@ -16,10 +17,14 @@ import useLanguage from '../../hooks/useLanguage';
 import useToast from '../../hooks/useToast';
 import { createShareUrl } from '../../utils/helper';
 import { deletePhotoFolder } from '../../utils/private-api-caller';
-const EditVoteModal = React.lazy(
-	() => import('../../components/EditVoteModal'),
-);
-const LinkShare = React.lazy(() => import('../../components/LinkShare'));
+const EditVoteModal = dynamic(() => import('../../components/EditVoteModal'), {
+	ssr: false,
+	suspense: true,
+});
+const LinkShare = dynamic(() => import('../../components/LinkShare'), {
+	ssr: false,
+	suspense: true,
+});
 
 const AccountPolls: NextPage = () => {
 	useCheckUserLogin({ isLoginPage: false });
@@ -36,8 +41,8 @@ const AccountPolls: NextPage = () => {
 	const [editingVote, setEditingVote] = useState<Vote | null>(null);
 
 	useEffect(() => {
-		if (!loading) {
-			setVotes([...(data?.votesOfUser.votes as Vote[])]);
+		if (!loading && data?.votesOfUser?.votes) {
+			setVotes([...(data.votesOfUser.votes as Vote[])]);
 		}
 	}, [loading, data]);
 
@@ -69,7 +74,6 @@ const AccountPolls: NextPage = () => {
 		const newVotes = votes.map(v =>
 			v._id === voteId ? { ...v, ...updatedValue } : v,
 		);
-		console.log(newVotes);
 		setVotes([...newVotes]);
 		setEditingVote(null);
 	};

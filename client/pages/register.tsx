@@ -52,14 +52,14 @@ const Register: NextPage = () => {
 
 	return (
 		<div
-			className={`flex items-center flex-col my-16 ${
+			className={`my-16 flex flex-col items-center ${
 				submitting ? 'disabled' : ''
 			}`}
 		>
-			<h1 className='text-2xl md:text-4xl font-extrabold text-center tracking-[1px] mb-2'>
+			<h1 className='mb-2 text-center text-3xl font-extrabold tracking-[1px] md:text-4xl'>
 				{lang.pageSEO.register.title}
 			</h1>
-			<p className='text-center mb-5 text-gray-400 dark:text-gray-300 md:text-lg'>
+			<p className='mb-5 text-center text-gray-400 dark:text-gray-300 md:text-lg'>
 				{registerLang.subTitle}
 			</p>
 

@@ -1,5 +1,6 @@
 import { NextPage } from 'next';
-import React, { Suspense, useEffect, useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import AnswerOptions from '../components/AnswerOptions';
 import CheckboxSwitch from '../components/core/CheckboxSwitch';
@@ -27,8 +28,10 @@ import { createShareUrl } from '../utils/helper';
 import { redisDelete, uploadOptionPhoto } from '../utils/private-api-caller';
 import { newPollValidate } from '../utils/validation';
 const VOTE_DEFAULT = DEFAULT.VOTE;
-const CreatePollSuccess = React.lazy(
+
+const CreatePollSuccess = dynamic(
 	() => import('../components/CreatePollSuccess'),
+	{ ssr: false, suspense: true },
 );
 
 export interface NewPollFields extends BasicVoteSettings, AdvanceVoteSettings {}

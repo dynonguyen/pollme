@@ -1,14 +1,16 @@
 import Link from 'next/link';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { DEFAULT } from '../constants/default';
 import { useLogoutMutation } from '../graphql-client/generated/graphql';
 import useLanguage from '../hooks/useLanguage';
 import useToast from '../hooks/useToast';
+import { MenuSliderAtom } from '../recoil/atoms/menu-slider.atom';
 import userAtom, { userAtomDefault } from '../recoil/atoms/user.atom';
 import { optimizeCloudinarySrc } from '../utils/format';
 
 export default function NavbarAccountAvatar(): JSX.Element {
 	const userInfo = useRecoilValue(userAtom);
+	const [showMenu, setShowMenu] = useRecoilState(MenuSliderAtom);
 	const userAvt = userInfo.avt
 		? optimizeCloudinarySrc(userInfo.avt, 40, 40)
 		: DEFAULT.USER_AVT;
@@ -38,7 +40,10 @@ export default function NavbarAccountAvatar(): JSX.Element {
 				<ul>
 					{accountMenu.map((item, index) => (
 						<Link href={item.to} key={index}>
-							<a className='menu-item'>
+							<a
+								className='menu-item'
+								onClick={() => showMenu && setShowMenu(false)}
+							>
 								<li>{item.title}</li>
 							</a>
 						</Link>

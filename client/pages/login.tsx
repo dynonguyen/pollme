@@ -64,7 +64,7 @@ const Login: NextPage = () => {
 				isSubmitting ? 'disabled' : ''
 			}`}
 		>
-			<h1 className='mb-6 text-center text-2xl font-extrabold tracking-[1px] md:text-4xl'>
+			<h1 className='mb-6 text-center text-3xl font-extrabold tracking-[1px] md:text-4xl'>
 				{lang.pageSEO.login.title}
 			</h1>
 
