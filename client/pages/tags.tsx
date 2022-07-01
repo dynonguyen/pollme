@@ -183,13 +183,14 @@ export const getServerSideProps: GetServerSideProps<
 	const sort: string = (query[QUERY_KEY.SORT] as string) || '';
 	const search: string = (query[QUERY_KEY.SEARCH] as string) || '';
 
-	const cachedKey = Redis.createPaginatedKey({
-		key: REDIS_KEY.TAGS,
-		page,
-		pageSize,
-		sort,
-		search,
-	});
+	const cachedKey =
+		Redis.createPaginatedKey({
+			key: REDIS_KEY.TAGS,
+			page,
+			pageSize,
+			sort,
+			search,
+		}) + `-${locale}`;
 
 	let props: ViTagsQuery | EnTagsQuery;
 	const cachedData: ViTagsQuery | EnTagsQuery | null = await Redis.get(

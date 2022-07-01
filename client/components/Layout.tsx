@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import NextNProgress from 'nextjs-progressbar';
 import React from 'react';
 import { ToastContainer } from 'react-toastify';
 import { TOAST_LIMIT } from '../constants';
@@ -22,6 +23,13 @@ export default function Layout(props: LayoutProps): JSX.Element {
 		<>
 			<SEOCustomize />
 			<ToastContainer newestOnTop limit={TOAST_LIMIT} />
+			<NextNProgress
+				height={4}
+				color='#219ebc'
+				stopDelayMs={200}
+				showOnShallow={true}
+				options={{ showSpinner: false }}
+			/>
 			<Header />
 			<main className='min-h-[calc(100vh-67px)]'>{props.children}</main>
 			<Footer />
