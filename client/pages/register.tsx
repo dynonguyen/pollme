@@ -40,7 +40,6 @@ const Register: NextPage = () => {
 				});
 			}
 		} catch (error) {
-			console.log(error);
 			toast.show({
 				message: registerLang.message.failed,
 				type: 'error',
@@ -63,7 +62,7 @@ const Register: NextPage = () => {
 				{registerLang.subTitle}
 			</p>
 
-			<RegisterForm onSubmit={handleFormSubmit} />
+			<RegisterForm onSubmit={handleFormSubmit} isSubmitting={submitting} />
 		</div>
 	);
 };

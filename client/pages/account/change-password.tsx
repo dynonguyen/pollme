@@ -2,6 +2,7 @@ import { LockClosedIcon } from '@heroicons/react/solid';
 import { NextPage } from 'next';
 import { useRef, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
+import Button from '../../components/core/Button';
 import PasswordInput from '../../components/core/PasswordInput';
 import { LS_KEY } from '../../constants/key';
 import { ERROR_CODE } from '../../constants/status';
@@ -95,12 +96,14 @@ const ChangePassword: NextPage = () => {
 					onChange={v => (fields.current.confirmPwd = v)}
 				/>
 
-				<button
-					className='btn-primary btn-lg font-medium'
+				<Button
+					className='font-medium'
+					size='large'
 					onClick={handleChangePassword}
+					loading={updating}
 				>
 					{changePwdLang.submitBtn}
-				</button>
+				</Button>
 			</div>
 		</div>
 	);

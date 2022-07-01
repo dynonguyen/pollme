@@ -3,12 +3,12 @@ import dynamic from 'next/dynamic';
 import { Suspense, useEffect, useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import AnswerOptions from '../components/AnswerOptions';
+import Button from '../components/core/Button';
 import CheckboxSwitch from '../components/core/CheckboxSwitch';
 import Select from '../components/core/Select';
 import TagInput from '../components/core/TagInput';
 import InfoTooltip from '../components/InfoTooltip';
 import Loading from '../components/Loading';
-import SmallLoading from '../components/SmallLoading';
 import { VOTE_TYPE } from '../constants';
 import { DEFAULT } from '../constants/default';
 import { REDIS_KEY } from '../constants/key';
@@ -332,6 +332,11 @@ const NewVote: NextPage = () => {
 				redisDelete(`${REDIS_KEY.DISCOVER}:*`, true);
 				redisDelete(`${REDIS_KEY.TAGS}:*`, true);
 
+				fields.current = {
+					...defaultBasicSettings,
+					...defaultAdvanceSettings,
+				};
+
 				const newPollUrl = createShareUrl(
 					newVote?.isPrivate,
 					`${newVote?.privateLink}/${pollId}`,
@@ -397,13 +402,14 @@ const NewVote: NextPage = () => {
 								}
 							/>
 							<div className='mt-3 text-right'>
-								<button
-									className='btn-primary btn-lg flex-center w-full'
+								<Button
+									className='w-full'
 									onClick={() => setIsCollectData(true)}
+									size='large'
+									loading={isCollectData}
 								>
-									<span>{newPollLang.submitBtn}</span>
-									{isCollectData && <SmallLoading className='ml-2' />}
-								</button>
+									{newPollLang.submitBtn}
+								</Button>
 							</div>
 						</div>
 					</div>

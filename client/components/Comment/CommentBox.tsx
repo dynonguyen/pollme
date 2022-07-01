@@ -1,10 +1,11 @@
 import Link from 'next/link';
-import { ChangeEvent, KeyboardEvent, useRef } from 'react';
+import { ChangeEvent, KeyboardEvent, useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { MAX } from '../../constants/validation';
 import { useCreateCommentMutation } from '../../graphql-client/generated/graphql';
 import useLanguage from '../../hooks/useLanguage';
 import userAtom from '../../recoil/atoms/user.atom';
+import Button from '../core/Button';
 
 interface CommentBoxProps {
 	voteId: string;
@@ -17,6 +18,7 @@ export default function CommentBox({ voteId }: CommentBoxProps): JSX.Element {
 	const inputRef = useRef<HTMLTextAreaElement>(null);
 	const userInfo = useRecoilValue(userAtom);
 	const [createCommentMutation] = useCreateCommentMutation();
+	const [submitting, setSubmitting] = useState(false);
 
 	const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
 		const value = e.target.value.trim();
@@ -32,6 +34,7 @@ export default function CommentBox({ voteId }: CommentBoxProps): JSX.Element {
 	const handleSubmitComment = async () => {
 		const comment = inputRef.current?.value.trim() || '';
 		if (comment) {
+			setSubmitting(true);
 			const response = await createCommentMutation({
 				variables: {
 					addCommentInput: {
@@ -45,6 +48,7 @@ export default function CommentBox({ voteId }: CommentBoxProps): JSX.Element {
 				inputRef.current!.value = '';
 				charLeftRef.current!.textContent = MAX.COMMENT_LEN.toString();
 			}
+			setSubmitting(false);
 		}
 	};
 
@@ -73,12 +77,13 @@ export default function CommentBox({ voteId }: CommentBoxProps): JSX.Element {
 			</p>
 			<div className='mt-2 text-right'>
 				{userInfo._id ? (
-					<button
-						className='btn btn-primary md:btn-lg capitalize'
+					<Button
+						className='md:btn-lg ml-auto capitalize'
 						onClick={handleSubmitComment}
+						loading={submitting}
 					>
 						{commentLang.submitCommentBtn}
-					</button>
+					</Button>
 				) : (
 					<Link href={lang.pages.login.link}>
 						<button className='btn btn-primary md:btn-lg capitalize'>

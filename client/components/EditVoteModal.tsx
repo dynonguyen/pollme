@@ -8,6 +8,7 @@ import {
 import useLanguage from '../hooks/useLanguage';
 import useToast from '../hooks/useToast';
 import { AdvanceVoteSettings } from '../types/vote-setting';
+import Button from './core/Button';
 import CheckboxSwitch from './core/CheckboxSwitch';
 
 interface EditVoteModalProps {
@@ -119,12 +120,12 @@ export default function EditVoteModal({
 		<div className='bg-overlay flex-center'>
 			<div className='w-[370px] max-w-full rounded-xl bg-white dark:bg-d_bg md:w-[540px]'>
 				<div className={updating ? 'disabled' : ''}>
-					<div className='border-color flex justify-between border-b px-5 py-3'>
+					<div className='border-color flex border-b px-5 py-3'>
 						<h3 className='text-lg capitalize md:text-xl'>
 							{editLang.modalTitle}
 						</h3>
 						<XCircleIcon
-							className='text-color-normal hover:error-text w-6 cursor-pointer'
+							className='text-color-normal hover:error-text ml-auto w-6 cursor-pointer'
 							onClick={onClose}
 						/>
 					</div>
@@ -238,9 +239,9 @@ export default function EditVoteModal({
 						<button className='btn-outline' onClick={onClose}>
 							{lang.button.close}
 						</button>
-						<button className='btn-primary' onClick={handleUpdatePoll}>
+						<Button onClick={handleUpdatePoll} loading={updating}>
 							{lang.button.update}
-						</button>
+						</Button>
 					</div>
 				</div>
 			</div>

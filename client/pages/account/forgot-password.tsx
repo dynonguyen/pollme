@@ -2,6 +2,7 @@ import { CheckCircleIcon, LockClosedIcon } from '@heroicons/react/solid';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useRef, useState } from 'react';
+import Button from '../../components/core/Button';
 import PasswordInput from '../../components/core/PasswordInput';
 import { ERROR_CODE } from '../../constants/status';
 import { MAX, MIN, VERIFY_CODE_LEN } from '../../constants/validation';
@@ -9,11 +10,13 @@ import {
 	useChangePwdByVerifyCodeMutation,
 	useForgotPwdSendMailMutation,
 } from '../../graphql-client/generated/graphql';
+import useCheckUserLogin from '../../hooks/useCheckUserLogin';
 import useLanguage from '../../hooks/useLanguage';
 import useToast from '../../hooks/useToast';
 import { isEmail } from '../../utils/validation';
 
 const ForgotPassword: NextPage = () => {
+	useCheckUserLogin({ isLoginPage: true });
 	const lang = useLanguage();
 	const changePwdLang = lang.pages.changePwd;
 	const forgotPwdLang = lang.pages.forgotPwd;
@@ -106,9 +109,9 @@ const ForgotPassword: NextPage = () => {
 	};
 
 	return (
-		<div className={`container ${updating ? 'disabled' : ''}`}>
+		<div className='container'>
 			<div className='mx-auto my-8 grid max-w-md grid-cols-1 gap-3 rounded-lg py-6 px-5 shadow-lg dark:bg-d_bg_hover md:py-8 md:px-8'>
-				<h1 className='flex-center mb-3 space-x-2 text-xl md:text-3xl'>
+				<h1 className='flex-center mb-3 space-x-2 text-2xl md:text-3xl'>
 					<LockClosedIcon className='w-8' />
 					<span>{forgotPwdLang.title}</span>
 				</h1>
@@ -125,9 +128,11 @@ const ForgotPassword: NextPage = () => {
 						placeholder={forgotPwdLang.verifyCode}
 						onChange={e => (fields.current.verifyCode = e.target.value.trim())}
 					/>
-					<button
-						className={`btn-accent min-w-max ${isSentMail ? 'disabled' : ''}`}
+					<Button
+						variant='accent'
+						className={`min-w-max ${isSentMail ? 'disabled' : ''}`}
 						onClick={handleSendVerifyCode}
+						loading={isSentMail === -1}
 					>
 						{isSentMail === 1 ? (
 							<div className='flex'>
@@ -137,7 +142,7 @@ const ForgotPassword: NextPage = () => {
 						) : (
 							forgotPwdLang.getVerifyCode
 						)}
-					</button>
+					</Button>
 				</div>
 
 				<PasswordInput
@@ -151,12 +156,14 @@ const ForgotPassword: NextPage = () => {
 					onChange={v => (fields.current.confirmPwd = v)}
 				/>
 
-				<button
-					className='btn-primary btn-lg font-medium'
+				<Button
+					className='font-medium'
+					size='large'
 					onClick={handleChangePassword}
+					loading={updating}
 				>
 					{changePwdLang.submitBtn}
-				</button>
+				</Button>
 			</div>
 		</div>
 	);

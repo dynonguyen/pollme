@@ -5,6 +5,7 @@ import * as yup from 'yup';
 import { MAX, MIN } from '../constants/validation';
 import { RegisterInput } from '../graphql-client/generated/graphql';
 import useLanguage from '../hooks/useLanguage';
+import Button from './core/Button';
 import InputFieldRegister, {
 	PasswordFieldRegister,
 } from './core/InputFieldRegister';
@@ -19,9 +20,13 @@ interface FieldInputs {
 
 interface RegisterProps {
 	onSubmit: (fields: RegisterInput) => void;
+	isSubmitting: boolean;
 }
 
-export default function RegisterForm({ onSubmit }: RegisterProps): JSX.Element {
+export default function RegisterForm({
+	onSubmit,
+	isSubmitting,
+}: RegisterProps): JSX.Element {
 	const lang = useLanguage();
 	const registerLang = lang.pages.register;
 
@@ -106,9 +111,13 @@ export default function RegisterForm({ onSubmit }: RegisterProps): JSX.Element {
 				error={errors.confirmPwd?.message}
 			/>
 
-			<button className='btn-primary btn-lg mt-3 w-full font-medium uppercase'>
+			<Button
+				className='mt-3 w-full font-medium uppercase'
+				size='large'
+				loading={isSubmitting}
+			>
 				{registerLang.submitBtn}
-			</button>
+			</Button>
 
 			<GoogleLogin />
 		</form>

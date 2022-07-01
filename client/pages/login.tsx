@@ -70,16 +70,11 @@ const Login: NextPage = () => {
 	};
 
 	return (
-		<div
-			className={`my-16 flex flex-col items-center ${
-				isSubmitting ? 'disabled' : ''
-			}`}
-		>
+		<div className='my-16 flex flex-col items-center'>
 			<h1 className='mb-6 text-center text-3xl font-extrabold tracking-[1px] md:text-4xl'>
 				{lang.pageSEO.login.title}
 			</h1>
-
-			<LoginForm onSubmit={handleFormSubmit} />
+			<LoginForm onSubmit={handleFormSubmit} isSubmitting={isSubmitting} />
 		</div>
 	);
 };

@@ -4,6 +4,7 @@ import { NextPage } from 'next';
 import Link from 'next/link';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
+import Button from '../../components/core/Button';
 import { USER_AVT_HEIGHT, USER_AVT_WIDTH } from '../../constants';
 import { DEFAULT } from '../../constants/default';
 import { REDIS_KEY } from '../../constants/key';
@@ -202,12 +203,13 @@ const AccountSettings: NextPage = () => {
 							{settingLang.changePwd}
 						</button>
 					</Link>
-					<button
-						className='btn btn-primary w-full py-2 font-medium capitalize'
+					<Button
+						className='w-full py-2 font-medium capitalize'
 						onClick={handleUpdateInfo}
+						loading={updating}
 					>
 						{settingLang.updateBtn}
-					</button>
+					</Button>
 				</div>
 			</div>
 		</div>

@@ -8,6 +8,7 @@ import useLanguage from '../../hooks/useLanguage';
 import useToast from '../../hooks/useToast';
 import { uploadOptionPhoto } from '../../utils/private-api-caller';
 import { AnswerOptionItem } from '../AnswerOptions';
+import Button from '../core/Button';
 
 interface AddOptionButtonProps {
 	pollId: string;
@@ -29,6 +30,7 @@ export default function AddOptionButton({
 	});
 	const [addAnswerMutation] = useAddAnswerOptionMutation();
 	const toast = useToast();
+	const [isAdding, setIsAdding] = useState(false);
 
 	const handleCloseOption = () => {
 		answer.current = { id: Date.now().toString(), label: '', photo: null };
@@ -38,6 +40,8 @@ export default function AddOptionButton({
 	const handleAddOption = async () => {
 		const { label, id, photo } = answer.current;
 		if (!label.trim()) return;
+
+		setIsAdding(true);
 
 		let photoSrc = '';
 		if (photo) {
@@ -59,6 +63,8 @@ export default function AddOptionButton({
 		} else {
 			toast.show({ type: 'error', message: lang.messages.addOptionFailed });
 		}
+
+		setIsAdding(false);
 	};
 
 	return (
@@ -85,12 +91,13 @@ export default function AddOptionButton({
 							}
 						/>
 					</div>
-					<button
-						className='btn h-max bg-gray-400 font-medium text-white dark:bg-gray-600'
+					<Button
+						className='h-max bg-gray-400 font-medium text-white dark:bg-gray-600'
 						onClick={handleAddOption}
+						loading={isAdding}
 					>
 						{lang.button.add}
-					</button>
+					</Button>
 				</div>
 			)}
 		</>
