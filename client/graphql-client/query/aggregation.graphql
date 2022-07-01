@@ -4,6 +4,6 @@ query HomeAnalysis {
 		poll
 		user
 		tag
-		comment
+		voted
 	}
 }

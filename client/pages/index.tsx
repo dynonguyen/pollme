@@ -70,7 +70,7 @@ function Analysis(props: HomeAnalysisQuery): JSX.Element {
 	const lang = useLanguage();
 	const analyticsLang = lang.pages.home.analytics;
 	const { count } = props;
-	const { comment, tag, poll, user } = count;
+	const { voted, tag, poll, user } = count;
 
 	const items: { Icon: Function; quantity: number; title: string }[] = [
 		{
@@ -90,7 +90,7 @@ function Analysis(props: HomeAnalysisQuery): JSX.Element {
 		},
 		{
 			Icon: AnnotationIcon,
-			quantity: comment,
+			quantity: voted,
 			title: analyticsLang[3],
 		},
 	];
@@ -248,9 +248,7 @@ export const getStaticProps: GetStaticProps<{
 
 		addApolloState(apolloClient, { props: {} });
 		return {
-			props: {
-				homeAnalysis,
-			},
+			props: { homeAnalysis },
 			revalidate: STATIC_PROPS_REVALIDATE.HOME_PAGE,
 		};
 	} catch (error) {
@@ -258,7 +256,7 @@ export const getStaticProps: GetStaticProps<{
 		return {
 			props: {
 				homeAnalysis: {
-					count: { code: 200, comment: 0, poll: 0, tag: 0, user: 0 },
+					count: { code: 200, voted: 0, poll: 0, tag: 0, user: 0 },
 				},
 			},
 			revalidate: STATIC_PROPS_REVALIDATE.HOME_PAGE,

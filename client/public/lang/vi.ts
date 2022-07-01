@@ -99,7 +99,7 @@ export default {
 						'Giao diện thân thiện với người dùng, đẹp, dễ sử dụng cho người mới bắt đầu. Đáp ứng tốt trên tất cả các thiết bị và màn hình.',
 				},
 			],
-			analytics: ['Cuộc khảo sát', 'Người dùng', 'Chủ đề', 'Bình luận'],
+			analytics: ['Cuộc khảo sát', 'Người dùng', 'Chủ đề', 'Lượt vote'],
 			featureTitle: 'Tính năng nổi bật',
 			features: [
 				{

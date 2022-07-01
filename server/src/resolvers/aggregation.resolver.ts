@@ -1,5 +1,4 @@
 import { Query, Resolver } from 'type-graphql';
-import CommentModel from '../models/comment.model';
 import TagModel from '../models/tag.model';
 import UserModel from '../models/user.model';
 import VoteModel from '../models/vote.model';
@@ -12,7 +11,7 @@ export class AggregationResolver {
 		let result: CountingAggregation = {
 			code: 200,
 			poll: 0,
-			comment: 0,
+			voted: 0,
 			user: 0,
 			tag: 0,
 		};
@@ -27,8 +26,12 @@ export class AggregationResolver {
 				UserModel.countDocuments().then(nUser => (result.user = nUser)),
 			);
 			promises.push(
-				CommentModel.countDocuments().then(
-					nComment => (result.comment = nComment),
+				VoteModel.aggregate([
+					{ $project: { 'answers.voteList': 1, _id: 0 } },
+					{ $addFields: { total: { $sum: { $size: '$answers.voteList' } } } },
+					{ $project: { total: 1 } },
+				]).then(
+					data => (result.voted = data.reduce((t, _) => (t += _.total), 0)),
 				),
 			);
 			promises.push(

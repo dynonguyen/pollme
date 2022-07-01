@@ -83,11 +83,11 @@ export type CommentPaginatedResponse = QueryResponse & {
 export type CountingAggregation = QueryResponse & {
   __typename?: 'CountingAggregation';
   code: Scalars['Int'];
-  comment: Scalars['Int'];
   message?: Maybe<Scalars['String']>;
   poll: Scalars['Int'];
   tag: Scalars['Int'];
   user: Scalars['Int'];
+  voted: Scalars['Int'];
 };
 
 export type CreateCommentMutationResponse = MutationResponse & {
@@ -650,7 +650,7 @@ export type UpdateAnswerPhotoMutation = { __typename?: 'Mutation', updateAnswerP
 export type HomeAnalysisQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type HomeAnalysisQuery = { __typename?: 'Query', count: { __typename?: 'CountingAggregation', poll: number, user: number, tag: number, comment: number, code: number, message?: string | null } };
+export type HomeAnalysisQuery = { __typename?: 'Query', count: { __typename?: 'CountingAggregation', poll: number, user: number, tag: number, voted: number, code: number, message?: string | null } };
 
 export type CommentsQueryVariables = Exact<{
   voteId: Scalars['String'];
@@ -1401,7 +1401,7 @@ export const HomeAnalysisDocument = gql`
     poll
     user
     tag
-    comment
+    voted
   }
 }
     ${QueryStatusFragmentDoc}`;

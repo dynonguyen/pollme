@@ -13,5 +13,5 @@ export class CountingAggregation extends QueryResponse {
 	tag: number;
 
 	@Field(_type => Int)
-	comment: number;
+	voted: number;
 }
