@@ -112,3 +112,22 @@ export const toThumbnailSrc = (photoSrc: string): string => {
 	}
 	return photoSrc;
 };
+
+export const isIOSMacOSDevice = () => {
+	return (
+		[
+			'iPad Simulator',
+			'iPhone Simulator',
+			'iPod Simulator',
+			'iPad',
+			'iPhone',
+			'iPod',
+			'Mac68K',
+			'MacPPC',
+			'MacIntel',
+			'MacQuantum',
+			'Macintosh',
+		].includes(navigator.platform) ||
+		(navigator.userAgent.includes('Mac') && 'ontouchend' in document)
+	);
+};

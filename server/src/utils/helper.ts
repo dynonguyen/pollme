@@ -5,7 +5,7 @@ import { ExpressContext } from './../types/core/ExpressContext';
 import findDescForTag from './find-tag-desc';
 import { jwtAccessTokenEncode } from './jwt';
 
-export const onLoginSuccess = ({ res }: ExpressContext, user: User) => {
+export const onLoginSuccess = ({ res }: ExpressContext, user: User): string => {
 	const { _id, name, avt, email } = user;
 	const accessToken = jwtAccessTokenEncode({
 		_id,
@@ -19,6 +19,7 @@ export const onLoginSuccess = ({ res }: ExpressContext, user: User) => {
 		sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
 		secure: process.env.NODE_ENV === 'production',
 	});
+	return accessToken;
 };
 
 export const stringToSlug = (str: string): string => {

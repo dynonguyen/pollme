@@ -128,6 +128,7 @@ export default {
 			fields: {
 				email: {
 					label: 'Email',
+					placeholder: 'Enter your email',
 					errors: {
 						required: 'Email is required !',
 						format: 'The email you entered is incorrect.',
@@ -136,6 +137,7 @@ export default {
 				},
 				name: {
 					label: 'Full name',
+					placeholder: 'Enter your full name',
 					errors: {
 						required: 'Full name is required !',
 						max: `The maximum length of full name is ${MAX.USERNAME_LEN} characters.`,
@@ -143,6 +145,7 @@ export default {
 				},
 				password: {
 					label: 'Password',
+					placeholder: 'Enter your password',
 					errors: {
 						required: 'Password is required !',
 						min: `The minimum length of password is ${MIN.PASSWORD_LEN} characters.`,
@@ -151,6 +154,7 @@ export default {
 				},
 				confirmPwd: {
 					label: 'Confirm Password',
+					placeholder: 'Enter your password again',
 					errors: {
 						noMatch: 'Password does not match',
 					},
@@ -168,6 +172,7 @@ export default {
 			fields: {
 				email: {
 					label: 'Email',
+					placeholder: 'Enter your email',
 					errors: {
 						required: 'Email is required !',
 						format: 'The email you entered is incorrect.',
@@ -177,6 +182,7 @@ export default {
 
 				password: {
 					label: 'Password',
+					placeholder: 'Enter your password',
 					errors: {
 						required: 'Password is required !',
 						min: `The minimum length of password is ${MIN.PASSWORD_LEN} characters.`,

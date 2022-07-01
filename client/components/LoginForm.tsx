@@ -57,7 +57,7 @@ export default function LoginForm({ onSubmit }: RegisterProps): JSX.Element {
 				rootClassName='mb-4'
 				name='email'
 				register={register}
-				placeholder='dynonguyen@example.com'
+				placeholder={loginLang.fields.email.placeholder}
 				label={loginLang.fields.email.label}
 				error={errors.email?.message}
 			/>
@@ -67,7 +67,7 @@ export default function LoginForm({ onSubmit }: RegisterProps): JSX.Element {
 				name='password'
 				type='password'
 				register={register}
-				placeholder='********'
+				placeholder={loginLang.fields.password.placeholder}
 				label={loginLang.fields.password.label}
 				error={errors.password?.message}
 			/>

@@ -7,6 +7,7 @@ import {
 	NormalizedCacheObject,
 	split,
 } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
@@ -20,6 +21,8 @@ import {
 } from 'next';
 import { useMemo } from 'react';
 import { APOLLO_SERVER_URI, APOLLO_WS_URI } from './../constants/index';
+import { LS_KEY } from './../constants/key';
+import { isIOSMacOSDevice } from './../utils/helper';
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
 
 type ApolloStateProps = {
@@ -85,6 +88,17 @@ export function initializeApollo(
 	// Create the Apollo Client once in the client
 	if (!apolloClient) {
 		const wsLink = new GraphQLWsLink(createClient({ url: APOLLO_WS_URI }));
+
+		const authLink = setContext((_, { headers }) => {
+			// Fix heroku can't set cookie for cross origin on MacOS, IOS
+			// get the authentication token from local storage if it exists
+			if (isIOSMacOSDevice()) {
+				const token = localStorage.getItem(LS_KEY.ACCESS_TOKEN_FOR_IOS);
+				return { headers: { ...headers, authorization: token ? token : '' } };
+			}
+			return { headers };
+		});
+
 		const splitLink = split(
 			({ query }) => {
 				const definition = getMainDefinition(query);
@@ -94,7 +108,7 @@ export function initializeApollo(
 				);
 			},
 			wsLink,
-			httpLink,
+			authLink.concat(httpLink),
 		);
 		apolloClient = createApolloClient(splitLink);
 	}

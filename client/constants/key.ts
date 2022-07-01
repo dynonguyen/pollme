@@ -1,6 +1,7 @@
 export const LS_KEY = {
 	THEME: 'theme_mode',
 	USER_IP: 'ip_address',
+	ACCESS_TOKEN_FOR_IOS: 'atk_ios',
 };
 
 export const GOOGLE_API_ID = process.env.NEXT_PUBLIC_GOOGLE_API_ID || '';

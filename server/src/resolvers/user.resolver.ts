@@ -76,11 +76,12 @@ export class UserResolver {
 				};
 			}
 
-			onLoginSuccess({ req, res }, existingUser);
+			const accessToken = onLoginSuccess({ req, res }, existingUser);
 			return {
 				code: SUCCESS_CODE.OK,
 				success: true,
 				user: existingUser,
+				accessToken,
 			};
 		} catch (error) {
 			console.log('USER_RESOLVER - LOGIN MUTATION FAILED:', error);
@@ -115,11 +116,12 @@ export class UserResolver {
 				user = await UserModel.create({ name, avt, oauthId, email });
 			}
 
-			onLoginSuccess({ res, req }, user);
+			const accessToken = onLoginSuccess({ res, req }, user);
 			return {
 				code: SUCCESS_CODE.OK,
 				success: true,
 				user,
+				accessToken,
 			};
 		} catch (error) {
 			console.log('USER_RESOLVER - OAUTH LOGIN MUTATION FAILED:', error);

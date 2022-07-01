@@ -9,9 +9,12 @@ export const authChecker: AuthChecker<ExpressContext, RoleType> = async (
 	{ context },
 	roles,
 ) => {
-	const accessToken: string = context.req.cookies[COOKIE.ACCESS_KEY];
+	let accessToken: string = context.req.cookies[COOKIE.ACCESS_KEY];
 	if (!accessToken) {
-		return false;
+		// Check authorization header for IOS device
+		const { authorization } = context.req.headers;
+		if (!authorization) return false;
+		accessToken = authorization;
 	}
 
 	const data = jwtAccessTokenDecode(accessToken);

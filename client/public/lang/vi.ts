@@ -125,6 +125,7 @@ export default {
 			fields: {
 				email: {
 					label: 'Email',
+					placeholder: 'Email của bạn',
 					errors: {
 						required: 'Email là bắt buộc !',
 						format: 'Email vừa nhập không chính xác.',
@@ -133,6 +134,7 @@ export default {
 				},
 				name: {
 					label: 'Họ tên',
+					placeholder: 'Nhập họ tên của bạn',
 					errors: {
 						required: 'Họ tên là bắt buộc !',
 						max: `Họ tên tối đa ${MAX.USERNAME_LEN} ký tự.`,
@@ -140,6 +142,7 @@ export default {
 				},
 				password: {
 					label: 'Mật khẩu',
+					placeholder: 'Nhập mật khẩu',
 					errors: {
 						required: 'Mật khẩu là bắt buộc !',
 						min: `Mật khẩu tối thiểu ${MIN.PASSWORD_LEN} ký tự.`,
@@ -148,6 +151,7 @@ export default {
 				},
 				confirmPwd: {
 					label: 'Xác nhận mật khẩu',
+					placeholder: 'Nhập lại mật khẩu',
 					errors: {
 						noMatch: 'Mật khẩu không trùng khớp',
 					},
@@ -164,6 +168,7 @@ export default {
 			fields: {
 				email: {
 					label: 'Email',
+					placeholder: 'Nhập email của bạn',
 					errors: {
 						required: 'Email là bắt buộc !',
 						format: 'Email vừa nhập không chính xác.',
@@ -172,6 +177,7 @@ export default {
 				},
 				password: {
 					label: 'Mật khẩu',
+					placeholder: 'Nhập mật khẩu',
 					errors: {
 						required: 'Mật khẩu là bắt buộc !',
 						min: `Mật khẩu tối thiểu ${MIN.PASSWORD_LEN} ký tự.`,

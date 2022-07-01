@@ -1,12 +1,14 @@
 import Link from 'next/link';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { DEFAULT } from '../constants/default';
+import { LS_KEY } from '../constants/key';
 import { useLogoutMutation } from '../graphql-client/generated/graphql';
 import useLanguage from '../hooks/useLanguage';
 import useToast from '../hooks/useToast';
 import { MenuSliderAtom } from '../recoil/atoms/menu-slider.atom';
 import userAtom, { userAtomDefault } from '../recoil/atoms/user.atom';
 import { optimizeCloudinarySrc } from '../utils/format';
+import { isIOSMacOSDevice } from '../utils/helper';
 
 export default function NavbarAccountAvatar(): JSX.Element {
 	const userInfo = useRecoilValue(userAtom);
@@ -22,6 +24,10 @@ export default function NavbarAccountAvatar(): JSX.Element {
 
 	const onLogout = async () => {
 		const response = await logoutMutation();
+		// clear access token in local storage for IOS devices
+		if (isIOSMacOSDevice())
+			localStorage.removeItem(LS_KEY.ACCESS_TOKEN_FOR_IOS);
+
 		if (response.data) {
 			toast.show({ message: lang.messages.logoutSuccess, type: 'success' });
 			setUserInfoAtom({ ...userAtomDefault, loading: false });

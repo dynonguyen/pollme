@@ -3,6 +3,7 @@ import { NextPage } from 'next';
 import { useRef, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import PasswordInput from '../../components/core/PasswordInput';
+import { LS_KEY } from '../../constants/key';
 import { ERROR_CODE } from '../../constants/status';
 import { MAX, MIN } from '../../constants/validation';
 import {
@@ -13,6 +14,7 @@ import useCheckUserLogin from '../../hooks/useCheckUserLogin';
 import useLanguage from '../../hooks/useLanguage';
 import useToast from '../../hooks/useToast';
 import userAtom, { userAtomDefault } from '../../recoil/atoms/user.atom';
+import { isIOSMacOSDevice } from '../../utils/helper';
 
 const ChangePassword: NextPage = () => {
 	useCheckUserLogin({ isLoginPage: false });
@@ -55,6 +57,9 @@ const ChangePassword: NextPage = () => {
 		if (updateRes.data?.changePassword.success) {
 			toast.show({ type: 'success', message: changePwdLang.changePwdSuccess });
 			await logoutMutation();
+			// clear access token in local storage for IOS devices
+			if (isIOSMacOSDevice())
+				localStorage.removeItem(LS_KEY.ACCESS_TOKEN_FOR_IOS);
 			setUserInfoAtom({ ...userAtomDefault, loading: false });
 		} else if (
 			updateRes.data?.changePassword.code === ERROR_CODE.UNAUTHORIZED

@@ -68,14 +68,14 @@ export default function RegisterForm({ onSubmit }: RegisterProps): JSX.Element {
 
 	return (
 		<form
-			className='w-11/12 sm:w-[420px] px-6 py-5 rounded-lg shadow-md dark:shadow-none dark:border dark:border-gray-600'
+			className='w-11/12 rounded-lg px-6 py-5 shadow-md dark:border dark:border-gray-600 dark:shadow-none sm:w-[420px]'
 			onSubmit={handleSubmit(handleFormSubmit)}
 		>
 			<InputFieldRegister
 				rootClassName='mb-4'
 				name='email'
 				register={register}
-				placeholder='dynonguyen@example.com'
+				placeholder={registerLang.fields.email.placeholder}
 				label={registerLang.fields.email.label}
 				error={errors.email?.message}
 			/>
@@ -83,7 +83,7 @@ export default function RegisterForm({ onSubmit }: RegisterProps): JSX.Element {
 				rootClassName='mb-4'
 				name='name'
 				register={register}
-				placeholder='Dyno Nguyen'
+				placeholder={registerLang.fields.name.placeholder}
 				label={registerLang.fields.name.label}
 				error={errors.name?.message}
 			/>
@@ -92,7 +92,7 @@ export default function RegisterForm({ onSubmit }: RegisterProps): JSX.Element {
 				name='password'
 				type='password'
 				register={register}
-				placeholder='********'
+				placeholder={registerLang.fields.password.placeholder}
 				label={registerLang.fields.password.label}
 				error={errors.password?.message}
 			/>
@@ -100,13 +100,13 @@ export default function RegisterForm({ onSubmit }: RegisterProps): JSX.Element {
 				rootClassName='mb-4'
 				name='confirmPwd'
 				register={register}
-				placeholder='********'
+				placeholder={registerLang.fields.confirmPwd.placeholder}
 				type='password'
 				label={registerLang.fields.confirmPwd.label}
 				error={errors.confirmPwd?.message}
 			/>
 
-			<button className='btn-primary btn-lg w-full mt-3 uppercase font-medium'>
+			<button className='btn-primary btn-lg mt-3 w-full font-medium uppercase'>
 				{registerLang.submitBtn}
 			</button>
 

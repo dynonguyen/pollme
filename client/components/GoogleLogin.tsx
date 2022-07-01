@@ -4,7 +4,7 @@ import GoogleLoginButton, {
 	GoogleLoginResponseOffline,
 } from 'react-google-login';
 import { useRecoilState } from 'recoil';
-import { GOOGLE_API_ID } from '../constants/key';
+import { GOOGLE_API_ID, LS_KEY } from '../constants/key';
 import { SUCCESS_CODE } from '../constants/status';
 import {
 	useLoginOAuthMutation,
@@ -13,6 +13,7 @@ import {
 import useLanguage from '../hooks/useLanguage';
 import useToast from '../hooks/useToast';
 import userAtom from '../recoil/atoms/user.atom';
+import { isIOSMacOSDevice } from '../utils/helper';
 
 export default function GoogleLogin(): JSX.Element {
 	const toast = useToast();
@@ -40,6 +41,13 @@ export default function GoogleLogin(): JSX.Element {
 			if (response.data?.loginWithOAuth.code === SUCCESS_CODE.OK) {
 				const user = response.data.loginWithOAuth.user as UserInfoFragment;
 				const { __typename, avt, ...rest } = user;
+				const { accessToken } = response.data.loginWithOAuth;
+
+				// Push access token into local storage for IOS devices
+				if (accessToken && isIOSMacOSDevice()) {
+					localStorage.setItem(LS_KEY.ACCESS_TOKEN_FOR_IOS, accessToken);
+				}
+
 				setUserInfoAtom({
 					...userInfo,
 					...rest,
@@ -50,7 +58,9 @@ export default function GoogleLogin(): JSX.Element {
 					type: 'success',
 					message: loginLang.message.success(user.name),
 				});
-				router.push('/');
+
+				if (window.history.length > 1) router.back();
+				else router.push('/');
 			} else {
 				handleLoginFailure(
 					response.data?.loginWithOAuth.message || loginLang.message.failed,
