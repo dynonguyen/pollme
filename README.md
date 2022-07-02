@@ -71,30 +71,30 @@
 
 # Minh hoạ
 
-![DB Diagram](https://res.cloudinary.com/dynonary/image/upload/v1656254786/pollme/ERD.png)
+<div align="center"><img src="https://res.cloudinary.com/dynonary/image/upload/v1656254786/pollme/ERD.png" /></div>
 
-![Landing Page](https://res.cloudinary.com/dynonary/image/upload/v1656254893/pollme/landing-page.png)
+<div align="center"><img src="https://res.cloudinary.com/dynonary/image/upload/v1656254893/pollme/landing-page.png" /></div>
 
-![Vote](https://res.cloudinary.com/dynonary/image/upload/v1656257926/pollme/7.png)
+<div align="center"><img src="https://res.cloudinary.com/dynonary/image/upload/v1656257926/pollme/7.png" /></div>
 
-![Result](https://res.cloudinary.com/dynonary/image/upload/v1656257926/pollme/8.png)
+<div align="center"><img src="https://res.cloudinary.com/dynonary/image/upload/v1656257926/pollme/8.png" /></div>
 
-![Result](https://res.cloudinary.com/dynonary/image/upload/v1656257926/pollme/9.png)
+<div align="center"><img src="https://res.cloudinary.com/dynonary/image/upload/v1656257926/pollme/9.png" /></div>
 
-![Result](https://res.cloudinary.com/dynonary/image/upload/v1656257926/pollme/10.png)
+<div align="center"><img src="https://res.cloudinary.com/dynonary/image/upload/v1656257926/pollme/10.png" /></div>
 
-![Result](https://res.cloudinary.com/dynonary/image/upload/v1656257926/pollme/11.png)
+<div align="center"><img src="https://res.cloudinary.com/dynonary/image/upload/v1656257926/pollme/11.png" /></div>
 
-![Result](https://res.cloudinary.com/dynonary/image/upload/v1656257926/pollme/12.png)
+<div align="center"><img src="https://res.cloudinary.com/dynonary/image/upload/v1656257926/pollme/12.png" /></div>
 
-![Đăng nhập](https://res.cloudinary.com/dynonary/image/upload/v1656256942/pollme/1.jpg)
+<div align="center"><img src="https://res.cloudinary.com/dynonary/image/upload/v1656256942/pollme/1.jpg" /></div>
 
-![Đăng ký](https://res.cloudinary.com/dynonary/image/upload/v1656256942/pollme/2.jpg)
+<div align="center"><img src="https://res.cloudinary.com/dynonary/image/upload/v1656256942/pollme/2.jpg" /></div>
 
-![Quên mật khẩu](https://res.cloudinary.com/dynonary/image/upload/v1656256942/pollme/3.jpg)
+<div align="center"><img src="https://res.cloudinary.com/dynonary/image/upload/v1656256942/pollme/3.jpg" /></div>
 
-![QL tài khoản](https://res.cloudinary.com/dynonary/image/upload/v1656256942/pollme/4.jpg)
+<div align="center"><img src="https://res.cloudinary.com/dynonary/image/upload/v1656256942/pollme/4.jpg" /></div>
 
-![Thay đổi mật khẩu](https://res.cloudinary.com/dynonary/image/upload/v1656256942/pollme/5.jpg)
+<div align="center"><img src="https://res.cloudinary.com/dynonary/image/upload/v1656256942/pollme/5.jpg" /></div>
 
-![FAQ](https://res.cloudinary.com/dynonary/image/upload/v1656256942/pollme/6.jpg)
+<div align="center"><img src="https://res.cloudinary.com/dynonary/image/upload/v1656256942/pollme/6.jpg" /></div>
